@@ -3,13 +3,13 @@
 A big pleasure in post graduate life is no more than SWIMMING with my fellows ! Com and date with us ~ 
 
 
-General
+<strong>General</strong>
 
 
 This is a android app for dating people you know or not know to swim.  Initial target users are students and staff in BUPT~
 
 
-TO DO
+<strong>To Do</strong>
 
 
 1.Log in page(sign up an account or log in with WeChat account)
