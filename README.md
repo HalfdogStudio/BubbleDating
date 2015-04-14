@@ -18,5 +18,7 @@ This is a android app for dating people you know or not know to swim.  Initial t
 
 3.Other functionalities : add new friend , send invitations to swim , accept invitation, instant conversation 
 
-4.To be added　~~~ 
+4.记录心情，分享状态，可设置为私有/对好友可见/对所有人可见。
+
+5.To be added　~~~ 
 
