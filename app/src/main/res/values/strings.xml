@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BubbleDating</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="login_title">泡沫之约</string>
+    <string name="login_without_username">直接使用</string>
+</resources>
