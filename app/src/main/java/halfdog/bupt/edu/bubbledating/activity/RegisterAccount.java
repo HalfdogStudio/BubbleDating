@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,8 +74,6 @@ public class RegisterAccount extends Activity {
         userGender.setOnCheckedChangeListener(checkedChangeListener);
         submit.setOnClickListener(clickListener);
         quit.setOnClickListener(clickListener);
-
-
     }
 
     RadioGroup.OnCheckedChangeListener checkedChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -179,6 +178,7 @@ public class RegisterAccount extends Activity {
                         break;
                     case R.id.register_activity_quit:
                         RegisterAccount.this.finish();
+                        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                         break;
 
                 }
@@ -223,10 +223,14 @@ public class RegisterAccount extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-//    public  static class   RegisterResponse {
-//        static final int OK = 0;
-//        static final int USER_NAME_DUPLICATE= 1;
-//        static final int EMAIL_DUPLICATE = 2;
-//        static final int UNKNOWN_ERROR = 3;
-//    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
+            finish();
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+        }
+        return true;
+    }
+
 }

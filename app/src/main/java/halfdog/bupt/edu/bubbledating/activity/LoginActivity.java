@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.AndroidCharacter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -71,6 +72,7 @@ public class LoginActivity extends Activity {
                 case R.id.use_without_login:
                     Intent toMainActivity = new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(toMainActivity);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                     break;
                 case R.id.login_activity_launch:
                     login(LoginActivity.this);
@@ -78,6 +80,7 @@ public class LoginActivity extends Activity {
                 case R.id.login_activity_register:
                     Intent toRegisterActivity = new Intent(LoginActivity.this,RegisterAccount.class);
                     startActivity(toRegisterActivity);
+                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
                     break;
 
             }
@@ -141,13 +144,15 @@ public class LoginActivity extends Activity {
                             Intent toMainAcvitiy = new Intent(context,MainActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putInt(UserInfoKeys.U_ID,res.getInt(UserInfoKeys.U_ID));
-                            bundle.putString(UserInfoKeys.U_NAME,res.getString(UserInfoKeys.U_NAME));
-                            bundle.putString(UserInfoKeys.U_PASSWORD,res.getString(UserInfoKeys.U_PASSWORD));
-                            bundle.putString(UserInfoKeys.U_EMAIL,res.getString(UserInfoKeys.U_EMAIL));
-                            bundle.putString(UserInfoKeys.U_GENDER,res.getString(UserInfoKeys.U_GENDER));
-                            bundle.putBoolean(UserInfoKeys.U_ONLINE,res.getBoolean(UserInfoKeys.U_ONLINE));
+                            bundle.putString(UserInfoKeys.U_NAME, res.getString(UserInfoKeys.U_NAME));
+                            bundle.putString(UserInfoKeys.U_PASSWORD, res.getString(UserInfoKeys.U_PASSWORD));
+                            bundle.putString(UserInfoKeys.U_EMAIL, res.getString(UserInfoKeys.U_EMAIL));
+                            bundle.putString(UserInfoKeys.U_GENDER, res.getString(UserInfoKeys.U_GENDER));
+                            bundle.putBoolean(UserInfoKeys.U_ONLINE, res.getBoolean(UserInfoKeys.U_ONLINE));
                             toMainAcvitiy.putExtras(bundle);
                             context.startActivity(toMainAcvitiy);
+
+                            ((Activity)context).overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                             break;
                         case ResponseState.UNKOWN_USERNAME:
                             Toast.makeText(context,"用户名错误",Toast.LENGTH_SHORT).show();
