@@ -35,6 +35,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:singleLine="true"
+        android:hint="用户名"
         android:background="#ffffff"
         android:paddingLeft="@dimen/login_edittext_padding"
         android:paddingRight="@dimen/login_edittext_padding"
@@ -57,6 +58,7 @@
         android:background="#ffffff"
         android:paddingLeft="@dimen/login_edittext_padding"
         android:paddingRight="@dimen/login_edittext_padding"
+        android:hint="密码"
         android:password="true"
         android:singleLine="true"
         />
@@ -69,13 +71,13 @@
         android:orientation="horizontal"
         android:gravity="center">
         <com.gc.materialdesign.views.ButtonRectangle
-            android:id="@+id/login_activity_launch"
+            android:id="@+id/login_activity_register"
             android:layout_width="120dp"
             android:layout_height="match_parent"
             android:background="@color/login_backgound"
             android:text="注册" />
         <com.gc.materialdesign.views.ButtonRectangle
-            android:id="@+id/login_activity_register"
+            android:id="@+id/login_activity_launch"
             android:layout_width="120dp"
             android:layout_height="match_parent"
             android:background="@color/login_backgound"

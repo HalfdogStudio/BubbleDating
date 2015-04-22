@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--login activity-->
     <color name="login_backgound">#33b5e5</color>
     <color name="login_title_color">#ffffff</color>
+    <color name="register_account_background">#33b5e5</color>
+
+    <!--register activity-->
+    <color name="regiter_hint_color">#ffffff</color>
 </resources>
