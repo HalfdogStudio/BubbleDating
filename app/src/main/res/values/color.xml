@@ -8,4 +8,9 @@
 
     <!--register activity-->
     <color name="regiter_hint_color">#ffffff</color>
+
+
+    <!--main activity-->
+    <color name="main_activity_bottom_tab_selected">#0099cc</color>
+    <color name="main_activity_bottom_tab_not_selected">#525252</color>
 </resources>

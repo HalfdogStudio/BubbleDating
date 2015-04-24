@@ -1,31 +1,23 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
 import android.app.Activity;
-import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.AndroidCharacter;
-import android.text.StaticLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.gc.materialdesign.views.ButtonRectangle;
 
@@ -36,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import halfdog.bupt.edu.bubbledating.R;
-import halfdog.bupt.edu.bubbledating.activity.halfdog.bupt.edu.bubbledating.tool.CustomRequest;
+import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.constants.ResponseState;
 
 public class RegisterAccount extends Activity {

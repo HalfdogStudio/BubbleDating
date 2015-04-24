@@ -2,24 +2,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+    <LinearLayout
+        android:id="@+id/main_activity_bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/date_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/date_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@mipmap/swim_not_chozen"
+                 />
+
+            <TextView
+                android:id="@+id/date_text"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:text="约游"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/message_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/message_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@mipmap/message_not_chozen"/>
+
+            <TextView
+                android:id="@+id/message_text"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:text="消息"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/swim_daily_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/swim_daily_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@mipmap/daily_not_chozen"/>
+
+            <TextView
+                android:id="@+id/swim_daily_text"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:text="日报"
+                android:gravity="center"
+                />
+        </LinearLayout>
+    </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageview"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
-    <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/network_image_view"
-        android:layout_width="30dp"
-        android:layout_height="30dp" />
+        android:layout_width="match_parent"
+        android:layout_height="1pt"
+        android:layout_above="@id/main_activity_bottom_container"
+        android:background="#22000000" />
+
+    <FrameLayout
+        android:id="@+id/main_activity_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/main_activity_bottom_container"></FrameLayout>
+
 
 </RelativeLayout>

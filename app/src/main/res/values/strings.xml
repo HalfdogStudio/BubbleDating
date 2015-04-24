@@ -7,4 +7,7 @@
     <string name="login_title">泡沫之约</string>
     <string name="login_without_username">直接使用</string>
     <string name="title_activity_register_account">RegisterAccount</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello dating fragment</string>
 </resources>

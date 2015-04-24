@@ -1,4 +1,4 @@
-package halfdog.bupt.edu.bubbledating.activity.halfdog.bupt.edu.bubbledating.entity;
+package halfdog.bupt.edu.bubbledating.entity;
 
 /**
  * Created by andy on 2015/4/22.

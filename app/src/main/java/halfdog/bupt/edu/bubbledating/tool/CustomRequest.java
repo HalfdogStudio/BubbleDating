@@ -1,4 +1,4 @@
-package halfdog.bupt.edu.bubbledating.activity.halfdog.bupt.edu.bubbledating.tool;
+package halfdog.bupt.edu.bubbledating.tool;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
