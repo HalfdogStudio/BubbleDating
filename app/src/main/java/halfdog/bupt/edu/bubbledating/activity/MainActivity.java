@@ -1,9 +1,12 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
 import android.net.Uri;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import halfdog.bupt.edu.bubbledating.R;
@@ -28,6 +32,10 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
     private TextView dateText,messageText,swimDailyText;
     private FrameLayout fragmentContainer;
     private Fragment dateFragment,messageFragment,swimDailyFragment,currentFragment;
+
+    private DrawerLayout drawerlayout;
+    private ListView leftDrawer;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,24 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         messageText = (TextView)findViewById(R.id.message_text);
         swimDailyText = (TextView)findViewById(R.id.swim_daily_text);
 
+        drawerlayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        leftDrawer = (ListView)findViewById(R.id.left_drawer);
+
+        drawerToggle = new ActionBarDrawerToggle(this,drawerlayout, R.string.drawer_open,R.string.drawer_close){
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                getSupportActionBar().setTitle("drawer closed");
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle("drawer opened");
+            }
+        };
+
+
     }
 
     public void initTabs(){
@@ -74,6 +100,10 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         dateContainer.setOnClickListener(onClickListener);
         messageContainer.setOnClickListener(onClickListener);
         swimDailyContainer.setOnClickListener(onClickListener);
+
+        drawerlayout.setDrawerListener(drawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -146,9 +176,11 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
 
     }
 
-
-
-
+    @Override
+    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onPostCreate(savedInstanceState, persistentState);
+        drawerToggle.syncState();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

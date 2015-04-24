@@ -1,8 +1,5 @@
 apply plugin: 'com.android.application'
 
-apply plugin: 'idea'
-
-//apply plugin: 'aar-link-sources'
 
 android {
     compileSdkVersion 22
@@ -32,11 +29,7 @@ dependencies {
     compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
     compile 'com.mcxiaoke.volley:library:1.0.+@aar'
     compile 'com.android.support:support-v4:22.0.0'
+    
 }
 
-idea {
-    module {
-        downloadJavadoc = true
-        downloadSources = true
-    }
-}
+
