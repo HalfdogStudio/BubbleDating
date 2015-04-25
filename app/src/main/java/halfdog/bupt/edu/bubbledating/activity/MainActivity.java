@@ -1,12 +1,13 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,7 +64,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         drawerlayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         leftDrawer = (ListView)findViewById(R.id.left_drawer);
 
-        drawerToggle = new ActionBarDrawerToggle(this,drawerlayout, R.string.drawer_open,R.string.drawer_close){
+        drawerToggle = new ActionBarDrawerToggle(this,drawerlayout,R.drawable.ic_drawer, R.string.drawer_open,R.string.drawer_close){
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -201,7 +202,17 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
             return true;
         }
 
+        if(drawerToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
