@@ -7,10 +7,12 @@
     <string name="login_title">泡沫之约</string>
     <string name="login_without_username">直接使用</string>
     <string name="title_activity_register_account">RegisterAccount</string>
+    <string name="login_activity_username_hint">用户名</string>
+    <string name="login_activity_password_hint">密码</string>
 
     
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer close</string>
-<!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello dating fragment</string>
+    <string name="title_activity_baidu_map_demo">BaiduMapDemoActivity</string>
 </resources>

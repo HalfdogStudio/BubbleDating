@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 import halfdog.bupt.edu.bubbledating.R;
 
 /**
@@ -56,6 +57,7 @@ public class DateFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        SDKInitializer.initialize(getApplicationContext())
         Log.d("","--> on create");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -69,6 +71,8 @@ public class DateFragment extends Fragment {
         // Inflate the layout for this fragment
         Log.d(" ","-->on create view");
         View view  = inflater.inflate(R.layout.fragment_dating,container,false);
+
+
         return view;
     }
 

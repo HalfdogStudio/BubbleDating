@@ -64,7 +64,7 @@ public class LoginActivity extends Activity {
         public void onClick(View v) {
             switch(v.getId()){
                 case R.id.use_without_login:
-                    Intent toMainActivity = new Intent(LoginActivity.this,MainActivity.class);
+                    Intent toMainActivity = new Intent(LoginActivity.this,BaiduMapDemoActivity.class);
                     startActivity(toMainActivity);
                     overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                     break;
@@ -122,6 +122,9 @@ public class LoginActivity extends Activity {
         Map<String,String> loginInfo = new HashMap<>();
         loginInfo.put("username",username);
         loginInfo.put("password",pw);
+        Log.d(TAG,"-->USERNAME:"+username);
+        Log.d(TAG,"-->pw:"+pw);
+
 
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
