@@ -116,7 +116,7 @@ public class RegisterAccount extends Activity {
                             break;
                         }
                         if(!Patterns.EMAIL_ADDRESS.matcher(uEmail).matches()){
-                            userEmail.setError("邮箱格式不合法");
+//                            userEmail.setError("邮箱格式不合法");
                             Toast.makeText(RegisterAccount.this,"邮箱格式不合法",Toast.LENGTH_SHORT).show();
                             break;
                         }
@@ -138,7 +138,7 @@ public class RegisterAccount extends Activity {
                                     switch(response){
                                         case ResponseState.OK:
                                             Toast.makeText(RegisterAccount.this, "注册成功", Toast.LENGTH_SHORT).show();
-                                            LoginActivity.login(RegisterAccount.this);
+                                            LoginActivity.login(RegisterAccount.this,uName,uPw);
                                             break;
                                         case ResponseState.USER_NAME_DUPLICATE:
                                             Toast.makeText(RegisterAccount.this,"用户名已被使用，请重新输入",Toast.LENGTH_SHORT).show();

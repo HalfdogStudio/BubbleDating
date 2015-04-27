@@ -24,7 +24,7 @@ import halfdog.bupt.edu.bubbledating.R;
 public class BaiduMapDemoActivity extends ActionBarActivity {
     public final String TAG = "BaiduMapDemoActivity";
     private MapView mMapView = null;
-    public LocationClient mLocationClient = null;
+    public static LocationClient mLocationClient = null;
     private BaiduMap mBaiduMap;
     public BDLocationListener listener = new MyLocationListener();
 
@@ -124,7 +124,8 @@ public class BaiduMapDemoActivity extends ActionBarActivity {
             Log.d("", "-->" + sb.toString());
 
             LatLng point  = new LatLng(location.getLatitude(),location.getLongitude());
-            BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.ic_locator_m);
+            BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.ic_locator_m_2);
+            Bundle extraInfo = new Bundle();
             OverlayOptions options = new MarkerOptions().position(point).icon(bitmap);
             mBaiduMap.addOverlay(options);
             mLocationClient.stop();

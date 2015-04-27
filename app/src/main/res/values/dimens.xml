@@ -20,4 +20,8 @@
     <dimen name="register_blank_edittext_height">30dp</dimen>
     <dimen name="register_radiobutton_2radius">15dp</dimen>
     <dimen name="register_radiobutton_letter">15sp</dimen>
+
+
+    <!--main activity-->
+    <dimen name="ic_locator_text_size">15dp</dimen>
 </resources>

@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import halfdog.bupt.edu.bubbledating.R;
+import halfdog.bupt.edu.bubbledating.entity.BubbleDatingApplication;
+import halfdog.bupt.edu.bubbledating.entity.User;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.constants.ResponseState;
 import halfdog.bupt.edu.bubbledating.constants.UserInfoKeys;
@@ -64,7 +66,7 @@ public class LoginActivity extends Activity {
         public void onClick(View v) {
             switch(v.getId()){
                 case R.id.use_without_login:
-                    Intent toMainActivity = new Intent(LoginActivity.this,BaiduMapDemoActivity.class);
+                    Intent toMainActivity = new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(toMainActivity);
                     overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                     break;
@@ -146,6 +148,70 @@ public class LoginActivity extends Activity {
                             bundle.putString(UserInfoKeys.U_EMAIL, res.getString(UserInfoKeys.U_EMAIL));
                             bundle.putString(UserInfoKeys.U_GENDER, res.getString(UserInfoKeys.U_GENDER));
                             bundle.putBoolean(UserInfoKeys.U_ONLINE, res.getBoolean(UserInfoKeys.U_ONLINE));
+
+                            BubbleDatingApplication.user = new User(res.getInt(UserInfoKeys.U_ID),
+                                    res.getString(UserInfoKeys.U_NAME),res.getString(UserInfoKeys.U_PASSWORD),
+                                    res.getString(UserInfoKeys.U_EMAIL),res.getString(UserInfoKeys.U_GENDER),null,
+                                    res.getBoolean(UserInfoKeys.U_ONLINE));
+                            toMainAcvitiy.putExtras(bundle);
+                            context.startActivity(toMainAcvitiy);
+
+                            ((Activity)context).overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                            break;
+                        case ResponseState.UNKOWN_USERNAME:
+                            Toast.makeText(context,"用户名错误",Toast.LENGTH_SHORT).show();
+                            break;
+                        case ResponseState.USERNAME_PASSWORD_UNCOMPATIBLE:
+                            Toast.makeText(context,"密码与用户名不匹配",Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(context,"未知的错误",Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        requestQueue.add(loginRequest);
+    }
+
+    public static void  login(final Context context,String username,String pw){
+        Map<String,String> loginInfo = new HashMap<>();
+        loginInfo.put("username",username);
+        loginInfo.put("password",pw);
+        Log.d(TAG,"-->USERNAME:"+username);
+        Log.d(TAG,"-->pw:"+pw);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        CustomRequest loginRequest = new CustomRequest(Request.Method.POST,LOGIN_URL,loginInfo,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                Log.d(TAG,"-->log in response:"+jsonObject.toString());
+                try {
+                    int status = jsonObject.getInt(ResponseState.RESPONSE_STATUS_KEY);
+                    switch(status){
+                        case ResponseState.OK:
+                            Toast.makeText(context,"登陆成功",Toast.LENGTH_SHORT).show();
+                            JSONObject res = (JSONObject)jsonObject.get("user_info");
+                            Intent toMainAcvitiy = new Intent(context,MainActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putInt(UserInfoKeys.U_ID,res.getInt(UserInfoKeys.U_ID));
+                            bundle.putString(UserInfoKeys.U_NAME, res.getString(UserInfoKeys.U_NAME));
+                            bundle.putString(UserInfoKeys.U_PASSWORD, res.getString(UserInfoKeys.U_PASSWORD));
+                            bundle.putString(UserInfoKeys.U_EMAIL, res.getString(UserInfoKeys.U_EMAIL));
+                            bundle.putString(UserInfoKeys.U_GENDER, res.getString(UserInfoKeys.U_GENDER));
+                            bundle.putBoolean(UserInfoKeys.U_ONLINE, res.getBoolean(UserInfoKeys.U_ONLINE));
+
+                            BubbleDatingApplication.user = new User(res.getInt(UserInfoKeys.U_ID),
+                                    res.getString(UserInfoKeys.U_NAME),res.getString(UserInfoKeys.U_PASSWORD),
+                                    res.getString(UserInfoKeys.U_EMAIL),res.getString(UserInfoKeys.U_GENDER),null,
+                                    res.getBoolean(UserInfoKeys.U_ONLINE));
                             toMainAcvitiy.putExtras(bundle);
                             context.startActivity(toMainAcvitiy);
 

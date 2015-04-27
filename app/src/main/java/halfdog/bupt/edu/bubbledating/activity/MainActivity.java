@@ -128,7 +128,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
 
     public void clickDateContainer(){
         if(dateFragment == null){
-            dateFragment = new DateFragment();
+            dateFragment = (Fragment)new DateFragment();
         }
         addOrShowFragment(dateFragment);
         dateImage.setImageResource(R.mipmap.swim_chozen);

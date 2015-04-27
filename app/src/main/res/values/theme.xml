@@ -2,7 +2,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--<style name="DiyActionBarTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">-->
-    <style name="DiyActionBarTheme" parent="Base.Theme.AppCompat">
+    <style name="DiyActionBarTheme" parent="AppTheme">
 
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/MyActionBar</item>
