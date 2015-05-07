@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="halfdog.bupt.edu.bubbledating.activity.ChatActivity">
+
+    <RelativeLayout
+        android:id="@+id/chat_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        >
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/chat_send_msg_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="#33b5e5"
+            android:text="发送" />
+        <EditText
+            android:id="@+id/chat_input_content"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:background="@drawable/chat_activity_edittext"
+            android:layout_toLeftOf="@id/chat_send_msg_button"/>
+        </RelativeLayout>
+    <ListView
+        android:id="@+id/chat_conversation_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:focusable="false"
+        android:scrollbars="none"
+        android:layout_above="@id/chat_bottom_layout"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:dividerHeight="5dp"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1pt"
+        android:background="@drawable/shade_bottom_up"
+        android:layout_above="@id/chat_bottom_layout"/>
+
+</RelativeLayout>

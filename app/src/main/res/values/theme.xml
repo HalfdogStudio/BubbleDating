@@ -2,26 +2,31 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--<style name="DiyActionBarTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">-->
-    <style name="DiyActionBarTheme" parent="AppTheme">
+    <style name="DiyActionBarTheme" parent="Theme.AppCompat.Light">
 
         <!-- Support library compatibility -->
         <item name="actionBarStyle">@style/MyActionBar</item>
         <item name="actionBarDivider">@null</item>
         <item name="actionMenuTextColor">@color/main_activity_bottom_tab_selected</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
         <!--edittext_style-->
         <item name="android:editTextStyle">@style/EditTextStyle</item>
     </style>
 
     <!-- ActionBar styles -->
-    <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar">
+    <style name="MyActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="drawerArrowStyle">@style/MyActionBar.DrawerArrowToggle</item>
+
         <item name="android:background">@color/main_activity_bottom_tab_selected</item>
 
         <!-- Support library compatibility -->
         <item name="background">@color/main_activity_bottom_tab_selected</item>
         <item name="titleTextStyle">@style/MyActionBarTitleText</item>
         <item name="backgroundStacked">@color/main_activity_bottom_tab_selected</item>
+    </style>
+
+    <style name="MyActionBar.DrawerArrowToggle" parent="Base.Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/white</item>
     </style>
 
     <!-- ActionBar title text -->

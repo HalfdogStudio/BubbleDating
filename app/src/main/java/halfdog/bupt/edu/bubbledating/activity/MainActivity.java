@@ -1,13 +1,19 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
+import android.content.Context;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.PersistableBundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,16 +23,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import halfdog.bupt.edu.bubbledating.R;
+import halfdog.bupt.edu.bubbledating.constants.Mode;
+import halfdog.bupt.edu.bubbledating.constants.Offline;
+import halfdog.bupt.edu.bubbledating.db.MySQLiteOpenHelper;
+import halfdog.bupt.edu.bubbledating.entity.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.DateFragment;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.MessageFragment;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.SwimDailyFragment;
+import halfdog.bupt.edu.bubbledating.tool.DataCache;
 
 
 public class MainActivity extends ActionBarActivity implements DateFragment.OnDatingFragmentInteractionListener,
         SwimDailyFragment.OnSwimDailyFragmentInteractionListener,MessageFragment.OnMessageFragmentInteractionListener {
     public static final String TAG = "MainActivity";
+
 
     private LinearLayout dateContainer,messageContainer,swimDailyContainer;
     private ImageView dateImage,messageImage,swimDailyImage;
@@ -38,14 +51,20 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
     private ListView leftDrawer;
     private ActionBarDrawerToggle drawerToggle;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        SDKInitializer.initialize(getApplicationContext());
+//        deleteDatabase("offline.db");
         initUI();
         initTabs();
         initListeners();
+        initMeasure();
+//        initOfflineData();
+
+        initDataCache(this);
 
     }
 
@@ -65,19 +84,25 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         drawerlayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         leftDrawer = (ListView)findViewById(R.id.left_drawer);
 
-        drawerToggle = new ActionBarDrawerToggle(this,drawerlayout,R.drawable.ic_drawer, R.string.drawer_open,R.string.drawer_close){
+
+
+        drawerToggle = new ActionBarDrawerToggle(this,drawerlayout,new Toolbar(MainActivity.this), R.string.drawer_open,R.string.drawer_close){
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 getSupportActionBar().setTitle("drawer closed");
+                drawerToggle.syncState();
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle("drawer opened");
+                drawerToggle.syncState();
             }
         };
+
+        drawerToggle.syncState();
 
 
     }
@@ -92,8 +117,12 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
             Log.d(TAG,"--> DATING FRAGMENT IS NOT ADDED");
             getSupportFragmentManager().beginTransaction().add(R.id.main_activity_fragment_container,dateFragment).commit();
             currentFragment = dateFragment;
-            dateImage.setImageResource(R.mipmap.swim_chozen);
+            dateImage.setImageDrawable(getResources().getDrawable(R.mipmap.swim_chozen));
             dateText.setTextColor(getResources().getColor(R.color.main_activity_bottom_tab_selected));
+
+            messageImage.setImageDrawable(getResources().getDrawable(R.mipmap.message_not_chozen));
+            swimDailyImage.setImageDrawable(getResources().getDrawable(R.mipmap.swim_not_chozen));
+
         }
 
     }
@@ -106,6 +135,40 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         drawerlayout.setDrawerListener(drawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    public void initMeasure(){
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        BubbleDatingApplication.screenWidth = metrics.widthPixels;
+        BubbleDatingApplication.screenHeight = metrics.heightPixels;
+        BubbleDatingApplication.density = metrics.density;
+        BubbleDatingApplication.densityDpi = metrics.densityDpi;
+    }
+
+    public void initOfflineData(){
+        MySQLiteOpenHelper instance = MySQLiteOpenHelper.getInstance(this, Offline.OFFLINE_DB);
+        SQLiteDatabase db = instance.getReadableDatabase();
+        db.execSQL("insert into contact_list values(null,?,?,?)",new String[]{"joseph","OK","2015-05-02 21:45:00"});
+        db.execSQL("insert into contact_list values(null,?,?,?)",new String[]{"loly","不见不散","2015-04-29 8:22:21"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)",new String[]{"joseph","2015-05-02 21:40:00","Hi,约么？","false"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)",new String[]{"joseph","2015-05-02 21:41:05","When?","true"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)",new String[]{"joseph","2015-05-02 21:43:32","今晚9点，游泳馆门口见","false"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)",new String[]{"joseph","2015-05-02 21:45:47","OK","true"});
+
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)",new String[]{"loly","2015-04-29 8:19:47","晚上去游泳么","true"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)",new String[]{"loly","2015-04-29 8:19:55","今天晚上有个会，改天吧","false"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"loly", "2015-04-29 8:22:21", "不见不散", "true"});
+        Log.d(TAG,"-->导入离线数据成功");
+    }
+
+
+    public void initDataCache(Context context){
+        if(BubbleDatingApplication.mode == Mode.OFFLINE_MODE){
+            DataCache.initOfflineCacheData(context);
+        }else{
+            DataCache.initCacheData(context);
+        }
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -175,6 +238,28 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         }
 
         currentFragment = fragment;
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(MySQLiteOpenHelper.getInstance(MainActivity.this) == null){
+            if(BubbleDatingApplication.mode == Mode.OFFLINE_MODE){
+                MySQLiteOpenHelper.getInstance(MainActivity.this,Offline.OFFLINE_DB);
+            }else{
+                //用于启动非离线模式的SQLite
+            }
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(MySQLiteOpenHelper.getInstance(MainActivity.this) != null){
+            MySQLiteOpenHelper.getInstance(MainActivity.this).close();
+        }
 
     }
 

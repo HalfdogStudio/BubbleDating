@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -36,6 +38,7 @@ public class BaiduMapDemoActivity extends ActionBarActivity {
         mMapView = (MapView)findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
         mLocationClient = new LocationClient(getApplicationContext());
+        new ImageView(this).setTag(new Object());
 
 
         LocationClientOption option = new LocationClientOption();

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/chat_msg_text_post_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="2015-5-5"
+            android:background="@drawable/chat_activity_msg_posttime"
+            android:textColor="#ffffff"
+            android:padding="5dp"
+            android:textSize="12sp"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp">
+        <ImageView
+            android:id="@+id/chat_msg_text_head"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/default_user_head"
+            android:layout_alignParentLeft="true"
+            android:clickable="false"
+            android:focusable="false"
+            />
+        <TextView
+            android:id="@+id/chat_msg_text_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/chat_msg_text_head"
+            android:gravity="center"
+            android:focusable="false"
+            android:clickable="false"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:background="@drawable/chatfrom_bg_normal"/>
+        <TextView
+            android:id="@+id/chat_msg_text_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="andy"
+            android:layout_alignParentLeft="true"
+            android:textColor="#818181"
+            android:textSize="15sp"
+            android:layout_below="@id/chat_msg_text_head"
+            android:layout_toLeftOf="@id/chat_msg_text_content"
+            android:gravity="center"/>
+        </RelativeLayout>
+
+</LinearLayout>

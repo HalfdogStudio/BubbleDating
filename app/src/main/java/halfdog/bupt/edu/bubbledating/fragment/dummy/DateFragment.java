@@ -1,14 +1,22 @@
 package halfdog.bupt.edu.bubbledating.fragment.dummy;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.PaintDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -17,39 +25,35 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BaiduMapOptions;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.SupportMapFragment;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.overlayutil.OverlayManager;
+import com.gc.materialdesign.views.ButtonRectangle;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import javax.xml.transform.ErrorListener;
+import java.util.List;
 
 import halfdog.bupt.edu.bubbledating.R;
+import halfdog.bupt.edu.bubbledating.activity.ChatActivity;
+import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.constants.Mode;
+import halfdog.bupt.edu.bubbledating.constants.Offline;
 import halfdog.bupt.edu.bubbledating.entity.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.tool.ImageMerger;
+import halfdog.bupt.edu.bubbledating.tool.MyDate;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,7 +66,7 @@ import halfdog.bupt.edu.bubbledating.tool.ImageMerger;
 public class DateFragment extends  Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    public final String REQUEST_PEOPLE_AROUND = "http://10.108.245.37:8080/BubbleDatingServer/HandlePeopleAround";
+    public final String REQUEST_PEOPLE_AROUND = Configuration.SERVER_IP+"/BubbleDatingServer/HandlePeopleAround";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -70,8 +74,6 @@ public class DateFragment extends  Fragment {
 
     private MapView mMapView;
     private BaiduMap mMap;
-    private LocationClient mLocationClient = null;
-    public BDLocationListener listener = new MyLocationListener();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -126,13 +128,53 @@ public class DateFragment extends  Fragment {
         mMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                switch (marker.getTitle()){
-                    case "1":
-                        Bundle extra  = marker.getExtraInfo();
-                        String info = extra.getString("hobby");
-                        Toast.makeText(getActivity(),"andy's hobby is"+info,Toast.LENGTH_SHORT).show();
-                        break;
+                Bundle extra  = marker.getExtraInfo();
+                if(extra == null) return true;
+                int uId = extra.getInt("uId");
+                String gender = extra.getString("uGender");
+                String diffDate = extra.getString("uDiffDate");
+                final String name = extra.getString("uName");
+                String info = extra.getString("uInvi");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Log.d(TAG,"-->clicked: name:"+name+",gender:"+gender+",gender.equals(f):"+gender.equals("f"));
+
+                View userInfoView = getActivity().getLayoutInflater().inflate(R.layout.user_info_view,null);
+                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams((int)getResources().getDimension(R.dimen.date_fragment_popup_window_width),
+                        (int)getResources().getDimension(R.dimen.date_fragment_popup_window_height));
+                userInfoView.setLayoutParams(layoutParams);
+                TextView mUserName = (TextView)userInfoView.findViewById(R.id.user_info_name);
+                ImageView mUserGender = (ImageView)userInfoView.findViewById(R.id.user_info_gender);
+                TextView mUserInviContent = (TextView)userInfoView.findViewById(R.id.user_info_invitation_content);
+                TextView mUserPosttime = (TextView)userInfoView.findViewById(R.id.user_info_posttime);
+                ButtonRectangle mUserChat = (ButtonRectangle)userInfoView.findViewById(R.id.user_info_chat_button);
+                mUserName.setText(name);
+                mUserPosttime.setText(diffDate);
+                if(gender.equals("m")){
+                    mUserGender.setImageResource(R.mipmap.ic_m);
+                }else if (gender.equals("f")){
+                    mUserGender.setImageResource(R.mipmap.ic_w);
                 }
+                if(TextUtils.isEmpty(info)){
+                    mUserInviContent.setVisibility(View.GONE);
+                }else{
+                    mUserInviContent.setText(info);
+                }
+                mUserChat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), ChatActivity.class);
+                        intent.putExtra("name",name);
+                        startActivity(intent);
+                    }
+                });
+                PopupWindow popupWindow = new PopupWindow(userInfoView,(int)getResources().getDimension(R.dimen.date_fragment_popup_window_width),(int)getResources().getDimension(R.dimen.date_fragment_popup_window_height),true);
+                //通过设置背景图片可以使popup window出现后能够通过点击旁白或者back键让它消失
+                //popupwindow背景设置成为透明色，以防设圆角时显示黑色
+                popupWindow.setBackgroundDrawable(new PaintDrawable(Color.TRANSPARENT) );
+                popupWindow.setTouchable(true);
+                popupWindow.setOutsideTouchable(true);
+                popupWindow.showAtLocation(getView(), Gravity.CENTER_HORIZONTAL,0,0);
+                Toast.makeText(getActivity(),"'"+info+"'"+" by "+name,Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -141,23 +183,83 @@ public class DateFragment extends  Fragment {
         /*
         *       request to get people around
         * */
+        if(BubbleDatingApplication.mode == Mode.OFFLINE_MODE){
+            JSONObject item = null;
+            for(int i = 0; i < Offline.offline_people_around.length(); i ++){
+                try {
+                    item = (JSONObject)Offline.offline_people_around.get(i);
+                    int uId = item.getInt("u_id");
+                    String uName = item.getString("u_name");
+                    String uInviName = item.getString("u_invi");
+                    String uGender = item.getString("u_gender");
+                    double uLat = item.getDouble("u_loc_lat");
+                    double uLong = item.getDouble("u_loc_long");
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date uDate = df.parse(item.getString("u_posttime"));
+                    Date now = MyDate.getCurrentDate();
+                    //上传时间距离现在的差 eg: XXX天前， XXX 小时前
+                    String dateDiff = MyDate.diffDate(now,uDate);
 
-        RequestQueue queue  = Volley.newRequestQueue(getActivity());
-        JsonArrayRequest requestPeopleAround = new JsonArrayRequest(Request.Method.GET,REQUEST_PEOPLE_AROUND,responseListener,errorListener);
-        queue.add(requestPeopleAround);
+                    Log.d(TAG,"-->uId:"+uId+"  uName:"+uName+" uInviName:"+uInviName+" uGender:"+uGender+
+                            " uLat:"+uLat+" uLong:"+uLong+" uDate:"+uDate.toString());
+                    Log.d(TAG,"-->uGender:"+uGender);
+                    // add loc icon
+                    if(uLat == 0 && uLong == 0){
+                        continue;
+                    }
+                    Bitmap photoOfHead = ImageMerger.addTextOnBitmap(uName,uGender,getActivity());
+                    BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(photoOfHead);
+                    Bundle extraInfo = new Bundle();
+                    extraInfo.putInt("uId",uId);
+                    extraInfo.putString("uName", uName);
+                    extraInfo.putString("uGender",uGender);
+                    extraInfo.putString("uInvi",uInviName);
+                    extraInfo.putString("uDiffDate", dateDiff);
+                    OverlayOptions options = new MarkerOptions().title(""+uId).position(new LatLng(uLat,uLong)).icon(bitmap).extraInfo(extraInfo);
+                    mMap.addOverlay(options);
+                    mMapManager.addToMap();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }else{
+            /*
+            *       联网Mode
+            * */
+            RequestQueue queue  = Volley.newRequestQueue(getActivity());
+            JsonArrayRequest requestPeopleAround = new JsonArrayRequest(Request.Method.GET,REQUEST_PEOPLE_AROUND,responseListener,errorListener);
+            queue.add(requestPeopleAround);
+        }
 
 
-        Bitmap photoOfHead = ImageMerger.addTextOnBitmap("andy",R.mipmap.ic_locator_m_2,getActivity());
-        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(photoOfHead);
-        Bundle extraInfo = new Bundle();
-        extraInfo.putString("hobby","swimming");
-        OverlayOptions options = new MarkerOptions().title("1").position(BubbleDatingApplication.userLatLng).icon(bitmap).extraInfo(extraInfo);
-        mMap.addOverlay(options);
+        /*
+        *       add loc icon
+        * */
+//        Bitmap photoOfHead = ImageMerger.addTextOnBitmap("andy","m",getActivity());
+//        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(photoOfHead);
+//        Bundle extraInfo = new Bundle();
+//        extraInfo.putString("hobby","swimming");
+//        OverlayOptions options = new MarkerOptions().title("1").position(BubbleDatingApplication.userLatLng).icon(bitmap).extraInfo(extraInfo);
+//        mMap.addOverlay(options);
         return view;
 
 
 
     }
+
+
+    OverlayManager mMapManager = new OverlayManager(mMap){
+
+        @Override
+        public List<OverlayOptions> getOverlayOptions() {
+            return null;
+        }
+
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            return false;
+        }
+    };
 
     Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
         @Override
@@ -174,8 +276,28 @@ public class DateFragment extends  Fragment {
                     double uLong = item.getDouble("u_loc_long");
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date uDate = df.parse(item.getString("u_posttime"));
+                    Date now = MyDate.getCurrentDate();
+                    //上传时间距离现在的差 eg: XXX天前， XXX 小时前
+                    String uDateDiff = MyDate.diffDate(now,uDate);
                     Log.d(TAG,"-->uId:"+uId+"  uName:"+uName+" uInviName:"+uInviName+" uGender:"+uGender+
-                    " uLat:"+uLat+" uLong:"+uLong+" uDate:"+uDate.toString());
+                    " uLat:"+uLat+" uLong:"+uLong+" uDateDiff:"+uDateDiff);
+                    // add loc icon
+                    if(uLat == 0 && uLong == 0){
+                        continue;
+                    }
+                    Bitmap photoOfHead = ImageMerger.addTextOnBitmap(uName,uGender,getActivity());
+                    BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(photoOfHead);
+                    Bundle extraInfo = new Bundle();
+                    extraInfo.putInt("uId",uId);
+                    extraInfo.putString("uName", uName);
+                    extraInfo.putString("uGender",uGender);
+                    extraInfo.putString("uInvi",uInviName);
+                    extraInfo.putString("uDiffDate", uDateDiff );
+                    OverlayOptions options = new MarkerOptions().title(""+uId).position(new LatLng(uLat,uLong)).icon(bitmap).extraInfo(extraInfo);
+                    mMap.addOverlay(options);
+                    mMapManager.addToMap();
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -189,6 +311,7 @@ public class DateFragment extends  Fragment {
             Log.d(TAG,"--> ERROR HAPPENED during query of people aroound");
         }
     };
+
 
     @Override
     public void onPause() {
@@ -208,44 +331,6 @@ public class DateFragment extends  Fragment {
         mMapView.onDestroy();
     }
 
-    public class MyLocationListener implements BDLocationListener {
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            if (location == null)
-                return ;
-            StringBuffer sb = new StringBuffer(256);
-            sb.append("time : ");
-            sb.append(location.getTime());
-            sb.append("\nerror code : ");
-            sb.append(location.getLocType());
-            sb.append("\nlatitude : ");
-            sb.append(location.getLatitude());
-            sb.append("\nlontitude : ");
-            sb.append(location.getLongitude());
-            sb.append("\nradius : ");
-            sb.append(location.getRadius());
-            if (location.getLocType() == BDLocation.TypeGpsLocation){
-                sb.append("\nspeed : ");
-                sb.append(location.getSpeed());
-                sb.append("\nsatellite : ");
-                sb.append(location.getSatelliteNumber());
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());
-            }
-
-            Log.d("", "-->" + sb.toString());
-
-            LatLng point  = new LatLng(location.getLatitude(),location.getLongitude());
-            BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.mipmap.ic_locator_m_2);
-            OverlayOptions options = new MarkerOptions().position(point).icon(bitmap);
-            mMap.addOverlay(options);
-            mLocationClient.stop();
-            Log.d(TAG,"-->停止定位");
-        }
-
-
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

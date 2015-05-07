@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -27,15 +26,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import halfdog.bupt.edu.bubbledating.R;
+import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.entity.BubbleDatingApplication;
-import halfdog.bupt.edu.bubbledating.entity.User;
+import halfdog.bupt.edu.bubbledating.entity.UserEntity;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.constants.ResponseState;
 import halfdog.bupt.edu.bubbledating.constants.UserInfoKeys;
 
 public class LoginActivity extends Activity {
     private static final String TAG = "LoginActivity";
-    private static final String LOGIN_URL = "http://10.108.245.37:8080/BubbleDatingServer/HandleLogin";
+    private static final String LOGIN_URL = Configuration.SERVER_IP + "/BubbleDatingServer/HandleLogin";
 
     private com.gc.materialdesign.views.ButtonRectangle useWithoutLogin;
     private com.gc.materialdesign.views.ButtonRectangle registerButton;
@@ -43,10 +44,14 @@ public class LoginActivity extends Activity {
 
     private static EditText loginName;
     private static EditText loginPw;
+
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         useWithoutLogin = (com.gc.materialdesign.views.ButtonRectangle)findViewById(R.id.use_without_login);
         registerButton = (ButtonRectangle)findViewById(R.id.login_activity_register);
         loginButton = (ButtonRectangle)findViewById(R.id.login_activity_launch);
@@ -59,6 +64,8 @@ public class LoginActivity extends Activity {
         registerButton.setOnClickListener(buttonListener);
         loginButton.setOnClickListener(buttonListener);
 
+
+        context = this;
     }
 
     View.OnClickListener buttonListener = new View.OnClickListener(){
@@ -67,11 +74,16 @@ public class LoginActivity extends Activity {
             switch(v.getId()){
                 case R.id.use_without_login:
                     Intent toMainActivity = new Intent(LoginActivity.this,MainActivity.class);
+                    //离线以 27, "aaa" , "aaa", "aaa@qq.com","f",null,true 登陆
+                    BubbleDatingApplication.userEntity = new UserEntity(27,"aaa","aaa","aaa@qq.com","f",null,true);
+                    BubbleDatingApplication.mode = Mode.OFFLINE_MODE;
                     startActivity(toMainActivity);
                     overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    finish();
                     break;
                 case R.id.login_activity_launch:
                     login(LoginActivity.this);
+                    finish();
                     break;
                 case R.id.login_activity_register:
                     Intent toRegisterActivity = new Intent(LoginActivity.this,RegisterAccount.class);
@@ -149,14 +161,14 @@ public class LoginActivity extends Activity {
                             bundle.putString(UserInfoKeys.U_GENDER, res.getString(UserInfoKeys.U_GENDER));
                             bundle.putBoolean(UserInfoKeys.U_ONLINE, res.getBoolean(UserInfoKeys.U_ONLINE));
 
-                            BubbleDatingApplication.user = new User(res.getInt(UserInfoKeys.U_ID),
+                            BubbleDatingApplication.userEntity = new UserEntity(res.getInt(UserInfoKeys.U_ID),
                                     res.getString(UserInfoKeys.U_NAME),res.getString(UserInfoKeys.U_PASSWORD),
                                     res.getString(UserInfoKeys.U_EMAIL),res.getString(UserInfoKeys.U_GENDER),null,
                                     res.getBoolean(UserInfoKeys.U_ONLINE));
                             toMainAcvitiy.putExtras(bundle);
                             context.startActivity(toMainAcvitiy);
-
                             ((Activity)context).overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                            ((Activity) context).finish();
                             break;
                         case ResponseState.UNKOWN_USERNAME:
                             Toast.makeText(context,"用户名错误",Toast.LENGTH_SHORT).show();
@@ -208,14 +220,14 @@ public class LoginActivity extends Activity {
                             bundle.putString(UserInfoKeys.U_GENDER, res.getString(UserInfoKeys.U_GENDER));
                             bundle.putBoolean(UserInfoKeys.U_ONLINE, res.getBoolean(UserInfoKeys.U_ONLINE));
 
-                            BubbleDatingApplication.user = new User(res.getInt(UserInfoKeys.U_ID),
+                            BubbleDatingApplication.userEntity = new UserEntity(res.getInt(UserInfoKeys.U_ID),
                                     res.getString(UserInfoKeys.U_NAME),res.getString(UserInfoKeys.U_PASSWORD),
                                     res.getString(UserInfoKeys.U_EMAIL),res.getString(UserInfoKeys.U_GENDER),null,
                                     res.getBoolean(UserInfoKeys.U_ONLINE));
                             toMainAcvitiy.putExtras(bundle);
                             context.startActivity(toMainAcvitiy);
-
                             ((Activity)context).overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                            ((Activity) context).finish();
                             break;
                         case ResponseState.UNKOWN_USERNAME:
                             Toast.makeText(context,"用户名错误",Toast.LENGTH_SHORT).show();
@@ -223,6 +235,8 @@ public class LoginActivity extends Activity {
                         case ResponseState.USERNAME_PASSWORD_UNCOMPATIBLE:
                             Toast.makeText(context,"密码与用户名不匹配",Toast.LENGTH_SHORT).show();
                             break;
+                        case ResponseState.USER_NOT_ON_HX:
+                            Toast.makeText(context,"无法登陆或注册IM，请联系管理员",Toast.LENGTH_SHORT).show();
                         default:
                             Toast.makeText(context,"未知的错误",Toast.LENGTH_SHORT).show();
                             break;

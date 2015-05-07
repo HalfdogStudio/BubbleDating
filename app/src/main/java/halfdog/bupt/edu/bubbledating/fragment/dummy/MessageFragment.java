@@ -1,14 +1,20 @@
 package halfdog.bupt.edu.bubbledating.fragment.dummy;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import halfdog.bupt.edu.bubbledating.R;
+import halfdog.bupt.edu.bubbledating.activity.ChatActivity;
+import halfdog.bupt.edu.bubbledating.adapter.LatestMsgAdapter;
+import halfdog.bupt.edu.bubbledating.tool.DataCache;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +25,10 @@ import halfdog.bupt.edu.bubbledating.R;
  * create an instance of this fragment.
  */
 public class MessageFragment extends Fragment {
+    private ListView mLatestMsgList;
+    private LatestMsgAdapter mLatestMsgAdapter;
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -59,14 +69,32 @@ public class MessageFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_message, container, false);
+        // Inflate
+        View view = inflater.inflate(R.layout.fragment_message, container, false);
+        mLatestMsgList = (ListView)view.findViewById(R.id.message_fragment_last_message_list);
+        mLatestMsgAdapter = new LatestMsgAdapter(getActivity(),DataCache.mContactUser);
+        mLatestMsgList.setAdapter(mLatestMsgAdapter);
+        mLatestMsgList.setOnItemClickListener(onLattestMessageItemListener);
+        return view;
     }
+
+    AdapterView.OnItemClickListener onLattestMessageItemListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            String mUserName = DataCache.mContactUser.get(position).getName();
+            Intent intent = new Intent(getActivity(), ChatActivity.class);
+            intent.putExtra("name",mUserName);
+            startActivity(intent);
+        }
+    };
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

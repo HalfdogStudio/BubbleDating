@@ -28,11 +28,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import halfdog.bupt.edu.bubbledating.R;
+import halfdog.bupt.edu.bubbledating.constants.Configuration;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.constants.ResponseState;
 
 public class RegisterAccount extends Activity {
-    private static final String REGISTER_URL = "http://10.108.245.37:8080/BubbleDatingServer/HandleRegistration";
+    private static final String REGISTER_URL = Configuration.SERVER_IP + "/BubbleDatingServer/HandleRegistration";
     private static final String TAG = "RegisterAccount";
 
     private EditText userName;
@@ -54,14 +55,14 @@ public class RegisterAccount extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_account);
 
-        userName = (EditText)findViewById(R.id.register_activity_user_name);
-        userPassword = (EditText)findViewById(R.id.register_activity_password);
-        userEmail = (EditText)findViewById(R.id.register_activity_email);
-        userGender = (RadioGroup)findViewById(R.id.register_activity_gender_select);
-        submit = (ButtonRectangle)findViewById(R.id.register_activity_submit);
-        quit = (ButtonRectangle)findViewById(R.id.register_activity_quit);
-        male = (RadioButton)findViewById(R.id.register_activity_radio_male);
-        female = (RadioButton)findViewById(R.id.register_activity_radio_female);
+        userName = (EditText) findViewById(R.id.register_activity_user_name);
+        userPassword = (EditText) findViewById(R.id.register_activity_password);
+        userEmail = (EditText) findViewById(R.id.register_activity_email);
+        userGender = (RadioGroup) findViewById(R.id.register_activity_gender_select);
+        submit = (ButtonRectangle) findViewById(R.id.register_activity_submit);
+        quit = (ButtonRectangle) findViewById(R.id.register_activity_quit);
+        male = (RadioButton) findViewById(R.id.register_activity_radio_male);
+        female = (RadioButton) findViewById(R.id.register_activity_radio_female);
 
         userGender.setOnCheckedChangeListener(checkedChangeListener);
         submit.setOnClickListener(clickListener);
@@ -71,15 +72,15 @@ public class RegisterAccount extends Activity {
     RadioGroup.OnCheckedChangeListener checkedChangeListener = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-            switch (checkedId){
+            switch (checkedId) {
                 case R.id.register_activity_radio_male:
-                    if(!male.isChecked()){
+                    if (!male.isChecked()) {
                         male.toggle();
                         female.toggle();
                     }
                     break;
                 case R.id.register_activity_radio_female:
-                    if(!female.isChecked()){
+                    if (!female.isChecked()) {
                         male.toggle();
                         female.toggle();
                     }
@@ -91,104 +92,101 @@ public class RegisterAccount extends Activity {
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-                switch(v.getId()){
-                    case R.id.register_activity_submit:
-                        uName = userName.getText().toString();
-                        uPw = userPassword.getText().toString();
-                        uEmail = userEmail.getText().toString();
-                        uGender = male.isChecked()?"m":"f";
-                        if(TextUtils.isEmpty(uName)){
-//                            userName.setError("用户名不能为空");
-//                            Toast toast = Toast.makeText(RegisterAccount.this, "用户名不能为空", Toast.LENGTH_SHORT);
-//                            toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL,0,20);
-//                            toast.show();
-                            Toast.makeText(RegisterAccount.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
-                            break;
-                        }
-                        if(TextUtils.isEmpty(uPw)){
+            switch (v.getId()) {
+                case R.id.register_activity_submit:
+                    uName = userName.getText().toString();
+                    uPw = userPassword.getText().toString();
+                    uEmail = userEmail.getText().toString();
+                    uGender = male.isChecked() ? "m" : "f";
+                    if (TextUtils.isEmpty(uName)) {
+                        Toast.makeText(RegisterAccount.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    if (TextUtils.isEmpty(uPw)) {
 //                            userPassword.setError("密码不能为空");
-                            Toast.makeText(RegisterAccount.this,"密码不能为空",Toast.LENGTH_SHORT).show();
-                            break;
-                        }
-                        if(TextUtils.isEmpty(uEmail)){
+                        Toast.makeText(RegisterAccount.this, "密码不能为空", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    if (TextUtils.isEmpty(uEmail)) {
 //                            userEmail.setError("邮箱不能为空");
-                            Toast.makeText(RegisterAccount.this,"邮箱不能为空",Toast.LENGTH_SHORT).show();
-                            break;
-                        }
-                        if(!Patterns.EMAIL_ADDRESS.matcher(uEmail).matches()){
+                        Toast.makeText(RegisterAccount.this, "邮箱不能为空", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    if (!Patterns.EMAIL_ADDRESS.matcher(uEmail).matches()) {
 //                            userEmail.setError("邮箱格式不合法");
-                            Toast.makeText(RegisterAccount.this,"邮箱格式不合法",Toast.LENGTH_SHORT).show();
-                            break;
-                        }
+                        Toast.makeText(RegisterAccount.this, "邮箱格式不合法", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
 
-                        RequestQueue requestQueue = Volley.newRequestQueue(RegisterAccount.this);
-                        Map<String,String> jsonData = new HashMap<String,String>();
-                        jsonData.put("username",uName);
-                        jsonData.put("password",uPw);
-                        jsonData.put("email",uEmail);
-                        jsonData.put("gender",uGender);
+                    RequestQueue requestQueue = Volley.newRequestQueue(RegisterAccount.this);
+                    Map<String, String> jsonData = new HashMap<String, String>();
+                    jsonData.put("username", uName);
+                    jsonData.put("password", uPw);
+                    jsonData.put("email", uEmail);
+                    jsonData.put("gender", uGender);
 
-                        CustomRequest registerRequest = new CustomRequest(Request.Method.POST,REGISTER_URL,jsonData, new Response.Listener <JSONObject>(){
+                    CustomRequest registerRequest = new CustomRequest(Request.Method.POST, REGISTER_URL, jsonData, new Response.Listener<JSONObject>() {
 
-                            @Override
-                            public void onResponse(JSONObject jsonObject) {
-                                Log.d(TAG,"-->on response:"+jsonObject.toString());
-                                try {
-                                    int response =  (int)jsonObject.get(ResponseState.RESPONSE_STATUS_KEY);
-                                    switch(response){
-                                        case ResponseState.OK:
-                                            Toast.makeText(RegisterAccount.this, "注册成功", Toast.LENGTH_SHORT).show();
-                                            LoginActivity.login(RegisterAccount.this,uName,uPw);
-                                            break;
-                                        case ResponseState.USER_NAME_DUPLICATE:
-                                            Toast.makeText(RegisterAccount.this,"用户名已被使用，请重新输入",Toast.LENGTH_SHORT).show();
-                                            break;
-                                        case ResponseState.EMAIL_DUPLICATE:
-                                            Toast.makeText(RegisterAccount.this,"邮箱已被使用，请重新输入",Toast.LENGTH_SHORT).show();
-                                            break;
-                                        case ResponseState.UNKNOWN_ERROR:
-                                            Toast.makeText(RegisterAccount.this,"很抱歉，发生了未知的错误，请联系管理员",Toast.LENGTH_SHORT).show();
-                                            break;
-                                        default:
-                                            Toast.makeText(RegisterAccount.this,"未知",Toast.LENGTH_SHORT).show();
-                                            break;
+                        @Override
+                        public void onResponse(JSONObject jsonObject) {
+                            Log.d(TAG, "-->on response:" + jsonObject.toString());
+                            try {
+                                int response = (int) jsonObject.get(ResponseState.RESPONSE_STATUS_KEY);
+                                switch (response) {
+                                    case ResponseState.OK:
+                                        Toast.makeText(RegisterAccount.this, "注册成功", Toast.LENGTH_SHORT).show();
+                                        LoginActivity.login(RegisterAccount.this, uName, uPw);
+                                        finish();
+                                        break;
+                                    case ResponseState.USER_NAME_DUPLICATE:
+                                        Toast.makeText(RegisterAccount.this, "用户名已被使用，请重新输入", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case ResponseState.EMAIL_DUPLICATE:
+                                        Toast.makeText(RegisterAccount.this, "邮箱已被使用，请重新输入", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case ResponseState.UNKNOWN_ERROR:
+                                        Toast.makeText(RegisterAccount.this, "很抱歉，发生了未知的错误，请联系管理员", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    default:
+                                        Toast.makeText(RegisterAccount.this, "未知", Toast.LENGTH_SHORT).show();
+                                        break;
 
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
                                 }
-
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        },new Response.ErrorListener(){
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
-                                Log.i(TAG,"--> on error response:"+volleyError.toString());
-                            }
-                        });
-                        requestQueue.add(registerRequest);
 
-                        break;
-                    case R.id.register_activity_quit:
-                        RegisterAccount.this.finish();
-                        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-                        break;
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            Log.i(TAG, "--> on error response:" + volleyError.toString());
+                        }
+                    });
+                    requestQueue.add(registerRequest);
 
-                }
+                    break;
+                case R.id.register_activity_quit:
+                    RegisterAccount.this.finish();
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
+
+            }
         }
     };
 
 
-    Response.Listener<JSONObject> jsonObjectListener = new Response.Listener<JSONObject>(){
+    Response.Listener<JSONObject> jsonObjectListener = new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject jsonObject) {
-            Log.d(TAG,"-->response:"+jsonObject.toString());
+            Log.d(TAG, "-->response:" + jsonObject.toString());
         }
     };
 
     Response.ErrorListener jsonOjectErrorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError volleyError) {
-            Log.d(TAG,"-->error response :"+volleyError.toString());
+            Log.d(TAG, "-->error response :" + volleyError.toString());
         }
     };
 
@@ -218,9 +216,9 @@ public class RegisterAccount extends Activity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             finish();
-            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
         return true;
     }

@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import halfdog.bupt.edu.bubbledating.R;
@@ -17,8 +18,20 @@ import halfdog.bupt.edu.bubbledating.entity.BubbleDatingApplication;
  */
 public class ImageMerger {
     public static final String TAG = "ImageMerger";
-    public static Bitmap addTextOnBitmap(String string, int drawableResId,Context context){
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),drawableResId);
+    public static Bitmap addTextOnBitmap(String name,String gender,Context context){
+
+        Bitmap bitmap = null;
+        /*
+        *       use equal method to judge if two Object instances are equal
+        * */
+        if(TextUtils.equals(gender,"m")){
+            bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_locator_m_2);
+        }else if(TextUtils.equals(gender,"f")){
+            bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_locator_w_2);
+        }else{
+            Log.e(TAG,"-->unknown gender:"+gender);
+        }
+
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         Log.d(TAG,"-->bit map width :"+width);
@@ -32,10 +45,10 @@ public class ImageMerger {
         canvas.drawBitmap(bitmap,0,0,paint);
         paint.setColor(Color.WHITE);
         paint.setTextSize(context.getResources().getDimension(R.dimen.ic_locator_text_size));
-        if(string.length()>4){
-            string = string.substring(0,3);
+        if(name.length()>4){
+            name = name.substring(0,4);
         }
-        canvas.drawText(string,width/10.0f,height/2.0f,paint);
+        canvas.drawText(name,width/4.0f,height/2.0f,paint);
         canvas.save(Canvas.ALL_SAVE_FLAG);
         canvas.restore();
         return newBit;
