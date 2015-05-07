@@ -16,4 +16,6 @@
     <string name="hello_blank_fragment">Hello dating fragment</string>
     <string name="title_activity_baidu_map_demo">BaiduMapDemoActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
+
+
 </resources>

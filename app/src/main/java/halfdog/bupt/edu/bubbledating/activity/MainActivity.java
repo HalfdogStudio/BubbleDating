@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +39,7 @@ import halfdog.bupt.edu.bubbledating.tool.DataCache;
 
 public class MainActivity extends ActionBarActivity implements DateFragment.OnDatingFragmentInteractionListener,
         SwimDailyFragment.OnSwimDailyFragmentInteractionListener,MessageFragment.OnMessageFragmentInteractionListener {
+
     public static final String TAG = "MainActivity";
 
 
@@ -50,6 +52,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
     private DrawerLayout drawerlayout;
     private ListView leftDrawer;
     private ActionBarDrawerToggle drawerToggle;
+    private Toolbar mToolbar;
 
 
     @Override
@@ -83,24 +86,12 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
 
         drawerlayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         leftDrawer = (ListView)findViewById(R.id.left_drawer);
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
 
-
-        drawerToggle = new ActionBarDrawerToggle(this,drawerlayout,new Toolbar(MainActivity.this), R.string.drawer_open,R.string.drawer_close){
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                getSupportActionBar().setTitle("drawer closed");
-                drawerToggle.syncState();
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("drawer opened");
-                drawerToggle.syncState();
-            }
-        };
+        drawerToggle = new ActionBarDrawerToggle(this,drawerlayout,mToolbar,R.string.drawer_open, R.string.drawer_close);
+        drawerlayout.setDrawerListener(drawerToggle);
 
         drawerToggle.syncState();
 
@@ -133,8 +124,8 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         swimDailyContainer.setOnClickListener(onClickListener);
 
         drawerlayout.setDrawerListener(drawerToggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     public void initMeasure(){
@@ -301,6 +292,17 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if(drawerlayout.isDrawerOpen(Gravity.START|Gravity.LEFT)){
+            drawerlayout.closeDrawers();
+            return ;
+        }
+        super.onBackPressed();
+    }
+
+    // MainActivity interaction with Fragments
     @Override
     public void onDatingFragmentInteraction(Uri uri) {
 
