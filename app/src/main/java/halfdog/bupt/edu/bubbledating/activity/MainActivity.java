@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import halfdog.bupt.edu.bubbledating.R;
+import halfdog.bupt.edu.bubbledating.adapter.LeftDrawerListAdapter;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.constants.Offline;
 import halfdog.bupt.edu.bubbledating.db.MySQLiteOpenHelper;
@@ -50,7 +51,10 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
     private Fragment dateFragment,messageFragment,swimDailyFragment,currentFragment;
 
     private DrawerLayout drawerlayout;
-    private ListView leftDrawer;
+    private ListView leftDrawerList;
+    private ImageView leftDrawerUserAvator;
+    private  TextView leftDrawerUserSignature;
+    private TextView leftDrawerUserName;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar mToolbar;
 
@@ -85,15 +89,24 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         swimDailyText = (TextView)findViewById(R.id.swim_daily_text);
 
         drawerlayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        leftDrawer = (ListView)findViewById(R.id.left_drawer);
+        leftDrawerUserAvator = (ImageView)findViewById(R.id.left_drawer_user_avatar);
+        leftDrawerUserName = (TextView)findViewById(R.id.left_drawer_user_name);
+        leftDrawerList = (ListView)findViewById(R.id.left_drawer_list);
+        leftDrawerUserSignature = (TextView)findViewById(R.id.left_drawer_user_signature);
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
+
 
 
         drawerToggle = new ActionBarDrawerToggle(this,drawerlayout,mToolbar,R.string.drawer_open, R.string.drawer_close);
         drawerlayout.setDrawerListener(drawerToggle);
 
         drawerToggle.syncState();
+
+        setSupportActionBar(mToolbar);
+        leftDrawerUserName.setText(BubbleDatingApplication.userEntity.getmName());
+        leftDrawerList.setAdapter(new LeftDrawerListAdapter(this));
+        //用户签名
+//        leftDrawerUserSignature.setText(BubbleDatingApplication.userEntity.get);
 
 
     }
@@ -113,6 +126,8 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
 
             messageImage.setImageDrawable(getResources().getDrawable(R.mipmap.message_not_chozen));
             swimDailyImage.setImageDrawable(getResources().getDrawable(R.mipmap.swim_not_chozen));
+
+            mToolbar.setTitle("约游");
 
         }
 
@@ -191,6 +206,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         messageText.setTextColor(getResources().getColor(R.color.main_activity_bottom_tab_not_selected));
         swimDailyImage.setImageResource(R.mipmap.daily_not_chozen);
         swimDailyText.setTextColor(getResources().getColor(R.color.main_activity_bottom_tab_not_selected));
+        mToolbar.setTitle("约游");
     }
 
     public void clickMessageContainer(){
@@ -204,6 +220,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         messageText.setTextColor(getResources().getColor(R.color.main_activity_bottom_tab_selected));
         swimDailyImage.setImageResource(R.mipmap.daily_not_chozen);
         swimDailyText.setTextColor(getResources().getColor(R.color.main_activity_bottom_tab_not_selected));
+        mToolbar.setTitle("消息");
     }
 
     public void clickSwimDailyContainer(){
@@ -217,6 +234,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         messageText.setTextColor(getResources().getColor(R.color.main_activity_bottom_tab_not_selected));
         swimDailyImage.setImageResource(R.mipmap.daily_chozen);
         swimDailyText.setTextColor(getResources().getColor(R.color.main_activity_bottom_tab_selected));
+        mToolbar.setTitle("游泳日报");
     }
 
     private void addOrShowFragment( Fragment fragment){

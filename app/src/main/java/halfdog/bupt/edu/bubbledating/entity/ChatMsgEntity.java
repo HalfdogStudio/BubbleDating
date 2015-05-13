@@ -8,7 +8,7 @@ public class ChatMsgEntity {
     private String mName;
     private String mContent;
     private String mDate;
-    private boolean mReceive;
+    private final boolean mReceive;
 
     public ChatMsgEntity(String mTo, String mContent, String mDate, boolean mReceive) {
         this.mName = mTo;
@@ -45,9 +45,9 @@ public class ChatMsgEntity {
         return mReceive;
     }
 
-    public void setReceive(boolean mReceive) {
-        this.mReceive = mReceive;
-    }
+//    public void setReceive(boolean mReceive) {
+//        this.mReceive = mReceive;
+////    }
 
     @Override
     public String toString() {

@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+
     android:minHeight="?attr/actionBarSize"
     android:background="?attr/colorPrimary">
+
+    <!--android:background="?attr/colorPrimary indicate thet toolbar will use the color the actionbar is set-->
 
 </android.support.v7.widget.Toolbar>

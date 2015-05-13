@@ -17,5 +17,9 @@
     <string name="title_activity_baidu_map_demo">BaiduMapDemoActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
 
+    <string name="setting">设置</string>
+    <string name="feedback">反馈</string>
+    <string name="info">关于</string>
+
 
 </resources>

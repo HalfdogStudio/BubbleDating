@@ -50,6 +50,7 @@ public class ChatActivity extends ActionBarActivity {
         initViews();
         initData();
         initListeners();
+
     }
 
     public void initViews(){
@@ -60,6 +61,7 @@ public class ChatActivity extends ActionBarActivity {
     }
 
     public void initData(){
+
         Intent intent = getIntent();
         chatter = intent.getStringExtra("name");
         mDataArray = DataCache.mUserMsgList.get(chatter);
@@ -68,6 +70,11 @@ public class ChatActivity extends ActionBarActivity {
             mListView.setAdapter(adapter);
             mListView.setSelection(adapter.getCount() - 1);
         }
+        // set home icon as "<--" back button
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(chatter);
+
 
     }
 
@@ -86,6 +93,7 @@ public class ChatActivity extends ActionBarActivity {
                         ChatMsgEntity entity = new ChatMsgEntity(chatter,content, MyDate.getCurSimpleDateFormate(),false);
                         mDataArray.add(entity);
                         adapter.refreshData(mDataArray);
+//                        adapter.notifyDataSetChanged();
                         mInputContent.setText("");
                         mListView.setSelection(mListView.getCount()-1);
                     }
@@ -108,11 +116,14 @@ public class ChatActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id){
+            case android.R.id.home:
+                this.finish();
+                return true;
+            case R.id.action_settings:
+                return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }

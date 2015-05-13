@@ -1,6 +1,8 @@
 package halfdog.bupt.edu.bubbledating.adapter;
 
 import android.content.Context;
+import android.os.IInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
  * Created by andy on 2015/5/5.
  */
 public class ChatMsgAdapter extends BaseAdapter {
+    private final String TAG = "ChatMsgAdapter";
     private static Context context;
     private static final int IM_SEND = 0;
     private static final int IM_RECEIVE = 1;
@@ -58,8 +61,12 @@ public class ChatMsgAdapter extends BaseAdapter {
     }
 
     public void refreshData( List<ChatMsgEntity> data){
-//        this.data = data;
+        this.data = data;
         notifyDataSetChanged();
+        for(int i = 0; i < data.size(); i++ ){
+            Log.d(TAG,"-->data["+i+"].isReceive:"+data.get(i).isReceive());
+        }
+
     }
 
     public int getMsgTypeCount() {
@@ -70,18 +77,18 @@ public class ChatMsgAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ChatMsgEntity entity = data.get(position);
         boolean receive = entity.isReceive();
-        int mMsgType = getMsgType(position);
+//        int mMsgType = getMsgType(position);
         ViewHolder holder = null;
         if (convertView == null) {
             holder = new ViewHolder();
             if (!receive) {
                 // send msg
                 convertView = inflater.inflate(R.layout.chat_msg_text_left, null);
-                holder.isReceive = receive;
+//                holder.isReceive = receive;
             } else {
                 // receive msg
                 convertView = inflater.inflate(R.layout.chat_msg_text_right, null);
-                holder.isReceive = receive;
+//                holder.isReceive = receive;
             }
             holder.mUserHead = (ImageView) convertView.findViewById(R.id.chat_msg_text_head);
             holder.mPostTime = (TextView) convertView.findViewById(R.id.chat_msg_text_post_time);
@@ -95,11 +102,13 @@ public class ChatMsgAdapter extends BaseAdapter {
         holder.mUserHead.setImageDrawable(context.getResources().getDrawable(R.drawable.default_user_head));
         holder.mPostTime.setText(entity.getDate());
         holder.mContent.setText(entity.getContent());
+//        holder.mUserName.setText(entity.getName());
         if (!receive){
             holder.mUserName.setText(BubbleDatingApplication.userEntity.getmName());
         }else{
             holder.mUserName.setText(entity.getName());
         }
+
         return convertView;
     }
 
