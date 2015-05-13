@@ -22,10 +22,11 @@ import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
 public class ChatMsgAdapter extends BaseAdapter {
     private final String TAG = "ChatMsgAdapter";
     private static Context context;
-    private static final int IM_SEND = 0;
-    private static final int IM_RECEIVE = 1;
+    private static final int IM_SEND = 10;
+    private static final int IM_RECEIVE = 11;
 
     private static final int IM_TYPE_COUNT = 2;
+
 
     private List<ChatMsgEntity> data;
     private LayoutInflater inflater;
@@ -63,9 +64,9 @@ public class ChatMsgAdapter extends BaseAdapter {
     public void refreshData( List<ChatMsgEntity> data){
         this.data = data;
         notifyDataSetChanged();
-        for(int i = 0; i < data.size(); i++ ){
-            Log.d(TAG,"-->data["+i+"].isReceive:"+data.get(i).isReceive());
-        }
+//        for(int i = 0; i < data.size(); i++ ){
+//            Log.d(TAG,"-->data["+i+"].isReceive:"+data.get(i).isReceive());
+//        }
 
     }
 
@@ -73,22 +74,29 @@ public class ChatMsgAdapter extends BaseAdapter {
         return IM_TYPE_COUNT;
     }
 
+    public View createViewByMsgEntity(int position, ChatMsgEntity msgEntity ){
+        return msgEntity.isReceive()?inflater.inflate(R.layout.chat_msg_text_right,null):
+                inflater.inflate(R.layout.chat_msg_text_left,null);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ChatMsgEntity entity = data.get(position);
         boolean receive = entity.isReceive();
-//        int mMsgType = getMsgType(position);
         ViewHolder holder = null;
-        if (convertView == null) {
+        // convertView 为空， 或者 convertView 没有ID， 或者 convertView 的 id 与 所需类型不同
+        if ( convertView == null || convertView.getId() == View.NO_ID || convertView.getId() !=
+                (receive?R.id.chat_msg_text_right:R.id.chat_msg_text_left)){
+            Log.d(TAG,"-->"+position+" convertView is null;");
             holder = new ViewHolder();
             if (!receive) {
                 // send msg
                 convertView = inflater.inflate(R.layout.chat_msg_text_left, null);
-//                holder.isReceive = receive;
+                convertView.setId(R.id.chat_msg_text_left);
             } else {
                 // receive msg
                 convertView = inflater.inflate(R.layout.chat_msg_text_right, null);
-//                holder.isReceive = receive;
+                convertView.setId(R.id.chat_msg_text_right);
             }
             holder.mUserHead = (ImageView) convertView.findViewById(R.id.chat_msg_text_head);
             holder.mPostTime = (TextView) convertView.findViewById(R.id.chat_msg_text_post_time);
@@ -96,6 +104,7 @@ public class ChatMsgAdapter extends BaseAdapter {
             holder.mContent = (TextView) convertView.findViewById(R.id.chat_msg_text_content);
             convertView.setTag(holder);
         } else {
+            Log.d(TAG,"-->"+position +" convertView is not null;");
             holder = (ViewHolder) convertView.getTag();
         }
 

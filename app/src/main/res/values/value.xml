@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="activity_switch_anim_duration">500</integer>
+    <integer name="im_send">11</integer>
+    <integer name="im_receive">12</integer>
+
+
 </resources>
