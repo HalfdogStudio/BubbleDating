@@ -73,6 +73,25 @@
                 android:background="#ffffff" />
         </LinearLayout>
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="@dimen/register_textview_vertical_interval"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="@dimen/register_hint_edittext_width"
+                android:layout_height="@dimen/register_edittext_height"
+                android:text="头像"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/regiter_hint_color"
+                android:textSize="@dimen/register_hint_letter_size"
+                />
+            <ImageView
+                android:id="@+id/register_activity_user_avatar"
+                android:layout_width="@dimen/register_user_avatar_width"
+                android:layout_height="@dimen/register_user_avatar_height"
+                android:background="@drawable/default_user_head"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_marginTop="@dimen/register_textview_vertical_interval"
             android:layout_width="match_parent"
             android:layout_height="@dimen/register_edittext_height">
@@ -131,6 +150,7 @@
                 android:layout_marginLeft="30dp"
                 android:text="取消" />
             </LinearLayout>
+
         </LinearLayout>
 
 </RelativeLayout>

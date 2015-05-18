@@ -1,4 +1,4 @@
-package halfdog.bupt.edu.bubbledating.entity;
+package halfdog.bupt.edu.bubbledating;
 
 import android.app.ActivityManager;
 import android.app.Application;
@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import halfdog.bupt.edu.bubbledating.constants.Mode;
+import halfdog.bupt.edu.bubbledating.entity.UserEntity;
 
 /**
  * Created by andy on 2015/4/25.

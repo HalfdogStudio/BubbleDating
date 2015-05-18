@@ -1,15 +1,29 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.text.AndroidCharacter;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -24,6 +38,11 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +54,9 @@ import halfdog.bupt.edu.bubbledating.constants.ResponseState;
 public class RegisterAccount extends Activity {
     private static final String REGISTER_URL = Configuration.SERVER_IP + "/BubbleDatingServer/HandleRegistration";
     private static final String TAG = "RegisterAccount";
+    private final int REQUEST_TAKE_PHOTO = 1;
+    private final int REQUEST_FROM_GALLERY = 2;
+    private final int REQUEST_PHOTO_ZOOM = 3;
 
     private EditText userName;
     private EditText userPassword;
@@ -44,11 +66,14 @@ public class RegisterAccount extends Activity {
     private ButtonRectangle quit;
     private RadioButton male;
     private RadioButton female;
+    private ImageView userAvatar;
+    private  File mCroppedAvatar;
 
     private String uName;
     private String uPw;
     private String uEmail;
     private String uGender;
+    private String uAvatarString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +88,12 @@ public class RegisterAccount extends Activity {
         quit = (ButtonRectangle) findViewById(R.id.register_activity_quit);
         male = (RadioButton) findViewById(R.id.register_activity_radio_male);
         female = (RadioButton) findViewById(R.id.register_activity_radio_female);
+        userAvatar = (ImageView) findViewById(R.id.register_activity_user_avatar);
 
         userGender.setOnCheckedChangeListener(checkedChangeListener);
         submit.setOnClickListener(clickListener);
         quit.setOnClickListener(clickListener);
+        userAvatar.setOnClickListener(clickListener);
     }
 
     RadioGroup.OnCheckedChangeListener checkedChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -124,6 +151,7 @@ public class RegisterAccount extends Activity {
                     jsonData.put("password", uPw);
                     jsonData.put("email", uEmail);
                     jsonData.put("gender", uGender);
+                    jsonData.put("avatar",uAvatarString);
 
                     CustomRequest registerRequest = new CustomRequest(Request.Method.POST, REGISTER_URL, jsonData, new Response.Listener<JSONObject>() {
 
@@ -170,11 +198,79 @@ public class RegisterAccount extends Activity {
                     RegisterAccount.this.finish();
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
+                case R.id.register_activity_user_avatar:
+                    showOptionDialog();
 
             }
         }
     };
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_TAKE_PHOTO:
+                if (resultCode == RESULT_OK) {
+//                    Bundle bundle = data.getExtras();
+//                    Bitmap imageBitmap = (Bitmap)bundle.get("data");
+//                    Log.d(TAG,"-->imageBitmap:"+imageBitmap.toString());
+                    File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),"default1.png");
+//                    if(file.exists()){
+//                        file.delete();
+//                        try {
+//                            file.createNewFile();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+                    startPhotoZoom(Uri.fromFile(file));
+                }
+                break;
+            case REQUEST_FROM_GALLERY:
+                if (resultCode == RESULT_OK) {
+                    startPhotoZoom(data.getData());
+//                    try {
+//                        Bitmap b = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+//                        userAvatar.setImageBitmap(b);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+                }
+                break;
+            case REQUEST_PHOTO_ZOOM:
+                if(data != null){
+                    Bundle extras = data.getExtras();
+                    if(extras != null){
+                        Bitmap bitmap = extras.getParcelable("data");
+                        Drawable drawable = new BitmapDrawable(this.getResources(),bitmap);
+                        userAvatar.setImageDrawable(drawable);
+
+                        try {
+                            //create a file
+//                            mCroppedAvatar = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),"user.png");
+//                            mCroppedAvatar.createNewFile();
+                            //convert bitmap to byte array
+                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.PNG,0,bos);
+                            byte[] mBitmapData = bos.toByteArray();
+                            uAvatarString = Base64.encodeToString(mBitmapData,Base64.DEFAULT);
+
+                            //write bytes in file
+//                            FileOutputStream fileOutputStream = new FileOutputStream(mCroppedAvatar);
+//                            fileOutputStream.write(mBitmapData);
+//                            fileOutputStream.flush();
+//                            fileOutputStream.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+
+
+        }
+    }
 
     Response.Listener<JSONObject> jsonObjectListener = new Response.Listener<JSONObject>() {
         @Override
@@ -190,6 +286,74 @@ public class RegisterAccount extends Activity {
         }
     };
 
+    public void showOptionDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("设置头像")
+                .setItems(new String[]{"选择本地图片", "拍照"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                Intent mFromGallery = new Intent();
+                                mFromGallery.setType("image/*");
+                                mFromGallery.setAction(Intent.ACTION_GET_CONTENT);
+                                startActivityForResult(mFromGallery, REQUEST_FROM_GALLERY);
+                                break;
+                            case 1:
+                                Intent mFromCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                File path = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                                File mLocPath = new File(path, "default1.png");
+                                Log.d(TAG, "-->path:" + mLocPath);
+                                mFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mLocPath));
+                                startActivityForResult(mFromCapture, REQUEST_TAKE_PHOTO);
+                                break;
+                        }
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
+    }
+
+
+    /*
+    *       图片剪裁的方法
+    * */
+    public void startPhotoZoom(Uri uri) {
+
+        Log.d(TAG,"-->startPhotoZoom URI:"+uri.toString());
+        Intent mStartPhotoZoom = new Intent("com.android.camera.action.CROP");
+        mStartPhotoZoom.setDataAndType(uri, "image/*");
+        // 设置剪裁参数
+        /*
+        *       附加选项    数据类型    描述
+                crop    String  发送裁剪信号
+                aspectX int X方向上的比例
+                aspectY int Y方向上的比例
+                outputX int 裁剪区的宽
+                outputY int 裁剪区的高
+                scale   boolean 是否保留比例
+                return-data boolean 是否将数据保留在Bitmap中返回
+                data    Parcelable  相应的Bitmap数据
+                circleCrop  String  圆形裁剪区域？
+                MediaStore.EXTRA_OUTPUT ("output")  URI 将URI指向相应的file:///
+        *
+        * */
+        mStartPhotoZoom.putExtra("crop","true");
+        mStartPhotoZoom.putExtra("aspectX",1);
+        mStartPhotoZoom.putExtra("aspectY",1);
+        mStartPhotoZoom.putExtra("outputX",200);
+        mStartPhotoZoom.putExtra("outputY",200);
+        mStartPhotoZoom.putExtra("scale",true);
+        mStartPhotoZoom.putExtra("return-data",true);
+        startActivityForResult(mStartPhotoZoom,REQUEST_PHOTO_ZOOM);
+
+
+
+
+     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

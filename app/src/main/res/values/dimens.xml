@@ -20,6 +20,8 @@
     <dimen name="register_blank_edittext_height">30dp</dimen>
     <dimen name="register_radiobutton_2radius">15dp</dimen>
     <dimen name="register_radiobutton_letter">15sp</dimen>
+    <dimen name="register_user_avatar_height">100dp</dimen>
+    <dimen name="register_user_avatar_width">100dp</dimen>
 
 
     <!--main activity-->

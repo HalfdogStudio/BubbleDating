@@ -51,7 +51,7 @@ import halfdog.bupt.edu.bubbledating.activity.ChatActivity;
 import halfdog.bupt.edu.bubbledating.constants.Configuration;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.constants.Offline;
-import halfdog.bupt.edu.bubbledating.entity.BubbleDatingApplication;
+import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.tool.ImageMerger;
 import halfdog.bupt.edu.bubbledating.tool.MyDate;
 

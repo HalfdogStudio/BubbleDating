@@ -1,7 +1,6 @@
 package halfdog.bupt.edu.bubbledating.adapter;
 
 import android.content.Context;
-import android.os.IInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import halfdog.bupt.edu.bubbledating.R;
-import halfdog.bupt.edu.bubbledating.entity.BubbleDatingApplication;
+import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
 
 /**

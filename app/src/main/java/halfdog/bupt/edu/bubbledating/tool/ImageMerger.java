@@ -6,12 +6,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 import android.text.TextUtils;
 import android.util.Log;
 
 import halfdog.bupt.edu.bubbledating.R;
-import halfdog.bupt.edu.bubbledating.entity.BubbleDatingApplication;
 
 /**
  * Created by andy on 2015/4/27.

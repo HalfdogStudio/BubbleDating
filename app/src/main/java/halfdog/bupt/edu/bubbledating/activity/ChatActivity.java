@@ -1,35 +1,21 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.provider.ContactsContract;
-import android.provider.SyncStateContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonRectangle;
 
-import java.security.AlgorithmParameterGenerator;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.adapter.ChatMsgAdapter;
-import halfdog.bupt.edu.bubbledating.constants.Mode;
-import halfdog.bupt.edu.bubbledating.constants.Offline;
-import halfdog.bupt.edu.bubbledating.db.MySQLiteOpenHelper;
-import halfdog.bupt.edu.bubbledating.entity.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
 import halfdog.bupt.edu.bubbledating.tool.MyDate;
