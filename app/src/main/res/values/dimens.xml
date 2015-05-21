@@ -30,4 +30,7 @@
     <!--dateFragment-->
     <dimen name="date_fragment_popup_window_height">400dp</dimen>
     <dimen name="date_fragment_popup_window_width">200dp</dimen>
+    <dimen name="user_info_avatar_width">96dp</dimen>
+    <dimen name="user_info_avatar_height">96dp</dimen>
+
 </resources>

@@ -14,7 +14,7 @@
             android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/default_user_head"/>
+            android:background="@drawable/avatar_default_m"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -19,6 +19,7 @@ import java.util.List;
 
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.entity.UserEntity;
+import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 
 /**
  * Created by andy on 2015/4/25.
@@ -42,6 +43,7 @@ public class BubbleDatingApplication extends Application {
     public void onCreate() {
         super.onCreate();
         userEntity = null;
+        RequestManager.init(getApplicationContext());
         initBaiduMap();
         initHX();
 

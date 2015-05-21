@@ -34,6 +34,7 @@ import halfdog.bupt.edu.bubbledating.entity.UserEntity;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.constants.ResponseState;
 import halfdog.bupt.edu.bubbledating.constants.UserInfoKeys;
+import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 
 public class LoginActivity extends Activity {
     private static final String TAG = "LoginActivity";
@@ -46,7 +47,7 @@ public class LoginActivity extends Activity {
     private static EditText loginName;
     private static EditText loginPw;
 
-    private Context context;
+    private final Context context = LoginActivity.this;
     private static com.gc.materialdesign.widgets.ProgressDialog progressDialog;
 
     @Override
@@ -67,7 +68,7 @@ public class LoginActivity extends Activity {
         loginButton.setOnClickListener(buttonListener);
 
         progressDialog = new com.gc.materialdesign.widgets.ProgressDialog(LoginActivity.this,"请稍候");
-        context = this;
+//        context = this;
     }
 
     View.OnClickListener buttonListener = new View.OnClickListener(){
@@ -190,7 +191,7 @@ public class LoginActivity extends Activity {
 
             }
         });
-        requestQueue.add(loginRequest);
+        RequestManager.getInstance(context).add(loginRequest);
     }
 
     public static void  login(final Context context,String username,String pw){
@@ -200,7 +201,7 @@ public class LoginActivity extends Activity {
         Log.d(TAG,"-->USERNAME:"+username);
         Log.d(TAG,"-->pw:"+pw);
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+//        RequestQueue requestQueue = Volley.newRequestQueue(context);
         CustomRequest loginRequest = new CustomRequest(Request.Method.POST,LOGIN_URL,loginInfo,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
@@ -212,13 +213,6 @@ public class LoginActivity extends Activity {
                             Toast.makeText(context,"登陆成功",Toast.LENGTH_SHORT).show();
                             JSONObject res = (JSONObject)jsonObject.get("user_info");
                             Intent toMainAcvitiy = new Intent(context,MainActivity.class);
-//                            Bundle bundle = new Bundle();
-//                            bundle.putInt(UserInfoKeys.U_ID,res.getInt(UserInfoKeys.U_ID));
-//                            bundle.putString(UserInfoKeys.U_NAME, res.getString(UserInfoKeys.U_NAME));
-//                            bundle.putString(UserInfoKeys.U_PASSWORD, res.getString(UserInfoKeys.U_PASSWORD));
-//                            bundle.putString(UserInfoKeys.U_EMAIL, res.getString(UserInfoKeys.U_EMAIL));
-//                            bundle.putString(UserInfoKeys.U_GENDER, res.getString(UserInfoKeys.U_GENDER));
-//                            bundle.putBoolean(UserInfoKeys.U_ONLINE, res.getBoolean(UserInfoKeys.U_ONLINE));
 
                             BubbleDatingApplication.userEntity = new UserEntity(res.getInt(UserInfoKeys.U_ID),
                                     res.getString(UserInfoKeys.U_NAME),res.getString(UserInfoKeys.U_PASSWORD),
@@ -252,6 +246,6 @@ public class LoginActivity extends Activity {
 
             }
         });
-        requestQueue.add(loginRequest);
+        RequestManager.getInstance(context).add(loginRequest);
     }
 }

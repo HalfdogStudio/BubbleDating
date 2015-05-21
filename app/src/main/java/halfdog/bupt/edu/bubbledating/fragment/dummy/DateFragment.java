@@ -1,6 +1,7 @@
 package halfdog.bupt.edu.bubbledating.fragment.dummy;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -46,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.activity.ChatActivity;
 import halfdog.bupt.edu.bubbledating.constants.Configuration;
@@ -54,6 +56,7 @@ import halfdog.bupt.edu.bubbledating.constants.Offline;
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.tool.ImageMerger;
 import halfdog.bupt.edu.bubbledating.tool.MyDate;
+import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,6 +77,7 @@ public class DateFragment extends  Fragment {
 
     private MapView mMapView;
     private BaiduMap mMap;
+    private Context context;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -108,6 +112,7 @@ public class DateFragment extends  Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        SDKInitializer.initialize(getApplicationContext())
+        context = getActivity();
         Log.d("","--> on create");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -146,13 +151,16 @@ public class DateFragment extends  Fragment {
                 ImageView mUserGender = (ImageView)userInfoView.findViewById(R.id.user_info_gender);
                 TextView mUserInviContent = (TextView)userInfoView.findViewById(R.id.user_info_invitation_content);
                 TextView mUserPosttime = (TextView)userInfoView.findViewById(R.id.user_info_posttime);
+                CircleImageView mUserAvatar = (CircleImageView)userInfoView.findViewById(R.id.user_info_avatar);
                 ButtonRectangle mUserChat = (ButtonRectangle)userInfoView.findViewById(R.id.user_info_chat_button);
                 mUserName.setText(name);
                 mUserPosttime.setText(diffDate);
                 if(gender.equals("m")){
                     mUserGender.setImageResource(R.mipmap.ic_m);
+                    mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_m));
                 }else if (gender.equals("f")){
                     mUserGender.setImageResource(R.mipmap.ic_w);
+                    mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_f));
                 }
                 if(TextUtils.isEmpty(info)){
                     mUserInviContent.setVisibility(View.GONE);
@@ -226,9 +234,9 @@ public class DateFragment extends  Fragment {
             /*
             *       联网Mode
             * */
-            RequestQueue queue  = Volley.newRequestQueue(getActivity());
+//            RequestQueue queue  = Volley.newRequestQueue(getActivity());
             JsonArrayRequest requestPeopleAround = new JsonArrayRequest(Request.Method.GET,REQUEST_PEOPLE_AROUND,responseListener,errorListener);
-            queue.add(requestPeopleAround);
+            RequestManager.getInstance(context).add(requestPeopleAround);
         }
 
 

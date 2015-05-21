@@ -58,7 +58,7 @@ public class LatestMsgAdapter extends BaseAdapter {
         }else{
             holder = (ViewHolder)convertView.getTag();
         }
-        holder.mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.default_user_head));
+        holder.mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_m));
         holder.mTitle.setText(entity.getName());
         holder.mContent.setText(entity.getContent());
         holder.mPosttime.setText(MyDate.diffDate(MyDate.getCurrentDate(),MyDate.parseSimpleDateFormate(entity.getDate())));

@@ -107,7 +107,7 @@ public class ChatMsgAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.mUserHead.setImageDrawable(context.getResources().getDrawable(R.drawable.default_user_head));
+        holder.mUserHead.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_m));
         holder.mPostTime.setText(entity.getDate());
         holder.mContent.setText(entity.getContent());
 //        holder.mUserName.setText(entity.getName());

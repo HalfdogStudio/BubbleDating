@@ -79,7 +79,6 @@ public class ChatActivity extends ActionBarActivity {
                         ChatMsgEntity entity = new ChatMsgEntity(chatter,content, MyDate.getCurSimpleDateFormate(),false);
                         mDataArray.add(entity);
                         adapter.refreshData(mDataArray);
-//                        adapter.notifyDataSetChanged();
                         mInputContent.setText("");
                         mListView.setSelection(mListView.getCount()-1);
                     }

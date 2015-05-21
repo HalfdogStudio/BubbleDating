@@ -2,6 +2,7 @@ package halfdog.bupt.edu.bubbledating.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -54,6 +55,7 @@ import halfdog.bupt.edu.bubbledating.constants.Configuration;
 import halfdog.bupt.edu.bubbledating.entity.UserEntity;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.constants.ResponseState;
+import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 
 public class RegisterAccount extends Activity {
     private static final String REGISTER_URL = Configuration.SERVER_IP + "/BubbleDatingServer/HandleRegistration";
@@ -79,6 +81,8 @@ public class RegisterAccount extends Activity {
     private String uEmail;
     private String uGender;
     private String uAvatarString;
+
+    private final Context context  = RegisterAccount.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +158,7 @@ public class RegisterAccount extends Activity {
 
                     progressDialog.show();
 
-                    RequestQueue requestQueue = Volley.newRequestQueue(RegisterAccount.this);
+//                    RequestQueue requestQueue = Volley.newRequestQueue(RegisterAccount.this);
                     Map<String, String> jsonData = new HashMap<String, String>();
                     jsonData.put("username", uName);
                     jsonData.put("password", uPw);
@@ -211,7 +215,7 @@ public class RegisterAccount extends Activity {
                             Log.i(TAG, "--> on error response:" + volleyError.toString());
                         }
                     });
-                    requestQueue.add(registerRequest);
+                    RequestManager.getInstance(context).add(registerRequest);
 
                     break;
                 case R.id.register_activity_quit:
