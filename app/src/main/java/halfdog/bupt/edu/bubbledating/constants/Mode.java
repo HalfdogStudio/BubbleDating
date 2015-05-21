@@ -6,5 +6,6 @@ package halfdog.bupt.edu.bubbledating.constants;
 public class Mode {
     public static int OFFLINE_MODE = 0;
     public static int ONLINE_MODE = 1;
+    public static final boolean DEBUG = true;
 
 }
