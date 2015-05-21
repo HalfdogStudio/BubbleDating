@@ -2,6 +2,7 @@ package halfdog.bupt.edu.bubbledating.cache.image;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.widget.ImageView;
 
 import com.android.volley.toolbox.ImageLoader;
 
@@ -95,6 +96,7 @@ public class ImageCacheManager {
     public void getImage(String url,ImageLoader.ImageListener listener){
         mImageLoader.get(url,listener);
     }
+
 
 
  }

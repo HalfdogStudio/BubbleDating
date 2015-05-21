@@ -9,10 +9,16 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+
+import java.io.File;
 import java.util.List;
 
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
+import halfdog.bupt.edu.bubbledating.cache.image.ImageCacheManager;
+import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
 
 /**
@@ -83,6 +89,10 @@ public class ChatMsgAdapter extends BaseAdapter {
         ChatMsgEntity entity = data.get(position);
         boolean receive = entity.isReceive();
         ViewHolder holder = null;
+        String serverImgPath = Configuration.SERVER_IP+ File.separator+Configuration.SERVER_IP+File.separator+entity.getName()+".png";
+        if(Mode.DEBUG){
+            Log.d(TAG,"-->chat msg adapter of "+entity.getName()+":"+serverImgPath);
+        }
         // convertView 为空， 或者 convertView 没有ID， 或者 convertView 的 id 与 所需类型不同
         if ( convertView == null || convertView.getId() == View.NO_ID || convertView.getId() !=
                 (receive?R.id.chat_msg_text_right:R.id.chat_msg_text_left)){
@@ -107,7 +117,10 @@ public class ChatMsgAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.mUserHead.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_m));
+        ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener( holder.mUserHead,
+                R.drawable.avatar_default_m, R.drawable.avatar_default_m);
+        ImageCacheManager.getInstance().getImage(serverImgPath,userAvatorListener);
+//        holder.mUserHead.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_m));
         holder.mPostTime.setText(entity.getDate());
         holder.mContent.setText(entity.getContent());
 //        holder.mUserName.setText(entity.getName());

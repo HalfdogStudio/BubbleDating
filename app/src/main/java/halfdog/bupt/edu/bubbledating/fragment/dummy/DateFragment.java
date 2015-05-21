@@ -25,6 +25,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.baidu.mapapi.map.BaiduMap;
@@ -43,6 +44,7 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -50,6 +52,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.activity.ChatActivity;
+import halfdog.bupt.edu.bubbledating.cache.image.ImageCacheManager;
 import halfdog.bupt.edu.bubbledating.constants.Configuration;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.constants.Offline;
@@ -70,6 +73,8 @@ public class DateFragment extends  Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     public final String REQUEST_PEOPLE_AROUND = Configuration.SERVER_IP+"/BubbleDatingServer/HandlePeopleAround";
+    public final String SERVER_IMG_CACHE_DIR = Configuration.SERVER_IP + File.separator + Configuration.IMG_CACHE_PATH;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -130,68 +135,15 @@ public class DateFragment extends  Fragment {
         View view  = inflater.inflate(R.layout.fragment_dating,container,false);
         mMapView = (MapView)view.findViewById(R.id.bmapView);
         mMap = mMapView.getMap();
-        mMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                Bundle extra  = marker.getExtraInfo();
-                if(extra == null) return true;
-                int uId = extra.getInt("uId");
-                String gender = extra.getString("uGender");
-                String diffDate = extra.getString("uDiffDate");
-                final String name = extra.getString("uName");
-                String info = extra.getString("uInvi");
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Log.d(TAG,"-->clicked: name:"+name+",gender:"+gender+",gender.equals(f):"+gender.equals("f"));
-
-                View userInfoView = getActivity().getLayoutInflater().inflate(R.layout.user_info_view,null);
-                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams((int)getResources().getDimension(R.dimen.date_fragment_popup_window_width),
-                        (int)getResources().getDimension(R.dimen.date_fragment_popup_window_height));
-                userInfoView.setLayoutParams(layoutParams);
-                TextView mUserName = (TextView)userInfoView.findViewById(R.id.user_info_name);
-                ImageView mUserGender = (ImageView)userInfoView.findViewById(R.id.user_info_gender);
-                TextView mUserInviContent = (TextView)userInfoView.findViewById(R.id.user_info_invitation_content);
-                TextView mUserPosttime = (TextView)userInfoView.findViewById(R.id.user_info_posttime);
-                CircleImageView mUserAvatar = (CircleImageView)userInfoView.findViewById(R.id.user_info_avatar);
-                ButtonRectangle mUserChat = (ButtonRectangle)userInfoView.findViewById(R.id.user_info_chat_button);
-                mUserName.setText(name);
-                mUserPosttime.setText(diffDate);
-                if(gender.equals("m")){
-                    mUserGender.setImageResource(R.mipmap.ic_m);
-                    mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_m));
-                }else if (gender.equals("f")){
-                    mUserGender.setImageResource(R.mipmap.ic_w);
-                    mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_f));
-                }
-                if(TextUtils.isEmpty(info)){
-                    mUserInviContent.setVisibility(View.GONE);
-                }else{
-                    mUserInviContent.setText(info);
-                }
-                mUserChat.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), ChatActivity.class);
-                        intent.putExtra("name",name);
-                        startActivity(intent);
-                    }
-                });
-                PopupWindow popupWindow = new PopupWindow(userInfoView,(int)getResources().getDimension(R.dimen.date_fragment_popup_window_width),(int)getResources().getDimension(R.dimen.date_fragment_popup_window_height),true);
-                //通过设置背景图片可以使popup window出现后能够通过点击旁白或者back键让它消失
-                //popupwindow背景设置成为透明色，以防设圆角时显示黑色
-                popupWindow.setBackgroundDrawable(new PaintDrawable(Color.TRANSPARENT) );
-                popupWindow.setTouchable(true);
-                popupWindow.setOutsideTouchable(true);
-                popupWindow.showAtLocation(getView(), Gravity.CENTER_HORIZONTAL,0,0);
-                Toast.makeText(getActivity(),"'"+info+"'"+" by "+name,Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
+        mMap.clear();
+        mMap.setOnMarkerClickListener(onMarkerClickListener);
         MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(BubbleDatingApplication.userLatLng,17);
         mMap.setMapStatus(update);
         /*
         *       request to get people around
         * */
         if(BubbleDatingApplication.mode == Mode.OFFLINE_MODE){
+            Log.d(TAG,"-->OFFLINE branch");
             JSONObject item = null;
             for(int i = 0; i < Offline.offline_people_around.length(); i ++){
                 try {
@@ -235,6 +187,7 @@ public class DateFragment extends  Fragment {
             *       联网Mode
             * */
 //            RequestQueue queue  = Volley.newRequestQueue(getActivity());
+            Log.d(TAG,"-->online branch");
             JsonArrayRequest requestPeopleAround = new JsonArrayRequest(Request.Method.GET,REQUEST_PEOPLE_AROUND,responseListener,errorListener);
             RequestManager.getInstance(context).add(requestPeopleAround);
         }
@@ -265,7 +218,69 @@ public class DateFragment extends  Fragment {
 
         @Override
         public boolean onMarkerClick(Marker marker) {
-            return false;
+            Bundle extra  = marker.getExtraInfo();
+            if(extra == null) return true;
+            int uId = extra.getInt("uId");
+            String gender = extra.getString("uGender");
+            String diffDate = extra.getString("uDiffDate");
+            final String name = extra.getString("uName");
+            String info = extra.getString("uInvi");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            if(Mode.DEBUG){
+                Log.d(TAG,"-->clicked: name:"+name+",gender:"+gender+",gender.equals(f):"+gender.equals("f"));
+            }
+            View userInfoView = getActivity().getLayoutInflater().inflate(R.layout.user_info_view,null);
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams((int)getResources().getDimension(R.dimen.date_fragment_popup_window_width),
+                    (int)getResources().getDimension(R.dimen.date_fragment_popup_window_height));
+            userInfoView.setLayoutParams(layoutParams);
+            TextView mUserName = (TextView)userInfoView.findViewById(R.id.user_info_name);
+            ImageView mUserGender = (ImageView)userInfoView.findViewById(R.id.user_info_gender);
+            TextView mUserInviContent = (TextView)userInfoView.findViewById(R.id.user_info_invitation_content);
+            TextView mUserPosttime = (TextView)userInfoView.findViewById(R.id.user_info_posttime);
+            final CircleImageView mUserAvatar = (CircleImageView)userInfoView.findViewById(R.id.user_info_avatar);
+            ButtonRectangle mUserChat = (ButtonRectangle)userInfoView.findViewById(R.id.user_info_chat_button);
+            mUserName.setText(name);
+            mUserPosttime.setText(diffDate);
+            if(gender.equals("m")){
+                mUserGender.setImageResource(R.mipmap.ic_m);
+//                mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_m));
+            }else if (gender.equals("f")){
+                mUserGender.setImageResource(R.mipmap.ic_w);
+//                mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_f));
+            }
+            if(TextUtils.isEmpty(info)){
+                mUserInviContent.setVisibility(View.GONE);
+            }else{
+                mUserInviContent.setText(info);
+            }
+
+            /*
+            *       load user avatar
+            * */
+            ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener(mUserAvatar,
+                    R.drawable.avatar_default_m, R.drawable.avatar_default_m);
+            String ServerImgUrl = SERVER_IMG_CACHE_DIR + File.separator + name + ".png";
+            if(Mode.DEBUG){
+                Log.d(TAG, "-->ServerImgUrl of "+mUserName + " is : "+ServerImgUrl);
+            }
+            ImageCacheManager.getInstance().getImage(ServerImgUrl,userAvatorListener);
+            mUserChat.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtra("name",name);
+                    startActivity(intent);
+                }
+            });
+            PopupWindow popupWindow = new PopupWindow(userInfoView,(int)getResources().getDimension(R.dimen.date_fragment_popup_window_width),(int)getResources().getDimension(R.dimen.date_fragment_popup_window_height),true);
+            //通过设置背景图片可以使popup window出现后能够通过点击旁白或者back键让它消失
+            //popupwindow背景设置成为透明色，以防设圆角时显示黑色
+            popupWindow.setBackgroundDrawable(new PaintDrawable(Color.TRANSPARENT) );
+            popupWindow.setTouchable(true);
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.showAtLocation(getView(), Gravity.CENTER_HORIZONTAL,0,0);
+//            Toast.makeText(getActivity(),"'"+info+"'"+" by "+name,Toast.LENGTH_SHORT).show();
+            return true;
         }
     };
 
@@ -291,6 +306,7 @@ public class DateFragment extends  Fragment {
                     " uLat:"+uLat+" uLong:"+uLong+" uDateDiff:"+uDateDiff);
                     // add loc icon
                     if(uLat == 0 && uLong == 0){
+                        Log.d(TAG,"-->lat or long is 0, continue, username:"+uName);
                         continue;
                     }
                     Bitmap photoOfHead = ImageMerger.addTextOnBitmap(uName,uGender,getActivity());
@@ -301,10 +317,9 @@ public class DateFragment extends  Fragment {
                     extraInfo.putString("uGender",uGender);
                     extraInfo.putString("uInvi",uInviName);
                     extraInfo.putString("uDiffDate", uDateDiff );
-                    OverlayOptions options = new MarkerOptions().title(""+uId).position(new LatLng(uLat,uLong)).icon(bitmap).extraInfo(extraInfo);
+                    OverlayOptions options = new MarkerOptions().title(""+uId).position(new LatLng(uLat,uLong)).icon(bitmap).extraInfo(extraInfo).visible(true);
                     mMap.addOverlay(options);
                     mMapManager.addToMap();
-
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -317,6 +332,92 @@ public class DateFragment extends  Fragment {
         @Override
         public void onErrorResponse(VolleyError volleyError) {
             Log.d(TAG,"--> ERROR HAPPENED during query of people aroound");
+        }
+    };
+
+    BaiduMap.OnMarkerClickListener onMarkerClickListener = new BaiduMap.OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            Bundle extra  = marker.getExtraInfo();
+            if(extra == null) return true;
+            int uId = extra.getInt("uId");
+            String gender = extra.getString("uGender");
+            String diffDate = extra.getString("uDiffDate");
+            final String name = extra.getString("uName");
+            String info = extra.getString("uInvi");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            if(Mode.DEBUG){
+                Log.d(TAG,"-->clicked: name:"+name+",gender:"+gender+",gender.equals(f):"+gender.equals("f"));
+            }
+            View userInfoView = getActivity().getLayoutInflater().inflate(R.layout.user_info_view,null);
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams((int)getResources().getDimension(R.dimen.date_fragment_popup_window_width),
+                    (int)getResources().getDimension(R.dimen.date_fragment_popup_window_height));
+            userInfoView.setLayoutParams(layoutParams);
+            TextView mUserName = (TextView)userInfoView.findViewById(R.id.user_info_name);
+            ImageView mUserGender = (ImageView)userInfoView.findViewById(R.id.user_info_gender);
+            TextView mUserInviContent = (TextView)userInfoView.findViewById(R.id.user_info_invitation_content);
+            TextView mUserPosttime = (TextView)userInfoView.findViewById(R.id.user_info_posttime);
+            final CircleImageView mUserAvatar = (CircleImageView)userInfoView.findViewById(R.id.user_info_avatar);
+            ButtonRectangle mUserChat = (ButtonRectangle)userInfoView.findViewById(R.id.user_info_chat_button);
+            mUserName.setText(name);
+            mUserPosttime.setText(diffDate);
+            if(gender.equals("m")){
+                mUserGender.setImageResource(R.mipmap.ic_m);
+//                mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_m));
+            }else if (gender.equals("f")){
+                mUserGender.setImageResource(R.mipmap.ic_w);
+//                mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_f));
+            }
+            if(TextUtils.isEmpty(info)){
+                mUserInviContent.setVisibility(View.GONE);
+            }else{
+                mUserInviContent.setText(info);
+            }
+
+            /*
+            *       load user avatar
+            * */
+            ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener(mUserAvatar,
+                    R.drawable.avatar_default_m, R.drawable.avatar_default_m);
+//             ImageLoader.ImageListener userAvatorListener = new ImageLoader.ImageListener(){
+//                @Override
+//                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+//                    Bitmap bitmap = response.getBitmap();
+//                    if(bitmap != null){
+//                        mUserAvatar.setImageBitmap(response.getBitmap());
+//                    }else{
+//                        mUserAvatar.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.avatar_default_m));
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    mUserAvatar.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.avatar_default_m));
+//                }
+//            };
+            String ServerImgUrl = SERVER_IMG_CACHE_DIR + File.separator + name + ".png";
+            if(Mode.DEBUG){
+                Log.d(TAG, "-->ServerImgUrl of "+mUserName + " is : "+ServerImgUrl);
+            }
+            ImageCacheManager.getInstance().getImage(ServerImgUrl,userAvatorListener);
+             mUserChat.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtra("name",name);
+                    startActivity(intent);
+                }
+            });
+            PopupWindow popupWindow = new PopupWindow(userInfoView,(int)getResources().getDimension(R.dimen.date_fragment_popup_window_width),(int)getResources().getDimension(R.dimen.date_fragment_popup_window_height),true);
+            //通过设置背景图片可以使popup window出现后能够通过点击旁白或者back键让它消失
+            //popupwindow背景设置成为透明色，以防设圆角时显示黑色
+            popupWindow.setBackgroundDrawable(new PaintDrawable(Color.TRANSPARENT) );
+            popupWindow.setTouchable(true);
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.showAtLocation(getView(), Gravity.CENTER_HORIZONTAL,0,0);
+//            Toast.makeText(getActivity(),"'"+info+"'"+" by "+name,Toast.LENGTH_SHORT).show();
+            return true;
         }
     };
 

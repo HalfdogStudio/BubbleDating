@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.baidu.location.BDLocation;
@@ -17,6 +18,7 @@ import com.easemob.chat.EMChat;
 import java.util.Iterator;
 import java.util.List;
 
+import halfdog.bupt.edu.bubbledating.cache.image.ImageCacheManager;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.entity.UserEntity;
 import halfdog.bupt.edu.bubbledating.tool.RequestManager;
@@ -26,15 +28,22 @@ import halfdog.bupt.edu.bubbledating.tool.RequestManager;
  */
 public class BubbleDatingApplication extends Application {
     public static final String TAG = "BubbleDatingApplication";
-    public static int mode = Mode.ONLINE_MODE;
+    public static final Bitmap.CompressFormat IMAGE_CACHE_COMPRESS_FORMAT = Bitmap.CompressFormat.PNG;
+    public static final int IMAGE_CACHE_QUALITY = 100;
+    public static final ImageCacheManager.CacheType CACHE_TYPE = ImageCacheManager.CacheType.MEMORY;
+
     public static UserEntity userEntity = null;
     public static  LatLng userLatLng;
     public static LocationClient mLocationClient = null;
+
+
 
     public static int screenWidth;
     public static int screenHeight;
     public static int densityDpi;
     public static float density;
+    public static int mCacheSize = 1024 * 1024 * 8;
+    public static int mode = Mode.ONLINE_MODE;
 
     public BDLocationListener listener = new MyLocationListener();
 
@@ -42,8 +51,19 @@ public class BubbleDatingApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //init user entity
         userEntity = null;
+        //init cache size
+        int maxMemory = (int)Runtime.getRuntime().maxMemory();
+        mCacheSize = maxMemory/8;
+        if(Mode.DEBUG){
+            Log.d(TAG,"-->mCacheSize:"+mCacheSize);
+        }
+        // init RequestManager
         RequestManager.init(getApplicationContext());
+        // init ImageCacheManager
+        ImageCacheManager.getInstance().init(getApplicationContext(),this.getPackageCodePath(),mCacheSize,
+                IMAGE_CACHE_COMPRESS_FORMAT,IMAGE_CACHE_QUALITY,CACHE_TYPE);
         initBaiduMap();
         initHX();
 
