@@ -34,6 +34,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.gc.materialdesign.views.ButtonRectangle;
+import com.gc.materialdesign.widgets.ProgressDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,9 +46,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
+import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.entity.UserEntity;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.constants.ResponseState;
 
@@ -68,6 +72,7 @@ public class RegisterAccount extends Activity {
     private RadioButton female;
     private ImageView userAvatar;
     private  File mCroppedAvatar;
+    private ProgressDialog progressDialog;
 
     private String uName;
     private String uPw;
@@ -94,6 +99,8 @@ public class RegisterAccount extends Activity {
         submit.setOnClickListener(clickListener);
         quit.setOnClickListener(clickListener);
         userAvatar.setOnClickListener(clickListener);
+
+        progressDialog = new ProgressDialog(RegisterAccount.this,"请稍候");
     }
 
     RadioGroup.OnCheckedChangeListener checkedChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -145,6 +152,8 @@ public class RegisterAccount extends Activity {
                         break;
                     }
 
+                    progressDialog.show();
+
                     RequestQueue requestQueue = Volley.newRequestQueue(RegisterAccount.this);
                     Map<String, String> jsonData = new HashMap<String, String>();
                     jsonData.put("username", uName);
@@ -152,6 +161,8 @@ public class RegisterAccount extends Activity {
                     jsonData.put("email", uEmail);
                     jsonData.put("gender", uGender);
                     jsonData.put("avatar",uAvatarString);
+                    jsonData.put("lat",String.valueOf(BubbleDatingApplication.userLatLng.latitude));
+                    jsonData.put("lon",String.valueOf(BubbleDatingApplication.userLatLng.longitude));
 
                     CustomRequest registerRequest = new CustomRequest(Request.Method.POST, REGISTER_URL, jsonData, new Response.Listener<JSONObject>() {
 
@@ -163,19 +174,28 @@ public class RegisterAccount extends Activity {
                                 switch (response) {
                                     case ResponseState.OK:
                                         Toast.makeText(RegisterAccount.this, "注册成功", Toast.LENGTH_SHORT).show();
-                                        LoginActivity.login(RegisterAccount.this, uName, uPw);
+                                        BubbleDatingApplication.userEntity = new UserEntity(-1,uName,uPw,uEmail
+                                        ,uGender,null,true);
+                                        Intent jumpToMainActivity = new Intent(RegisterAccount.this,MainActivity.class);
+                                        progressDialog.dismiss();
+                                        startActivity(jumpToMainActivity);
+                                        RegisterAccount.this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                         finish();
                                         break;
                                     case ResponseState.USER_NAME_DUPLICATE:
+                                        progressDialog.dismiss();
                                         Toast.makeText(RegisterAccount.this, "用户名已被使用，请重新输入", Toast.LENGTH_SHORT).show();
                                         break;
                                     case ResponseState.EMAIL_DUPLICATE:
+                                        progressDialog.dismiss();
                                         Toast.makeText(RegisterAccount.this, "邮箱已被使用，请重新输入", Toast.LENGTH_SHORT).show();
                                         break;
                                     case ResponseState.UNKNOWN_ERROR:
+                                        progressDialog.dismiss();
                                         Toast.makeText(RegisterAccount.this, "很抱歉，发生了未知的错误，请联系管理员", Toast.LENGTH_SHORT).show();
                                         break;
                                     default:
+                                        progressDialog.dismiss();
                                         Toast.makeText(RegisterAccount.this, "未知", Toast.LENGTH_SHORT).show();
                                         break;
 

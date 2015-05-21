@@ -1,6 +1,7 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class LoginActivity extends Activity {
     private static EditText loginPw;
 
     private Context context;
+    private static com.gc.materialdesign.widgets.ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class LoginActivity extends Activity {
         registerButton.setOnClickListener(buttonListener);
         loginButton.setOnClickListener(buttonListener);
 
-
+        progressDialog = new com.gc.materialdesign.widgets.ProgressDialog(LoginActivity.this,"请稍候");
         context = this;
     }
 
@@ -82,8 +84,8 @@ public class LoginActivity extends Activity {
                     finish();
                     break;
                 case R.id.login_activity_launch:
+
                     login(LoginActivity.this);
-                    finish();
                     break;
                 case R.id.login_activity_register:
                     Intent toRegisterActivity = new Intent(LoginActivity.this,RegisterAccount.class);
@@ -133,9 +135,12 @@ public class LoginActivity extends Activity {
             return;
         }
 
+        progressDialog.show();
         Map<String,String> loginInfo = new HashMap<>();
         loginInfo.put("username",username);
         loginInfo.put("password",pw);
+        loginInfo.put("lat",String.valueOf(BubbleDatingApplication.userLatLng.latitude));
+        loginInfo.put("lon",String.valueOf(BubbleDatingApplication.userLatLng.longitude));
         Log.d(TAG,"-->USERNAME:"+username);
         Log.d(TAG,"-->pw:"+pw);
 
@@ -153,30 +158,25 @@ public class LoginActivity extends Activity {
                             Toast.makeText(context,"登陆成功",Toast.LENGTH_SHORT).show();
                             JSONObject res = (JSONObject)jsonObject.get("user_info");
                             Intent toMainAcvitiy = new Intent(context,MainActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putInt(UserInfoKeys.U_ID,res.getInt(UserInfoKeys.U_ID));
-                            bundle.putString(UserInfoKeys.U_NAME, res.getString(UserInfoKeys.U_NAME));
-                            bundle.putString(UserInfoKeys.U_PASSWORD, res.getString(UserInfoKeys.U_PASSWORD));
-                            bundle.putString(UserInfoKeys.U_EMAIL, res.getString(UserInfoKeys.U_EMAIL));
-                            bundle.putString(UserInfoKeys.U_GENDER, res.getString(UserInfoKeys.U_GENDER));
-                            bundle.putBoolean(UserInfoKeys.U_ONLINE, res.getBoolean(UserInfoKeys.U_ONLINE));
-
                             BubbleDatingApplication.userEntity = new UserEntity(res.getInt(UserInfoKeys.U_ID),
                                     res.getString(UserInfoKeys.U_NAME),res.getString(UserInfoKeys.U_PASSWORD),
                                     res.getString(UserInfoKeys.U_EMAIL),res.getString(UserInfoKeys.U_GENDER),null,
                                     res.getBoolean(UserInfoKeys.U_ONLINE));
-                            toMainAcvitiy.putExtras(bundle);
+                            progressDialog.dismiss();
                             context.startActivity(toMainAcvitiy);
                             ((Activity)context).overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                             ((Activity) context).finish();
                             break;
                         case ResponseState.UNKOWN_USERNAME:
+                            progressDialog.dismiss();
                             Toast.makeText(context,"用户名错误",Toast.LENGTH_SHORT).show();
                             break;
                         case ResponseState.USERNAME_PASSWORD_UNCOMPATIBLE:
+                            progressDialog.dismiss();
                             Toast.makeText(context,"密码与用户名不匹配",Toast.LENGTH_SHORT).show();
                             break;
                         default:
+                            progressDialog.dismiss();
                             Toast.makeText(context,"未知的错误",Toast.LENGTH_SHORT).show();
                             break;
                     }
@@ -212,19 +212,20 @@ public class LoginActivity extends Activity {
                             Toast.makeText(context,"登陆成功",Toast.LENGTH_SHORT).show();
                             JSONObject res = (JSONObject)jsonObject.get("user_info");
                             Intent toMainAcvitiy = new Intent(context,MainActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putInt(UserInfoKeys.U_ID,res.getInt(UserInfoKeys.U_ID));
-                            bundle.putString(UserInfoKeys.U_NAME, res.getString(UserInfoKeys.U_NAME));
-                            bundle.putString(UserInfoKeys.U_PASSWORD, res.getString(UserInfoKeys.U_PASSWORD));
-                            bundle.putString(UserInfoKeys.U_EMAIL, res.getString(UserInfoKeys.U_EMAIL));
-                            bundle.putString(UserInfoKeys.U_GENDER, res.getString(UserInfoKeys.U_GENDER));
-                            bundle.putBoolean(UserInfoKeys.U_ONLINE, res.getBoolean(UserInfoKeys.U_ONLINE));
+//                            Bundle bundle = new Bundle();
+//                            bundle.putInt(UserInfoKeys.U_ID,res.getInt(UserInfoKeys.U_ID));
+//                            bundle.putString(UserInfoKeys.U_NAME, res.getString(UserInfoKeys.U_NAME));
+//                            bundle.putString(UserInfoKeys.U_PASSWORD, res.getString(UserInfoKeys.U_PASSWORD));
+//                            bundle.putString(UserInfoKeys.U_EMAIL, res.getString(UserInfoKeys.U_EMAIL));
+//                            bundle.putString(UserInfoKeys.U_GENDER, res.getString(UserInfoKeys.U_GENDER));
+//                            bundle.putBoolean(UserInfoKeys.U_ONLINE, res.getBoolean(UserInfoKeys.U_ONLINE));
 
                             BubbleDatingApplication.userEntity = new UserEntity(res.getInt(UserInfoKeys.U_ID),
                                     res.getString(UserInfoKeys.U_NAME),res.getString(UserInfoKeys.U_PASSWORD),
                                     res.getString(UserInfoKeys.U_EMAIL),res.getString(UserInfoKeys.U_GENDER),null,
                                     res.getBoolean(UserInfoKeys.U_ONLINE));
-                            toMainAcvitiy.putExtras(bundle);
+//                            toMainAcvitiy.putExtras(bundle);
+                            progressDialog.dismiss();
                             context.startActivity(toMainAcvitiy);
                             ((Activity)context).overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                             ((Activity) context).finish();
