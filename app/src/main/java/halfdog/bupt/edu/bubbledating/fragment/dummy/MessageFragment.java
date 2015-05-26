@@ -5,15 +5,20 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.baidu.navisdk.util.SysOSAPI;
 
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.activity.ChatActivity;
 import halfdog.bupt.edu.bubbledating.adapter.LatestMsgAdapter;
+import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
 
 /**
@@ -25,8 +30,10 @@ import halfdog.bupt.edu.bubbledating.tool.DataCache;
  * create an instance of this fragment.
  */
 public class MessageFragment extends Fragment {
+    private final String TAG = "MessageFragment";
     private ListView mLatestMsgList;
     private LatestMsgAdapter mLatestMsgAdapter;
+    private TextView mNoMsgTextView;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -79,10 +86,26 @@ public class MessageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate
         View view = inflater.inflate(R.layout.fragment_message, container, false);
+        mNoMsgTextView = (TextView)view.findViewById(R.id.message_framgent_no_msg);
         mLatestMsgList = (ListView)view.findViewById(R.id.message_fragment_last_message_list);
         mLatestMsgAdapter = new LatestMsgAdapter(getActivity(),DataCache.mContactUser);
         mLatestMsgList.setAdapter(mLatestMsgAdapter);
         mLatestMsgList.setOnItemClickListener(onLattestMessageItemListener);
+
+        if(DataCache.mHasHistoryMsg){
+            if(Mode.DEBUG){
+                Log.d(TAG,"-->has history msg,list view show");
+            }
+
+            mNoMsgTextView.setVisibility(View.GONE);
+            mLatestMsgList.setVisibility(View.VISIBLE);
+        }else{
+            if(Mode.DEBUG){
+                Log.d(TAG,"-->no history msg,no msg textview show");
+            }
+            mNoMsgTextView.setVisibility(View.VISIBLE);
+            mLatestMsgList.setVisibility(View.GONE);
+        }
         return view;
     }
 

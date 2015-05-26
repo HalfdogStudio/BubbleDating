@@ -20,13 +20,14 @@ public class DataCache {
     public static final String TAG = "DataCache";
     public static HashMap<String,List<ChatMsgEntity>> mUserMsgList;
     public static List<ChatMsgEntity> mContactUser;
+    public static boolean mHasHistoryMsg = true;
     static {
         mContactUser = new ArrayList<ChatMsgEntity>();
         mUserMsgList = new HashMap<String,List<ChatMsgEntity>>();
     }
 
     public static void initCacheData(Context context){
-
+        mHasHistoryMsg = false;
     }
     public static void initOfflineCacheData(Context context){
 //        Log.d(TAG,"-->contact_list EXISTS?:"+MySQLiteOpenHelper.isTableExists("contact_list"));
@@ -40,6 +41,7 @@ public class DataCache {
             String lastContactDate = cursor.getString(3);
             mContactUser.add(new ChatMsgEntity(name,lastMessage,lastContactDate,true));
         }
+        if(mContactUser.size() == 0) mHasHistoryMsg = false;
         for(int i = 0; i < mContactUser.size(); i ++ ){
             Cursor tmpCursor = db.rawQuery("select * from contact_msg_list where name= ?",new String[]{mContactUser.get(i).getName()});
             List<ChatMsgEntity> list = new ArrayList<ChatMsgEntity>();

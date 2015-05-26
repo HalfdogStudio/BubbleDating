@@ -22,4 +22,7 @@
     <string name="info">关于</string>
 
 
+    <!--message fragment-->
+    <string name="message_fragment_no_msg">暂时没有消息</string>
+
 </resources>

@@ -89,7 +89,7 @@ public class ChatMsgAdapter extends BaseAdapter {
         ChatMsgEntity entity = data.get(position);
         boolean receive = entity.isReceive();
         ViewHolder holder = null;
-        String serverImgPath = Configuration.SERVER_IP+ File.separator+Configuration.SERVER_IP+File.separator+entity.getName()+".png";
+        String serverImgPath = Configuration.SERVER_IMG_CACHE_DIR  + entity.getName()+".png";
         if(Mode.DEBUG){
             Log.d(TAG,"-->chat msg adapter of "+entity.getName()+":"+serverImgPath);
         }

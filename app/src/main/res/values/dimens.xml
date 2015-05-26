@@ -33,4 +33,10 @@
     <dimen name="user_info_avatar_width">96dp</dimen>
     <dimen name="user_info_avatar_height">96dp</dimen>
 
+    <!--message fragment-->
+    <dimen name="msg_fragment_no_msg">24sp</dimen>
+    <dimen name="msg_fragment_no_msg_margin_top">15dp</dimen>
+
+
+
 </resources>

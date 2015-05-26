@@ -3,12 +3,22 @@
     android:layout_height="match_parent"
     tools:context="halfdog.bupt.edu.bubbledating.fragment.dummy.MessageFragment">
 
+    <TextView
+        android:id="@+id/message_framgent_no_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/message_fragment_no_msg"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/msg_fragment_no_msg_margin_top"
+        android:textSize="@dimen/msg_fragment_no_msg"
+        android:visibility="gone"/>
+
     <ListView
         android:id="@+id/message_fragment_last_message_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
-
+        android:visibility="visible"
         />
 
 </FrameLayout>

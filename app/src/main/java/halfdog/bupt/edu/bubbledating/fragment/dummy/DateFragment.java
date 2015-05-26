@@ -73,7 +73,7 @@ public class DateFragment extends  Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     public final String REQUEST_PEOPLE_AROUND = Configuration.SERVER_IP+"/BubbleDatingServer/HandlePeopleAround";
-    public final String SERVER_IMG_CACHE_DIR = Configuration.SERVER_IP + File.separator + Configuration.IMG_CACHE_PATH;
+
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -259,7 +259,7 @@ public class DateFragment extends  Fragment {
             * */
             ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener(mUserAvatar,
                     R.drawable.avatar_default_m, R.drawable.avatar_default_f);
-            String ServerImgUrl = SERVER_IMG_CACHE_DIR + File.separator + name + ".png";
+            String ServerImgUrl = Configuration.SERVER_IMG_CACHE_DIR + File.separator + name + ".png";
             if(Mode.DEBUG){
                 Log.d(TAG, "-->ServerImgUrl of "+mUserName + " is : "+ServerImgUrl);
             }
@@ -379,7 +379,7 @@ public class DateFragment extends  Fragment {
             * */
             ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener(mUserAvatar,
                     R.drawable.avatar_default_m, R.drawable.avatar_default_m);
-            String ServerImgUrl = SERVER_IMG_CACHE_DIR  + name + ".png";
+            String ServerImgUrl = Configuration.SERVER_IMG_CACHE_DIR  + name + ".png";
             if(Mode.DEBUG){
                 Log.d(TAG, "-->ServerImgUrl of "+name + " is : "+ServerImgUrl);
             }
