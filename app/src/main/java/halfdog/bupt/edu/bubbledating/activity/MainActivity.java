@@ -86,10 +86,10 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         swimDailyText = (TextView)findViewById(R.id.swim_daily_text);
 
         drawerlayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        leftDrawerUserAvator = (ImageView)findViewById(R.id.left_drawer_user_avatar);
-        leftDrawerUserName = (TextView)findViewById(R.id.left_drawer_user_name);
+//        leftDrawerUserAvator = (ImageView)findViewById(R.id.left_drawer_user_avatar);
+//        leftDrawerUserName = (TextView)findViewById(R.id.left_drawer_user_name);
         leftDrawerList = (ListView)findViewById(R.id.left_drawer_list);
-        leftDrawerUserSignature = (TextView)findViewById(R.id.left_drawer_user_signature);
+//        leftDrawerUserSignature = (TextView)findViewById(R.id.left_drawer_user_signature);
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
 
 
@@ -100,7 +100,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         drawerToggle.syncState();
 
         setSupportActionBar(mToolbar);
-        leftDrawerUserName.setText(BubbleDatingApplication.userEntity.getmName());
+//        leftDrawerUserName.setText(BubbleDatingApplication.userEntity.getmName());
         leftDrawerList.setAdapter(new LeftDrawerListAdapter(this));
         //用户签名
 //        leftDrawerUserSignature.setText(BubbleDatingApplication.userEntity.get);
@@ -167,9 +167,12 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
 
 
     public void initDataCache(Context context){
+        /* init MySQLiteOpenHelper singleton and cache data */
         if(BubbleDatingApplication.mode == Mode.OFFLINE_MODE){
+            MySQLiteOpenHelper.getInstance(this);
             DataCache.initOfflineCacheData(context);
         }else{
+            MySQLiteOpenHelper.getInstance(this,BubbleDatingApplication.userEntity.getmName()+".db");
             DataCache.initCacheData(context);
         }
     }
@@ -251,21 +254,21 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
     @Override
     protected void onStart() {
         super.onStart();
-        if(MySQLiteOpenHelper.getInstance(MainActivity.this) == null){
-            if(BubbleDatingApplication.mode == Mode.OFFLINE_MODE){
-                MySQLiteOpenHelper.getInstance(MainActivity.this,Offline.OFFLINE_DB);
-            }else{
-                //用于启动非离线模式的SQLite
-            }
-        }
+//        if(MySQLiteOpenHelper.getInstance(MainActivity.this) == null){
+//            if(BubbleDatingApplication.mode == Mode.OFFLINE_MODE){
+//                MySQLiteOpenHelper.getInstance(MainActivity.this,Offline.OFFLINE_DB);
+//            }else{
+//                //用于启动非离线模式的SQLite
+//            }
+//        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if(MySQLiteOpenHelper.getInstance(MainActivity.this) != null){
-            MySQLiteOpenHelper.getInstance(MainActivity.this).close();
-        }
+//        if(MySQLiteOpenHelper.getInstance(MainActivity.this) != null){
+//            MySQLiteOpenHelper.getInstance(MainActivity.this).close();
+//        }
 
     }
 

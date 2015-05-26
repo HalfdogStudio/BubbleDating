@@ -11,32 +11,34 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
     private static final int VERSION_NUMBER = 1;
-    private static final String DB_NAME = "bubble_dating.db";
+    /*   DB_NAME should be BubbleDatingApplication.userEntity.getmName() + ".db"  */
+    private static  String ON_LINE_DB_NAME = null;
     private static final String OFF_LINE_DB_NAME = "bubble_dating_offline.db";
+//    private static final String OFF_LINE_DB_NAME = "bubble_dating_offline.db";
 
     private static MySQLiteOpenHelper instance;
 
-    private final String CONTACT_TABLE_NAME = "contact_list";
-    private final String CONTACT_MSG_TABLE_NAME = "contact_msg_list";
-    private final String CREATE_COTACT_LIST = " create table "+CONTACT_TABLE_NAME +
-            " (_id integer primary key autoincrement, name,last_message, last_contact_date)";
-    private final String CREATE_MSG_LIST = "create table "+CONTACT_MSG_TABLE_NAME +
-            " (_id integer primary key autoincrement, name, date, content, is_receive)";
+    public static  final String CONTACT_TABLE_NAME = "contact_list";
+    public static  final String CONTACT_MSG_TABLE_NAME = "contact_msg_list";
+    private final String CREATE_COTACT_LIST = " create table if not exists "+CONTACT_TABLE_NAME +
+            " (_id integer primary key autoincrement, name,last_message, last_contact_date) " ;
+    private final String CREATE_MSG_LIST = "create table if not exists "+CONTACT_MSG_TABLE_NAME +
+            " (_id integer primary key autoincrement, name, date, content, is_receive) ";
 
 
 
 
-    public MySQLiteOpenHelper(Context context,String name){
-        super(context,name,null,VERSION_NUMBER);
+    public MySQLiteOpenHelper(Context context,String dbName){
+        super(context,dbName,null,VERSION_NUMBER);
     }
 
     public MySQLiteOpenHelper(Context context){
-        super(context,DB_NAME,null,VERSION_NUMBER);
+        super(context,OFF_LINE_DB_NAME,null,VERSION_NUMBER);
     }
 
-    public static MySQLiteOpenHelper getInstance(Context context,String username){
+    public static MySQLiteOpenHelper getInstance(Context context,String dbName){
         if(instance == null){
-            instance = new MySQLiteOpenHelper(context,username);
+            instance = new MySQLiteOpenHelper(context,dbName);
         }
         return instance;
     }
@@ -51,8 +53,8 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("drop table if exists "+CONTACT_TABLE_NAME);
-        db.execSQL("drop table if exists "+CONTACT_MSG_TABLE_NAME);
+//        db.execSQL("drop table if exists "+CONTACT_TABLE_NAME);
+//        db.execSQL("drop table if exists "+CONTACT_MSG_TABLE_NAME);
         db.execSQL(CREATE_COTACT_LIST);
         db.execSQL(CREATE_MSG_LIST);
     }
