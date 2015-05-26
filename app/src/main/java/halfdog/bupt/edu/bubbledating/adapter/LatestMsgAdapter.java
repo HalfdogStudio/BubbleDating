@@ -56,7 +56,7 @@ public class LatestMsgAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ChatMsgEntity entity = list.get(position);
         ViewHolder holder = null;
-        String serverImgPath = Configuration.SERVER_IP+ File.separator+Configuration.SERVER_IP+File.separator+entity.getName()+".png";
+        String serverImgPath = Configuration.SERVER_IP+ File.separator+Configuration.IMG_CACHE_PATH+File.separator+entity.getName()+".png";
         if(Mode.DEBUG){
             Log.d(TAG, "-->chat msg adapter of " + entity.getName() + ":" + serverImgPath);
         }

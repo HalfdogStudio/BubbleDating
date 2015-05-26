@@ -71,7 +71,7 @@ public class ImageCacheManager {
 
     public Bitmap getBitmap(String url){
        try{
-           return mImageCache.getBitmap(url);
+           return mImageCache.getBitmap(createKey(url));
        }catch(NullPointerException e){
            throw new IllegalStateException("Disk cache not initialized");
        }

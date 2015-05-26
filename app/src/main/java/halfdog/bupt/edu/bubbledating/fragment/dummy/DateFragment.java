@@ -258,7 +258,7 @@ public class DateFragment extends  Fragment {
             *       load user avatar
             * */
             ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener(mUserAvatar,
-                    R.drawable.avatar_default_m, R.drawable.avatar_default_m);
+                    R.drawable.avatar_default_m, R.drawable.avatar_default_f);
             String ServerImgUrl = SERVER_IMG_CACHE_DIR + File.separator + name + ".png";
             if(Mode.DEBUG){
                 Log.d(TAG, "-->ServerImgUrl of "+mUserName + " is : "+ServerImgUrl);
@@ -379,26 +379,9 @@ public class DateFragment extends  Fragment {
             * */
             ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener(mUserAvatar,
                     R.drawable.avatar_default_m, R.drawable.avatar_default_m);
-//             ImageLoader.ImageListener userAvatorListener = new ImageLoader.ImageListener(){
-//                @Override
-//                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-//                    Bitmap bitmap = response.getBitmap();
-//                    if(bitmap != null){
-//                        mUserAvatar.setImageBitmap(response.getBitmap());
-//                    }else{
-//                        mUserAvatar.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.avatar_default_m));
-//                    }
-//
-//                }
-//
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    mUserAvatar.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.avatar_default_m));
-//                }
-//            };
-            String ServerImgUrl = SERVER_IMG_CACHE_DIR + File.separator + name + ".png";
+            String ServerImgUrl = SERVER_IMG_CACHE_DIR  + name + ".png";
             if(Mode.DEBUG){
-                Log.d(TAG, "-->ServerImgUrl of "+mUserName + " is : "+ServerImgUrl);
+                Log.d(TAG, "-->ServerImgUrl of "+name + " is : "+ServerImgUrl);
             }
             ImageCacheManager.getInstance().getImage(ServerImgUrl,userAvatorListener);
              mUserChat.setOnClickListener(new View.OnClickListener(){
