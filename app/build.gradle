@@ -7,8 +7,8 @@ android {
 
     defaultConfig {
         applicationId "halfdog.bupt.edu.bubbledating"
-//        minSdkVersion 9
-        minSdkVersion 12
+        minSdkVersion 9
+//        minSdkVersion 12
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"

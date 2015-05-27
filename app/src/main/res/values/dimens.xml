@@ -37,6 +37,10 @@
     <dimen name="msg_fragment_no_msg">24sp</dimen>
     <dimen name="msg_fragment_no_msg_margin_top">15dp</dimen>
 
-
+    <!--about activity-->
+    <dimen name="about_activity_app_name">35dp</dimen>
+    <dimen name="about_activity_app_version">20dp</dimen>
+    <dimen name="about_activity_team_info">20dp</dimen>
+    <dimen name="about_activity_vertical_interval">15dp</dimen>
 
 </resources>

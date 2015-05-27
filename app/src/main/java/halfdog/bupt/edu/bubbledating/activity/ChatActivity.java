@@ -57,8 +57,6 @@ public class ChatActivity extends ActionBarActivity {
     }
 
     public void initData() {
-
-
         Intent intent = getIntent();
         chatter = intent.getStringExtra("name");
         mDataArray = DataCache.mUserMsgList.get(chatter);

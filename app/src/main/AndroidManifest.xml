@@ -36,8 +36,9 @@
     <!-- 允许应用读取低级别的系统日志文件 -->
     <uses-permission android:name="android.permission.READ_LOGS" />
 
-    <!--使用相机-->
-    <uses-feature android:name="android.hardware.camera"
+    <!-- 使用相机 -->
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <application
@@ -56,29 +57,25 @@
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:logo="@drawable/icon"
+            android:launchMode="singleTask"
             android:theme="@style/DiyActionBarTheme" >
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/loginAndRegisterTheme" >
+            android:theme="@style/loginAndRegisterTheme"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.RegisterAccount"
             android:label="@string/title_activity_register_account"
-            android:theme="@style/loginAndRegisterTheme" />
+            android:theme="@style/loginAndRegisterTheme"
+            android:launchMode="singleTask"/>
 
         <!-- 百度地图定位服务 -->
         <service
@@ -91,11 +88,18 @@
         <activity
             android:name=".activity.BaiduMapDemoActivity"
             android:label="@string/title_activity_baidu_map_demo"
-            android:theme="@style/DiyActionBarTheme" />
+            android:theme="@style/DiyActionBarTheme"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".activity.ChatActivity"
             android:label="@string/title_activity_chat"
-            android:theme="@style/ChatActivityStyle">
+            android:theme="@style/ChatActivityStyle" >
+        </activity>
+        <activity
+            android:name=".activity.AboutInfoActivity"
+            android:label="@string/title_activity_about_info"
+            android:theme="@style/ChatActivityStyle"
+            android:launchMode="singleTask">
         </activity>
     </application>
 

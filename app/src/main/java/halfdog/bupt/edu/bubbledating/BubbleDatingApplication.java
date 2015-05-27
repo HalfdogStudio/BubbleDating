@@ -3,6 +3,7 @@ package halfdog.bupt.edu.bubbledating;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -62,8 +63,8 @@ public class BubbleDatingApplication extends Application {
         // init RequestManager
         RequestManager.init(getApplicationContext());
         // init ImageCacheManager
-        ImageCacheManager.getInstance().init(getApplicationContext(),this.getPackageCodePath(),mCacheSize,
-                IMAGE_CACHE_COMPRESS_FORMAT,IMAGE_CACHE_QUALITY,CACHE_TYPE);
+        ImageCacheManager.getInstance().init(getApplicationContext(), this.getPackageCodePath(), mCacheSize,
+                IMAGE_CACHE_COMPRESS_FORMAT, IMAGE_CACHE_QUALITY, CACHE_TYPE);
         initBaiduMap();
         initHX();
 
@@ -152,7 +153,28 @@ public class BubbleDatingApplication extends Application {
 
     }
 
-    private String getAppName(int pID) {
+    public static String getApplicationName(Context context){
+        int stringId = context.getApplicationInfo().labelRes;
+        if(Mode.DEBUG){
+            Log.d(TAG,"--> app name:"+context.getString(stringId));
+        }
+        return context.getString(stringId);
+    }
+
+    public static String getAppVersion(Context context){
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(),0);
+            if(Mode.DEBUG){
+                Log.d(TAG,"-->version name:"+packageInfo.versionName);
+            }
+            return "version "+packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public  String getAppName(int pID) {
         String processName = null;
         ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> l = am.getRunningAppProcesses();

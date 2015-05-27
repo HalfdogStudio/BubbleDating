@@ -24,5 +24,8 @@
 
     <!--message fragment-->
     <string name="message_fragment_no_msg">暂时没有消息</string>
+    <string name="title_activity_about_info">关于</string>
+
+    <string name="develop_team_info">powered by Half Dog Studio</string>
 
 </resources>

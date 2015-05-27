@@ -1,6 +1,7 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -102,6 +104,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         setSupportActionBar(mToolbar);
 //        leftDrawerUserName.setText(BubbleDatingApplication.userEntity.getmName());
         leftDrawerList.setAdapter(new LeftDrawerListAdapter(this));
+        leftDrawerList.setOnItemClickListener(leftDrawerItemClickListener);
         //用户签名
 //        leftDrawerUserSignature.setText(BubbleDatingApplication.userEntity.get);
 
@@ -277,6 +280,24 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         super.onPostCreate(savedInstanceState, persistentState);
         drawerToggle.syncState();
     }
+
+    AdapterView.OnItemClickListener leftDrawerItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            switch(position){
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    /* about info activity */
+                    Intent toAboutInfo = new Intent(MainActivity.this,AboutInfoActivity.class);
+                    startActivity(toAboutInfo);
+                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+                    break;
+            }
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
