@@ -288,6 +288,10 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
                 case 0:
                     break;
                 case 1:
+                    /*  feedback  */
+                    Intent toFeedback = new Intent(MainActivity.this,FeedbackActivity.class);
+                    startActivity(toFeedback);
+                    overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
                     break;
                 case 2:
                     /* about info activity */

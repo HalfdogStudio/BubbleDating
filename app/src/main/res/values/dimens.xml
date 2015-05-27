@@ -43,4 +43,12 @@
     <dimen name="about_activity_team_info">20dp</dimen>
     <dimen name="about_activity_vertical_interval">15dp</dimen>
 
+    <!--feedback activity-->
+    <dimen name="feedback_activity_button_interval">80dp</dimen>
+    <dimen name="feedback_activity_edittext_width">0dp</dimen>
+    <dimen name="feedback_activity_edittext_height">200dp</dimen>
+    <dimen name="feedback_activity_edittext_side_margin">10dp</dimen>
+
+
+
 </resources>

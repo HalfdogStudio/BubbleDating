@@ -28,4 +28,13 @@
 
     <string name="develop_team_info">powered by Half Dog Studio</string>
 
+
+    <!--feedback activity-->
+    <string name="feedback_activity_edittext_hint">请写下您宝贵的意见(最多200字)</string>
+    <string name="feedback_activity_button_submit">提交</string>
+    <string name="feedback_activity_button_cancel">取消</string>
+    <string name="title_activity_feedback">意见反馈</string>
+
+    <!--progressbar-->
+    <string name="progress_bar_hint">请稍等</string>
 </resources>

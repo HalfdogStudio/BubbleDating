@@ -18,5 +18,8 @@
     <color name="main_activity_bottom_tab_not_selected">#525252</color>
 
     <!--chat activity-->
+
+    <!--feedback activity-->
+    <color name="feedback_activity_button">#33b5e5</color>
     <!--<color name="chat_activity_bottom_rl"></color>-->
 </resources>
