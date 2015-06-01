@@ -109,8 +109,24 @@
         <activity
             android:name=".activity.PersonInfoActivity"
             android:label="@string/title_activity_person_info"
-            android:theme="@style/ChatActivityStyle">
+            android:theme="@style/ChatActivityStyle" >
         </activity>
+
+        <service
+            android:name=".service.MonitorNetworkStateService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <receiver
+            android:name=".receiver.ConnectionChangeReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

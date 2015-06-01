@@ -45,6 +45,7 @@ import halfdog.bupt.edu.bubbledating.fragment.dummy.SwimDailyFragment;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
 import halfdog.bupt.edu.bubbledating.tool.HXTool.HXNotifier;
 import halfdog.bupt.edu.bubbledating.tool.HXTool.HXSDKHelper;
+import halfdog.bupt.edu.bubbledating.tool.NetworkStatusTool;
 
 
 public class MainActivity extends ActionBarActivity implements EMEventListener,DateFragment.OnDatingFragmentInteractionListener,
@@ -322,6 +323,9 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
     public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onPostCreate(savedInstanceState, persistentState);
         drawerToggle.syncState();
+        if(!NetworkStatusTool.isConnected(MainActivity.this)){
+            Toast.makeText(this, R.string.network_state_not_connected,Toast.LENGTH_LONG).show();
+        }
     }
 
     AdapterView.OnItemClickListener leftDrawerItemClickListener = new AdapterView.OnItemClickListener() {

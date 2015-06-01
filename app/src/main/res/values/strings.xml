@@ -44,4 +44,6 @@
     <string name="hx_login_error">环信登陆失败,请重新登陆</string>
     <string name="hx_login_success">环信登陆成功</string>
     <string name="title_activity_person_info">个人信息</string>
+
+    <string name="network_state_not_connected">网络连接不可用，请稍后重试</string>
 </resources>
