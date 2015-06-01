@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,8 +23,8 @@ public class DataCache {
     public static List<ChatMsgEntity> mContactUser;
     public static boolean mHasHistoryMsg = true;
     static {
-        mContactUser = new ArrayList<ChatMsgEntity>();
-        mUserMsgList = new HashMap<String,List<ChatMsgEntity>>();
+        mContactUser = new ArrayList<>();
+        mUserMsgList = new HashMap<>();
     }
 
     public static void initCacheData(Context context){
@@ -49,7 +48,7 @@ public class DataCache {
         }
         for(int i = 0; i < mContactUser.size(); i ++ ){
             Cursor tmpCursor = db.rawQuery("select * from contact_msg_list where name= ?",new String[]{mContactUser.get(i).getName()});
-            List<ChatMsgEntity> list = new ArrayList<ChatMsgEntity>();
+            List<ChatMsgEntity> list = new ArrayList<>();
             while(tmpCursor.moveToNext()){
                 String name = tmpCursor.getString(1);
                 String date = tmpCursor.getString(2);
@@ -57,7 +56,6 @@ public class DataCache {
                 boolean isReceive = Boolean.parseBoolean(tmpCursor.getString(4));
                 ChatMsgEntity entity = new ChatMsgEntity(name,content,date,isReceive);
                 list.add(entity);
-//                Log.d(TAG,"-->chat msg entity:"+entity.toString());
             }
             if(list.size() == 0){
                 mUserMsgList.put(mContactUser.get(i).getName(),null);
@@ -66,12 +64,9 @@ public class DataCache {
             }
 
         }
-        Log.d(TAG,"-->导入缓存数据成功");
 
     }
     public static void initOfflineCacheData(Context context){
-//        Log.d(TAG,"-->contact_list EXISTS?:"+MySQLiteOpenHelper.isTableExists("contact_list"));
-//        Log.d(TAG,"-->contact_msg_list EXISTS?:"+MySQLiteOpenHelper.isTableExists("contact_msg_list"));
         mHasHistoryMsg = true;
 
         SQLiteDatabase db = MySQLiteOpenHelper.getInstance(context, Offline.OFFLINE_DB).getReadableDatabase();
@@ -88,7 +83,7 @@ public class DataCache {
         }
         for(int i = 0; i < mContactUser.size(); i ++ ){
             Cursor tmpCursor = db.rawQuery("select * from contact_msg_list where name= ?",new String[]{mContactUser.get(i).getName()});
-            List<ChatMsgEntity> list = new ArrayList<ChatMsgEntity>();
+            List<ChatMsgEntity> list = new ArrayList<>();
             while(tmpCursor.moveToNext()){
                 String name = tmpCursor.getString(1);
                 String date = tmpCursor.getString(2);
@@ -96,7 +91,6 @@ public class DataCache {
                 boolean isReceive = Boolean.parseBoolean(tmpCursor.getString(4));
                 ChatMsgEntity entity = new ChatMsgEntity(name,content,date,isReceive);
                 list.add(entity);
-//                Log.d(TAG,"-->chat msg entity:"+entity.toString());
             }
             if(list.size() == 0){
                 mUserMsgList.put(mContactUser.get(i).getName(),null);
@@ -105,6 +99,5 @@ public class DataCache {
             }
 
         }
-        Log.d(TAG, "-->导入离线数据成功");
     }
 }

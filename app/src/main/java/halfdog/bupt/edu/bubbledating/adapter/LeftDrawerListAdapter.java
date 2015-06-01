@@ -50,8 +50,8 @@ public class LeftDrawerListAdapter extends BaseAdapter {
         }
         switch (position){
             case 0:
-                holder.imageView.setImageDrawable(context.getResources().getDrawable(R.mipmap.setting));
-                holder.textView.setText(context.getResources().getText(R.string.setting));
+                holder.imageView.setImageDrawable(context.getResources().getDrawable(R.mipmap.self_info));
+                holder.textView.setText(context.getResources().getText(R.string.self_info));
                 break;
             case 1:
                 holder.imageView.setImageDrawable(context.getResources().getDrawable(R.mipmap.feedback));

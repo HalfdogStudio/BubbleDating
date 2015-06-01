@@ -15,6 +15,9 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.model.LatLng;
 import com.easemob.chat.EMChat;
+import com.easemob.chat.EMChatConfig;
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMChatOptions;
 
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.List;
 import halfdog.bupt.edu.bubbledating.cache.image.ImageCacheManager;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.entity.UserEntity;
+import halfdog.bupt.edu.bubbledating.tool.HXTool.HXSDKHelper;
 import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 
 /**
@@ -47,6 +51,8 @@ public class BubbleDatingApplication extends Application {
     public static int mode = Mode.ONLINE_MODE;
 
     public BDLocationListener listener = new MyLocationListener();
+
+    public static HXSDKHelper hxSDKHelper = null;
 
 
     @Override
@@ -108,6 +114,9 @@ public class BubbleDatingApplication extends Application {
          * 在做代码混淆的时候需要设置成false
          */
         EMChat.getInstance().setDebugMode(true);//在做打包混淆时，要关闭debug模式，如果未被关闭，则会出现程序无法运行问题
+
+        HXSDKHelper.getInstance().onInit(this);
+
     }
 
     public static void beginLocate(){

@@ -73,7 +73,6 @@ public class RegisterAccount extends Activity {
     private RadioButton male;
     private RadioButton female;
     private ImageView userAvatar;
-    private  File mCroppedAvatar;
     private ProgressDialog progressDialog;
 
     private String uName;

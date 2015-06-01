@@ -49,6 +49,13 @@
     <dimen name="feedback_activity_edittext_height">200dp</dimen>
     <dimen name="feedback_activity_edittext_side_margin">10dp</dimen>
 
+    <!--person info activity-->
+    <dimen name="person_info_avator_name_interval">10dp</dimen>
+    <dimen name="person_info_avator_width_height">150dp</dimen>
+    <dimen name="person_info_name_size">35sp</dimen>
+    <dimen name="person_info_email_size">30sp</dimen>
+    <dimen name="person_info_vertical_interval">10sp</dimen>
+
 
 
 </resources>

@@ -147,7 +147,7 @@ public class LoginActivity extends Activity {
 
 
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+//        RequestQueue requestQueue = Volley.newRequestQueue(context);
         CustomRequest loginRequest = new CustomRequest(Request.Method.POST,LOGIN_URL,loginInfo,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {

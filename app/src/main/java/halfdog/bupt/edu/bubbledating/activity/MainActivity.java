@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.PersistableBundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -24,6 +25,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.easemob.EMCallBack;
+import com.easemob.EMEventListener;
+import com.easemob.EMNotifierEvent;
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMMessage;
 
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.adapter.LeftDrawerListAdapter;
@@ -35,10 +43,12 @@ import halfdog.bupt.edu.bubbledating.fragment.dummy.DateFragment;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.MessageFragment;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.SwimDailyFragment;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
+import halfdog.bupt.edu.bubbledating.tool.HXTool.HXNotifier;
+import halfdog.bupt.edu.bubbledating.tool.HXTool.HXSDKHelper;
 
 
-public class MainActivity extends ActionBarActivity implements DateFragment.OnDatingFragmentInteractionListener,
-        SwimDailyFragment.OnSwimDailyFragmentInteractionListener,MessageFragment.OnMessageFragmentInteractionListener {
+public class MainActivity extends ActionBarActivity implements EMEventListener,DateFragment.OnDatingFragmentInteractionListener,
+        MessageFragment.OnMessageFragmentInteractionListener,SwimDailyFragment.OnSwimDailyFragmentInteractionListener{
 
     public static final String TAG = "MainActivity";
 
@@ -68,9 +78,16 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         initTabs();
         initListeners();
         initMeasure();
+
 //        initOfflineData();
 
         initDataCache(this);
+        if(BubbleDatingApplication.mode != Mode.OFFLINE_MODE){
+            initHXLogin();
+        }
+
+
+
 
     }
 
@@ -157,15 +174,15 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         SQLiteDatabase db = instance.getReadableDatabase();
         db.execSQL("insert into contact_list values(null,?,?,?)",new String[]{"joseph","OK","2015-05-02 21:45:00"});
         db.execSQL("insert into contact_list values(null,?,?,?)",new String[]{"loly","不见不散","2015-04-29 8:22:21"});
-        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)",new String[]{"joseph","2015-05-02 21:40:00","Hi,约么？","false"});
-        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)",new String[]{"joseph","2015-05-02 21:41:05","When?","true"});
-        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)",new String[]{"joseph","2015-05-02 21:43:32","今晚9点，游泳馆门口见","false"});
-        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)",new String[]{"joseph","2015-05-02 21:45:47","OK","true"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-05-02 21:40:00", "Hi,约么？", "false"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-05-02 21:41:05", "When?", "true"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-05-02 21:43:32", "今晚9点，游泳馆门口见", "false"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-05-02 21:45:47", "OK", "true"});
 
-        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)",new String[]{"loly","2015-04-29 8:19:47","晚上去游泳么","true"});
-        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)",new String[]{"loly","2015-04-29 8:19:55","今天晚上有个会，改天吧","false"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"loly", "2015-04-29 8:19:47", "晚上去游泳么", "true"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"loly", "2015-04-29 8:19:55", "今天晚上有个会，改天吧", "false"});
         db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"loly", "2015-04-29 8:22:21", "不见不散", "true"});
-        Log.d(TAG,"-->导入离线数据成功");
+        Log.d(TAG, "-->导入离线数据成功");
     }
 
 
@@ -178,6 +195,27 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
             MySQLiteOpenHelper.getInstance(this,BubbleDatingApplication.userEntity.getmName()+".db");
             DataCache.initCacheData(context);
         }
+    }
+
+    public void initHXLogin(){
+        EMChatManager.getInstance().login(BubbleDatingApplication.userEntity.getmName(),
+                BubbleDatingApplication.userEntity.getmPw(), new EMCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        /* Toast.maketext should be called within UI thread. */
+                        Log.d(TAG, "--> LOGIN HX success");
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        Log.e(TAG, "-->login HX failed");
+                    }
+
+                    @Override
+                    public void onProgress(int i, String s) {
+
+                    }
+                });
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -255,23 +293,28 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
 
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // register this event listener when this activity enters the background
+        HXSDKHelper sdkHelper =  HXSDKHelper.getInstance();
+        sdkHelper.pushActivity(this);
+
+        // register the event listener when enter the foreground
+        EMChatManager.getInstance().registerEventListener(this);
+
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
-//        if(MySQLiteOpenHelper.getInstance(MainActivity.this) == null){
-//            if(BubbleDatingApplication.mode == Mode.OFFLINE_MODE){
-//                MySQLiteOpenHelper.getInstance(MainActivity.this,Offline.OFFLINE_DB);
-//            }else{
-//                //用于启动非离线模式的SQLite
-//            }
-//        }
     }
 
     @Override
     protected void onStop() {
+        EMChatManager.getInstance().unregisterEventListener(this);
+        HXSDKHelper sdkHelper =  HXSDKHelper.getInstance();
+        sdkHelper.popActivity(this);
         super.onStop();
-//        if(MySQLiteOpenHelper.getInstance(MainActivity.this) != null){
-//            MySQLiteOpenHelper.getInstance(MainActivity.this).close();
-//        }
 
     }
 
@@ -286,6 +329,9 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             switch(position){
                 case 0:
+                    Intent toPersonInfo = new Intent(MainActivity.this,PersonInfoActivity.class);
+                    startActivity(toPersonInfo);
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                     break;
                 case 1:
                     /*  feedback  */
@@ -318,9 +364,9 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         if(drawerToggle.onOptionsItemSelected(item)){
             return true;
@@ -345,7 +391,42 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         super.onBackPressed();
     }
 
-    // MainActivity interaction with Fragments
+    @Override
+    public void onEvent(EMNotifierEvent emNotifierEvent) {
+        {
+            Log.d(TAG,"-->EMNotifierEvent:"+emNotifierEvent.getData().toString());
+            Log.d(TAG,"-->EMNotifierEvent:"+emNotifierEvent.getEvent().toString());
+
+            switch (emNotifierEvent.getEvent()) {
+                case EventNewMessage: //普通消息
+                {
+                    EMMessage message = (EMMessage) emNotifierEvent.getData();
+                    Log.d(TAG,"-->normal message:"+message.toString());
+                    //提示新消息
+                    HXSDKHelper instance = HXSDKHelper.getInstance();
+                    Log.d(TAG, "-->instance == ?:"+(instance == null));
+                    HXNotifier notifiier =  instance.getNotifier();
+                    Log.d(TAG, "-->notifiier == ?:"+(notifiier == null));
+                    notifiier.onNewMsg(message);
+
+//                    refreshUI();
+                    break;
+                }
+
+                case EventOfflineMessage:
+                {
+                    Log.d(TAG,"-->get offline message");
+//                    refreshUI();
+                    break;
+                }
+
+                default:
+                    Log.d(TAG,"-->get default message");
+                    break;
+            }
+        }
+    }
+
     @Override
     public void onDatingFragmentInteraction(Uri uri) {
 

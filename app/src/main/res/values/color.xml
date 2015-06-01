@@ -22,4 +22,7 @@
     <!--feedback activity-->
     <color name="feedback_activity_button">#33b5e5</color>
     <!--<color name="chat_activity_bottom_rl"></color>-->
+
+    <!--person info activity-->
+    <color name="person_info_activity_text_color">#A6A6A6</color>
 </resources>

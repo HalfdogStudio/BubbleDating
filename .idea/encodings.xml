@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/ChatActivity.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/FeedbackActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/DataCache.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/HXTool/CallReceiver.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/HXTool/HXNotifier.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/HXTool/HXPreferenceUtils.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/HXTool/HXSDKHelper.java" charset="GBK" />
+    <file url="PROJECT" charset="GBK" />
   </component>
 </project>

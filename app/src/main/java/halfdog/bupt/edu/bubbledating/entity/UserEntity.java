@@ -14,6 +14,7 @@ public class UserEntity {
 
 
 
+
     public UserEntity(int mId, String mName, String mPw, String mEmail,
                       String mGender, String mImage, boolean mOnline) {
         super();

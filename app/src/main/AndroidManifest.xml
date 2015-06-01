@@ -55,7 +55,7 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/app_name"
+            android:label="@string/main_activity_name"
             android:launchMode="singleTask"
             android:logo="@drawable/icon"
             android:theme="@style/DiyActionBarTheme" >
@@ -104,6 +104,11 @@
         <activity
             android:name=".activity.FeedbackActivity"
             android:label="@string/title_activity_feedback"
+            android:theme="@style/ChatActivityStyle" >
+        </activity>
+        <activity
+            android:name=".activity.PersonInfoActivity"
+            android:label="@string/title_activity_person_info"
             android:theme="@style/ChatActivityStyle">
         </activity>
     </application>

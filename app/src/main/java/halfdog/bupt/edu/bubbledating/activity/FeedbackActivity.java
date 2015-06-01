@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -149,4 +150,14 @@ public class FeedbackActivity extends ActionBarActivity {
             Toast.makeText(FeedbackActivity.this,"发生未知错误，请稍后重试",Toast.LENGTH_LONG).show();
         }
     };
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK){
+            this.finish();
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }
