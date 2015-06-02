@@ -15,6 +15,7 @@ public class Offline {
         offline_people_around = new JSONArray();
         JSONObject candi1 = new JSONObject();
         JSONObject candi2 = new JSONObject();
+        JSONObject candi3 = new JSONObject();
         try {
             candi1.put("u_id",34);
             candi1.put("u_name","loly");
@@ -31,8 +32,17 @@ public class Offline {
             candi2.put("u_invi","今晚九点，北邮游泳馆，想找个MM一起游泳~");
             candi2.put("u_loc_lat","39.96875");
             candi2.put("u_loc_long","116.364905");
+
+            candi3.put("u_id",35);
+            candi3.put("u_name","andy");
+            candi3.put("u_posttime","2015-06-1 20:09:21.0");
+            candi3.put("u_gender","m");
+            candi3.put("u_invi","6.3晚8:30，北邮游泳馆，自由泳求带~");
+            candi3.put("u_loc_lat","39.96175");
+            candi3.put("u_loc_long","116.365905");
             offline_people_around.put(candi1);
             offline_people_around.put(candi2);
+            offline_people_around.put(candi3);
         } catch (JSONException e) {
             e.printStackTrace();
         }

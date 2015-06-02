@@ -176,15 +176,14 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
         MySQLiteOpenHelper instance = MySQLiteOpenHelper.getInstance(this, Offline.OFFLINE_DB);
         SQLiteDatabase db = instance.getReadableDatabase();
         db.execSQL("insert into contact_list values(null,?,?,?)",new String[]{"joseph","OK","2015-05-02 21:45:00"});
-        db.execSQL("insert into contact_list values(null,?,?,?)",new String[]{"loly","不见不散","2015-04-29 8:22:21"});
-        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-05-02 21:40:00", "Hi,约么？", "false"});
-        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-05-02 21:41:05", "When?", "true"});
-        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-05-02 21:43:32", "今晚9点，游泳馆门口见", "false"});
-        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-05-02 21:45:47", "OK", "true"});
-
-        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"loly", "2015-04-29 8:19:47", "晚上去游泳么", "true"});
-        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"loly", "2015-04-29 8:19:55", "今天晚上有个会，改天吧", "false"});
-        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"loly", "2015-04-29 8:22:21", "不见不散", "true"});
+        db.execSQL("insert into contact_list values(null,?,?,?)",new String[]{"loly","不见不散","2015-05-29 8:22:21"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-06-01 21:40:00", "Hi,约么？", "false"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-06-01 21:41:05", "When?", "true"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-06-01 21:43:32", "今晚9点，游泳馆门口见", "false"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-06-01 21:45:47", "OK", "true"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"loly", "2015-05-29 8:19:47", "晚上去游泳么", "true"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"loly", "2015-05-29 8:19:55", "今天晚上有个会，改天吧", "false"});
+        db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"loly", "2015-05-29 8:22:21", "不见不散", "true"});
         Log.d(TAG, "-->导入离线数据成功");
     }
 
@@ -192,6 +191,7 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
     public void initDataCache(Context context){
         /* init MySQLiteOpenHelper singleton and cache data */
         if(BubbleDatingApplication.mode == Mode.OFFLINE_MODE){
+//            initOfflineData();
             MySQLiteOpenHelper.getInstance(this);
             DataCache.initOfflineCacheData(context);
         }else{
@@ -222,6 +222,7 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
     }
 
     public void initService(Context context){
+        /* start network state monitoring service */
         Intent startMonitorNetworkState = new Intent(context, MonitorNetworkStateService.class);
         context.startService(startMonitorNetworkState);
     }
@@ -400,6 +401,14 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
             return ;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        /*关闭服务*/
+        Intent shutNetworkStateMonService = new Intent(this,MonitorNetworkStateService.class);
+        stopService(shutNetworkStateMonService);
     }
 
     @Override

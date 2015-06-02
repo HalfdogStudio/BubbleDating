@@ -44,7 +44,7 @@
     <application
         android:name=".BubbleDatingApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_new_launcher"
         android:label="@string/app_name" >
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -57,7 +57,6 @@
             android:name=".activity.MainActivity"
             android:label="@string/main_activity_name"
             android:launchMode="singleTask"
-            android:logo="@drawable/icon"
             android:theme="@style/DiyActionBarTheme" >
         </activity>
         <activity
