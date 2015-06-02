@@ -290,18 +290,26 @@ public class DateFragment extends  Fragment {
             Log.d(TAG,"--> get reponse with json array from server ");
             for(int i = 0; i < jsonArray.length(); i ++ ){
                 try {
+
                     JSONObject item = jsonArray.getJSONObject(i);
+                    Log.d(TAG,"-->request invitation:"+i+":"+item.toString());
                     int uId = item.getInt("u_id");
                     String uName = item.getString("u_name");
                     String uInviName = item.getString("u_invi");
                     String uGender = item.getString("u_gender");
                     double uLat = item.getDouble("u_loc_lat");
                     double uLong = item.getDouble("u_loc_long");
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date uDate = df.parse(item.getString("u_posttime"));
-                    Date now = MyDate.getCurrentDate();
-                    //上传时间距离现在的差 eg: XXX天前， XXX 小时前
-                    String uDateDiff = MyDate.diffDate(now,uDate);
+//                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String uDateDiff = null;
+                   try{
+                       Date uDate = new Date(item.getLong("u_posttime"));
+                       Date now = MyDate.getCurrentDate();
+                       //上传时间距离现在的差 eg: XXX天前， XXX 小时前
+                       uDateDiff = MyDate.diffDate(now,uDate);
+                     }catch(Exception e){
+                       Log.d(TAG,"-->exception occurred while parsing posttime");
+                   }
+
                     Log.d(TAG,"-->uId:"+uId+"  uName:"+uName+" uInviName:"+uInviName+" uGender:"+uGender+
                     " uLat:"+uLat+" uLong:"+uLong+" uDateDiff:"+uDateDiff);
                     // add loc icon

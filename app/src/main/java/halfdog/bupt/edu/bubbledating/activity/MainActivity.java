@@ -42,6 +42,7 @@ import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.DateFragment;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.MessageFragment;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.SwimDailyFragment;
+import halfdog.bupt.edu.bubbledating.service.MonitorNetworkStateService;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
 import halfdog.bupt.edu.bubbledating.tool.HXTool.HXNotifier;
 import halfdog.bupt.edu.bubbledating.tool.HXTool.HXSDKHelper;
@@ -83,6 +84,7 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
 //        initOfflineData();
 
         initDataCache(this);
+        initService(this);
         if(BubbleDatingApplication.mode != Mode.OFFLINE_MODE){
             initHXLogin();
         }
@@ -217,6 +219,11 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
 
                     }
                 });
+    }
+
+    public void initService(Context context){
+        Intent startMonitorNetworkState = new Intent(context, MonitorNetworkStateService.class);
+        context.startService(startMonitorNetworkState);
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
