@@ -68,6 +68,9 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
     private TextView leftDrawerUserName;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar mToolbar;
+    private Menu mMenu;
+
+    private final int MENU_ADD_ID = R.id.action_add;
 
 
     @Override
@@ -191,8 +194,7 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
     public void initDataCache(Context context){
         /* init MySQLiteOpenHelper singleton and cache data */
         if(BubbleDatingApplication.mode == Mode.OFFLINE_MODE){
-//            initOfflineData();
-            MySQLiteOpenHelper.getInstance(this);
+            MySQLiteOpenHelper.getInstance(this,Offline.OFFLINE_DB);
             DataCache.initOfflineCacheData(context);
         }else{
             MySQLiteOpenHelper.getInstance(this,BubbleDatingApplication.userEntity.getmName()+".db");
@@ -257,6 +259,7 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
         swimDailyImage.setImageResource(R.mipmap.daily_not_chozen);
         swimDailyText.setTextColor(getResources().getColor(R.color.main_activity_bottom_tab_not_selected));
         mToolbar.setTitle("约游");
+        showMenuOption(MENU_ADD_ID);
     }
 
     public void clickMessageContainer(){
@@ -271,6 +274,7 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
         swimDailyImage.setImageResource(R.mipmap.daily_not_chozen);
         swimDailyText.setTextColor(getResources().getColor(R.color.main_activity_bottom_tab_not_selected));
         mToolbar.setTitle("消息");
+        hideMenuOption(MENU_ADD_ID);
     }
 
     public void clickSwimDailyContainer(){
@@ -285,6 +289,7 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
         swimDailyImage.setImageResource(R.mipmap.daily_chozen);
         swimDailyText.setTextColor(getResources().getColor(R.color.main_activity_bottom_tab_selected));
         mToolbar.setTitle("游泳日报");
+        hideMenuOption(MENU_ADD_ID);
     }
 
     private void addOrShowFragment( Fragment fragment){
@@ -316,6 +321,9 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
     @Override
     protected void onStart() {
         super.onStart();
+        if(!NetworkStatusTool.isConnected(MainActivity.this)){
+            Toast.makeText(this, R.string.network_state_not_connected,Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -365,6 +373,7 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.mMenu = menu;
         return true;
     }
 
@@ -375,10 +384,13 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        switch(id){
+            case R.id.action_add:
+                Intent toInvitationActivity = new Intent(MainActivity.this,InvitationActivity.class);
+                startActivity(toInvitationActivity);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+        }
 
         if(drawerToggle.onOptionsItemSelected(item)){
             return true;
@@ -460,5 +472,15 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
     @Override
     public void onSwimDailyFragmentInteraction(Uri uri) {
 
+    }
+
+    private void hideMenuOption(int id){
+        MenuItem item = mMenu.findItem(id);
+        item.setVisible(false);
+    }
+
+    private void showMenuOption(int id){
+        MenuItem item = mMenu.findItem(id);
+        item.setVisible(true);
     }
 }

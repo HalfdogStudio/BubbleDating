@@ -148,7 +148,7 @@ public class DateFragment extends  Fragment {
             for(int i = 0; i < Offline.offline_people_around.length(); i ++){
                 try {
                     item = (JSONObject)Offline.offline_people_around.get(i);
-                    int uId = item.getInt("u_id");
+//                    int uId = item.getInt("u_id");
                     String uName = item.getString("u_name");
                     String uInviName = item.getString("u_invi");
                     String uGender = item.getString("u_gender");
@@ -160,7 +160,7 @@ public class DateFragment extends  Fragment {
                     //上传时间距离现在的差 eg: XXX天前， XXX 小时前
                     String dateDiff = MyDate.diffDate(now,uDate);
 
-                    Log.d(TAG,"-->uId:"+uId+"  uName:"+uName+" uInviName:"+uInviName+" uGender:"+uGender+
+                    Log.d(TAG,"-->uName:"+uName+" uInviName:"+uInviName+" uGender:"+uGender+
                             " uLat:"+uLat+" uLong:"+uLong+" uDate:"+uDate.toString());
                     Log.d(TAG,"-->uGender:"+uGender);
                     // add loc icon
@@ -170,12 +170,11 @@ public class DateFragment extends  Fragment {
                     Bitmap photoOfHead = ImageMerger.addTextOnBitmap(uName,uGender,getActivity());
                     BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(photoOfHead);
                     Bundle extraInfo = new Bundle();
-                    extraInfo.putInt("uId",uId);
                     extraInfo.putString("uName", uName);
                     extraInfo.putString("uGender",uGender);
                     extraInfo.putString("uInvi",uInviName);
                     extraInfo.putString("uDiffDate", dateDiff);
-                    OverlayOptions options = new MarkerOptions().title(""+uId).position(new LatLng(uLat,uLong)).icon(bitmap).extraInfo(extraInfo);
+                    OverlayOptions options = new MarkerOptions().title(""+uName).position(new LatLng(uLat,uLong)).icon(bitmap).extraInfo(extraInfo);
                     mMap.addOverlay(options);
                     mMapManager.addToMap();
                 } catch (Exception e) {
@@ -293,7 +292,7 @@ public class DateFragment extends  Fragment {
 
                     JSONObject item = jsonArray.getJSONObject(i);
                     Log.d(TAG,"-->request invitation:"+i+":"+item.toString());
-                    int uId = item.getInt("u_id");
+//                    int uId = item.getInt("u_id");
                     String uName = item.getString("u_name");
                     String uInviName = item.getString("u_invi");
                     String uGender = item.getString("u_gender");
@@ -310,7 +309,7 @@ public class DateFragment extends  Fragment {
                        Log.d(TAG,"-->exception occurred while parsing posttime");
                    }
 
-                    Log.d(TAG,"-->uId:"+uId+"  uName:"+uName+" uInviName:"+uInviName+" uGender:"+uGender+
+                    Log.d(TAG,"-->uName:"+uName+" uInviName:"+uInviName+" uGender:"+uGender+
                     " uLat:"+uLat+" uLong:"+uLong+" uDateDiff:"+uDateDiff);
                     // add loc icon
                     if(uLat == 0 && uLong == 0){
@@ -320,12 +319,11 @@ public class DateFragment extends  Fragment {
                     Bitmap photoOfHead = ImageMerger.addTextOnBitmap(uName,uGender,getActivity());
                     BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(photoOfHead);
                     Bundle extraInfo = new Bundle();
-                    extraInfo.putInt("uId",uId);
                     extraInfo.putString("uName", uName);
                     extraInfo.putString("uGender",uGender);
                     extraInfo.putString("uInvi",uInviName);
                     extraInfo.putString("uDiffDate", uDateDiff );
-                    OverlayOptions options = new MarkerOptions().title(""+uId).position(new LatLng(uLat,uLong)).icon(bitmap).extraInfo(extraInfo).visible(true);
+                    OverlayOptions options = new MarkerOptions().title(""+uName).position(new LatLng(uLat,uLong)).icon(bitmap).extraInfo(extraInfo).visible(true);
                     mMap.addOverlay(options);
                     mMapManager.addToMap();
 
