@@ -84,7 +84,7 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
         initListeners();
         initMeasure();
 
-        initOfflineData();
+//        initOfflineData();
 
         initDataCache(this);
         initService(this);

@@ -92,12 +92,12 @@
         <activity
             android:name=".activity.ChatActivity"
             android:label="@string/title_activity_chat"
-            android:theme="@style/ChatActivityStyle" >
+            android:theme="@style/ChatActivityStyle"
+            android:launchMode="singleTop">
         </activity>
         <activity
             android:name=".activity.AboutInfoActivity"
             android:label="@string/title_activity_about_info"
-            android:launchMode="singleTask"
             android:theme="@style/ChatActivityStyle" >
         </activity>
         <activity
@@ -130,7 +130,8 @@
         <activity
             android:name=".activity.InvitationActivity"
             android:label="@string/title_activity_invitation"
-            android:theme="@style/ChatActivityStyle">
+            android:theme="@style/ChatActivityStyle"
+            android:launchMode="singleTop">
         </activity>
     </application>
 
