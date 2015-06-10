@@ -27,8 +27,8 @@ import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
 public class ChatMsgAdapter extends BaseAdapter {
     private final String TAG = "ChatMsgAdapter";
     private static Context context;
-    private static final int IM_SEND = 10;
-    private static final int IM_RECEIVE = 11;
+    private static final int IM_SEND = 0;
+    private static final int IM_RECEIVE = 1;
 
     private static final int IM_TYPE_COUNT = 2;
 
@@ -57,21 +57,10 @@ public class ChatMsgAdapter extends BaseAdapter {
         return position;
     }
 
-    public int getMsgType(int postion) {
-        ChatMsgEntity entity = data.get(postion);
-        if (entity.isReceive()) {
-            return IM_RECEIVE;
-        } else {
-            return IM_SEND;
-        }
-    }
 
     public void refreshData( List<ChatMsgEntity> data){
         this.data = data;
         notifyDataSetChanged();
-//        for(int i = 0; i < data.size(); i++ ){
-//            Log.d(TAG,"-->data["+i+"].isReceive:"+data.get(i).isReceive());
-//        }
 
     }
 
@@ -87,25 +76,22 @@ public class ChatMsgAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ChatMsgEntity entity = data.get(position);
-        boolean receive = entity.isReceive();
+        int type = getItemViewType(position);
         ViewHolder holder = null;
         String serverImgPath = Configuration.SERVER_IMG_CACHE_DIR  + entity.getName()+".png";
         if(Mode.DEBUG){
             Log.d(TAG,"-->chat msg adapter of "+entity.getName()+":"+serverImgPath);
         }
         // convertView 为空， 或者 convertView 没有ID， 或者 convertView 的 id 与 所需类型不同
-        if ( convertView == null || convertView.getId() == View.NO_ID || convertView.getId() !=
-                (receive?R.id.chat_msg_text_right:R.id.chat_msg_text_left)){
+        if ( convertView == null ){
             Log.d(TAG,"-->"+position+" convertView is null;");
             holder = new ViewHolder();
-            if (!receive) {
+            if (type == IM_SEND) {
                 // send msg
                 convertView = inflater.inflate(R.layout.chat_msg_text_left, null);
-                convertView.setId(R.id.chat_msg_text_left);
             } else {
                 // receive msg
                 convertView = inflater.inflate(R.layout.chat_msg_text_right, null);
-                convertView.setId(R.id.chat_msg_text_right);
             }
             holder.mUserHead = (ImageView) convertView.findViewById(R.id.chat_msg_text_head);
             holder.mPostTime = (TextView) convertView.findViewById(R.id.chat_msg_text_post_time);
@@ -124,13 +110,29 @@ public class ChatMsgAdapter extends BaseAdapter {
         holder.mPostTime.setText(entity.getDate());
         holder.mContent.setText(entity.getContent());
 //        holder.mUserName.setText(entity.getName());
-        if (!receive){
+        if (type == IM_SEND){
             holder.mUserName.setText(BubbleDatingApplication.userEntity.getmName());
         }else{
             holder.mUserName.setText(entity.getName());
         }
 
         return convertView;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        ChatMsgEntity entity = data.get(position);
+        boolean isReceive = entity.isReceive();
+        if(isReceive){
+            return IM_RECEIVE;
+        }else{
+            return IM_SEND;
+        }
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return IM_TYPE_COUNT ;
     }
 
     private static class ViewHolder {

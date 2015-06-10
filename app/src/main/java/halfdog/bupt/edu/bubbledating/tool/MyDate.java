@@ -10,6 +10,8 @@ import java.util.Date;
  * Created by andy on 2015/5/4.
  */
 public class MyDate {
+    private static final String TAG = "MyDate";
+
     public static final long MINUTE = 1000*60;
     public static final long HOUR = MINUTE*60;
     public static final long DAY = HOUR*24;
@@ -37,7 +39,12 @@ public class MyDate {
     public static Date getCurrentDate(){
         return new Date();
     }
+
     public static String diffDate(Date d1, Date d2){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Log.d(TAG,"-->d1:"+dateFormat.format(d1)+",d2:"+dateFormat.format(d2));
+        Log.d(TAG,"-->d1:"+d1.getTime()+",d2:"+d2.getTime()+",(d1-d2):"+(d1.getTime()-d2.getTime()+
+                ",(d1-d2)/day:"+(d1.getTime()-d2.getTime())/DAY));
         // date 1 >= date 2
         StringBuilder ans = new StringBuilder();
         long t1 =d1.getTime();

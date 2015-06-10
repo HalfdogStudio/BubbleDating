@@ -84,7 +84,7 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
         initListeners();
         initMeasure();
 
-//        initOfflineData();
+        initOfflineData();
 
         initDataCache(this);
         initService(this);
@@ -178,8 +178,8 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
     public void initOfflineData(){
         MySQLiteOpenHelper instance = MySQLiteOpenHelper.getInstance(this, Offline.OFFLINE_DB);
         SQLiteDatabase db = instance.getReadableDatabase();
-        db.execSQL("insert into contact_list values(null,?,?,?)",new String[]{"joseph","OK","2015-05-02 21:45:00"});
-        db.execSQL("insert into contact_list values(null,?,?,?)",new String[]{"loly","不见不散","2015-05-29 8:22:21"});
+        db.execSQL("insert into contact_list values(null,?,?,?)",new String[]{"joseph","OK","2015-06-01 21:40:00"});
+        db.execSQL("insert into contact_list values(null,?,?,?)",new String[]{"loly","不见不散","2015-05-29 8:19:47"});
         db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-06-01 21:40:00", "Hi,约么？", "false"});
         db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-06-01 21:41:05", "When?", "true"});
         db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-06-01 21:43:32", "今晚9点，游泳馆门口见", "false"});
