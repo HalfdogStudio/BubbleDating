@@ -436,10 +436,11 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
                     Log.d(TAG,"-->normal message:"+message.toString());
                     //提示新消息
                     HXSDKHelper instance = HXSDKHelper.getInstance();
-                    Log.d(TAG, "-->instance == ?:"+(instance == null));
+                    Log.d(TAG, "-->instance == null?:"+(instance == null));
                     HXNotifier notifiier =  instance.getNotifier();
-                    Log.d(TAG, "-->notifiier == ?:"+(notifiier == null));
-                    notifiier.onNewMsg(message);
+                    Log.d(TAG, "-->notifiier == null?:"+(notifiier == null));
+                    Log.d(TAG,"-->notifier:"+notifiier.getClass().getName());
+                    notifiier.onNewMsg(message,this);
 
 //                    refreshUI();
                     break;

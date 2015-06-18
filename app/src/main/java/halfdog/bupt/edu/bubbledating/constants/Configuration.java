@@ -11,4 +11,8 @@ public class Configuration {
     public static final String SERVER_IMG_CACHE_DIR = Configuration.SERVER_IP + File.separator + Configuration.IMG_CACHE_PATH;
     public static final String FEED_BACK_REQUEST = SERVER_IP+File.separator+"BubbleDatingServer/HandleFeedback";
     public static final String SUBMIT_NEW_INVITATION = "BubbleDatingServer/HandleNewInvitation";
+
+    public static final int REQUEST_TIMEOUT_MS = 3000;
+    public static final int MAX_RETRY_TIMES = 1;
+    public static final int BACK_OFF_MULTI = 1;
 }

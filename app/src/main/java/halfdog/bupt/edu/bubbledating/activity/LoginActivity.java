@@ -1,7 +1,6 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +12,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.gc.materialdesign.views.ButtonRectangle;
 
 import org.json.JSONException;
@@ -124,7 +123,58 @@ public class LoginActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void  login(final Context context){
+
+    Response.Listener<JSONObject> reponseListener = new Response.Listener<JSONObject>() {
+        @Override
+        public void onResponse(JSONObject response) {
+            {
+                Log.d(TAG, "-->log in response:" + response.toString());
+                try {
+                    int status = response.getInt(ResponseState.RESPONSE_STATUS_KEY);
+                    switch(status){
+                        case ResponseState.OK:
+                            Toast.makeText(context,"登陆成功",Toast.LENGTH_SHORT).show();
+                            JSONObject res = (JSONObject)response.get("user_info");
+                            Intent toMainAcvitiy = new Intent(context,MainActivity.class);
+                            BubbleDatingApplication.userEntity = new UserEntity(res.getInt(UserInfoKeys.U_ID),
+                                    res.getString(UserInfoKeys.U_NAME),res.getString(UserInfoKeys.U_PASSWORD),
+                                    res.getString(UserInfoKeys.U_EMAIL),res.getString(UserInfoKeys.U_GENDER),null,
+                                    res.getBoolean(UserInfoKeys.U_ONLINE));
+                            progressDialog.dismiss();
+                            context.startActivity(toMainAcvitiy);
+                            ((Activity)context).overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                            ((Activity) context).finish();
+                            break;
+                        case ResponseState.UNKOWN_USERNAME:
+                            progressDialog.dismiss();
+                            Toast.makeText(context,"用户名错误",Toast.LENGTH_SHORT).show();
+                            break;
+                        case ResponseState.USERNAME_PASSWORD_UNCOMPATIBLE:
+                            progressDialog.dismiss();
+                            Toast.makeText(context,"密码与用户名不匹配",Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            progressDialog.dismiss();
+                            Toast.makeText(context,"未知的错误",Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+
+    Response.ErrorListener errorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError volleyError) {
+            progressDialog.dismiss();
+            Toast.makeText(LoginActivity.this, R.string.volley_request_timeout_error, Toast.LENGTH_LONG).show();
+        }
+    };
+
+
+    public  void  login(final Context context){
         final String username = loginName.getText().toString();
         String pw = loginPw.getText().toString();
         if(TextUtils.isEmpty(username)){
@@ -141,111 +191,28 @@ public class LoginActivity extends Activity {
         loginInfo.put("username",username);
         loginInfo.put("password",pw);
         loginInfo.put("lat",String.valueOf(BubbleDatingApplication.userLatLng.latitude));
-        loginInfo.put("lon",String.valueOf(BubbleDatingApplication.userLatLng.longitude));
-        Log.d(TAG,"-->USERNAME:"+username);
+        loginInfo.put("lon", String.valueOf(BubbleDatingApplication.userLatLng.longitude));
+        Log.d(TAG, "-->USERNAME:" + username);
         Log.d(TAG,"-->pw:"+pw);
 
 
-
 //        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        CustomRequest loginRequest = new CustomRequest(Request.Method.POST,LOGIN_URL,loginInfo,new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject jsonObject) {
-                Log.d(TAG,"-->log in response:"+jsonObject.toString());
-                try {
-                    int status = jsonObject.getInt(ResponseState.RESPONSE_STATUS_KEY);
-                    switch(status){
-                        case ResponseState.OK:
-                            Toast.makeText(context,"登陆成功",Toast.LENGTH_SHORT).show();
-                            JSONObject res = (JSONObject)jsonObject.get("user_info");
-                            Intent toMainAcvitiy = new Intent(context,MainActivity.class);
-                            BubbleDatingApplication.userEntity = new UserEntity(res.getInt(UserInfoKeys.U_ID),
-                                    res.getString(UserInfoKeys.U_NAME),res.getString(UserInfoKeys.U_PASSWORD),
-                                    res.getString(UserInfoKeys.U_EMAIL),res.getString(UserInfoKeys.U_GENDER),null,
-                                    res.getBoolean(UserInfoKeys.U_ONLINE));
-                            progressDialog.dismiss();
-                            context.startActivity(toMainAcvitiy);
-                            ((Activity)context).overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-                            ((Activity) context).finish();
-                            break;
-                        case ResponseState.UNKOWN_USERNAME:
-                            progressDialog.dismiss();
-                            Toast.makeText(context,"用户名错误",Toast.LENGTH_SHORT).show();
-                            break;
-                        case ResponseState.USERNAME_PASSWORD_UNCOMPATIBLE:
-                            progressDialog.dismiss();
-                            Toast.makeText(context,"密码与用户名不匹配",Toast.LENGTH_SHORT).show();
-                            break;
-                        default:
-                            progressDialog.dismiss();
-                            Toast.makeText(context,"未知的错误",Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        },new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-
-            }
-        });
+        CustomRequest loginRequest = new CustomRequest(Request.Method.POST,LOGIN_URL,loginInfo,reponseListener, errorListener);
+        RetryPolicy retryPolicy = new DefaultRetryPolicy(Configuration.REQUEST_TIMEOUT_MS,
+                Configuration.MAX_RETRY_TIMES,Configuration.BACK_OFF_MULTI);
+        loginRequest.setRetryPolicy(retryPolicy);
         RequestManager.getInstance(context).add(loginRequest);
     }
 
-    public static void  login(final Context context,String username,String pw){
-        Map<String,String> loginInfo = new HashMap<>();
-        loginInfo.put("username",username);
-        loginInfo.put("password",pw);
-        Log.d(TAG,"-->USERNAME:"+username);
-        Log.d(TAG,"-->pw:"+pw);
-
-//        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        CustomRequest loginRequest = new CustomRequest(Request.Method.POST,LOGIN_URL,loginInfo,new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject jsonObject) {
-                Log.d(TAG,"-->log in response:"+jsonObject.toString());
-                try {
-                    int status = jsonObject.getInt(ResponseState.RESPONSE_STATUS_KEY);
-                    switch(status){
-                        case ResponseState.OK:
-                            Toast.makeText(context,"登陆成功",Toast.LENGTH_SHORT).show();
-                            JSONObject res = (JSONObject)jsonObject.get("user_info");
-                            Intent toMainAcvitiy = new Intent(context,MainActivity.class);
-
-                            BubbleDatingApplication.userEntity = new UserEntity(res.getInt(UserInfoKeys.U_ID),
-                                    res.getString(UserInfoKeys.U_NAME),res.getString(UserInfoKeys.U_PASSWORD),
-                                    res.getString(UserInfoKeys.U_EMAIL),res.getString(UserInfoKeys.U_GENDER),null,
-                                    res.getBoolean(UserInfoKeys.U_ONLINE));
-//                            toMainAcvitiy.putExtras(bundle);
-                            progressDialog.dismiss();
-                            context.startActivity(toMainAcvitiy);
-                            ((Activity)context).overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-                            ((Activity) context).finish();
-                            break;
-                        case ResponseState.UNKOWN_USERNAME:
-                            Toast.makeText(context,"用户名错误",Toast.LENGTH_SHORT).show();
-                            break;
-                        case ResponseState.USERNAME_PASSWORD_UNCOMPATIBLE:
-                            Toast.makeText(context,"密码与用户名不匹配",Toast.LENGTH_SHORT).show();
-                            break;
-                        case ResponseState.USER_NOT_ON_HX:
-                            Toast.makeText(context,"无法登陆或注册IM，请联系管理员",Toast.LENGTH_SHORT).show();
-                        default:
-                            Toast.makeText(context,"未知的错误",Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        },new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-
-            }
-        });
-        RequestManager.getInstance(context).add(loginRequest);
-    }
+//    public static void  login(final Context context,String username,String pw){
+//        Map<String,String> loginInfo = new HashMap<>();
+//        loginInfo.put("username",username);
+//        loginInfo.put("password",pw);
+//        Log.d(TAG,"-->USERNAME:"+username);
+//        Log.d(TAG,"-->pw:"+pw);
+//
+////        RequestQueue requestQueue = Volley.newRequestQueue(context);
+//        CustomRequest loginRequest = new CustomRequest(Request.Method.POST,LOGIN_URL,loginInfo,response);
+//        RequestManager.getInstance(context).add(loginRequest);
+//    }
 }

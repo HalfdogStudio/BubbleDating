@@ -54,8 +54,12 @@
     <string name="activity_invitation_edittext_hint">请输入邀约内容</string>
     <string name="action_submit">提交</string>
     <string name="activity_invitation_empty_content_hint">请输入要发布的内容！</string>
-    <string name="activity_invitation_error_response">发生了未知的错误，请稍后重试</string>
+    <string name="volley_request_timeout_error">网络连接超时，请稍后重试</string>
     <string name="activity_invitation_response_ok">提交成功</string>
     <string name="activity_invitation_response_not_ok">提交失败，请稍后重试</string>
+
+    <!--notification-->
+    <string name="notification_from_hint">来自</string>
+    <string name="notification_end">的消息</string>
 
 </resources>

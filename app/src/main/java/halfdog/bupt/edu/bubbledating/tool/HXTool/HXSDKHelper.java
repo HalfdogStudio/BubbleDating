@@ -57,7 +57,7 @@ public  class HXSDKHelper {
     /**
      * the global HXSDKHelper instance
      */
-    private static HXSDKHelper instance = null;
+    private static HXSDKHelper instance =  new HXSDKHelper();;
 
     /**
      * the notifier
@@ -68,9 +68,6 @@ public  class HXSDKHelper {
     }
 
     public static HXSDKHelper getInstance(){
-        if(instance == null){
-            instance = new HXSDKHelper();
-        }
         return instance;
     }
 
@@ -222,7 +219,7 @@ public  class HXSDKHelper {
 //        // 设置从db初始化加载时, 每个conversation需要加载msg的个数
 //        options.setNumberOfMessagesLoaded(1);
 
-        notifier = createNotifier();
+        notifier = new HXNotifier();
         notifier.init(appContext);
 
         notifier.setNotificationInfoProvider(getNotificationListener());

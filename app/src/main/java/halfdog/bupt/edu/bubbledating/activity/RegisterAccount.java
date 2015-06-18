@@ -6,20 +6,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.AndroidCharacter;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,11 +26,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.widgets.ProgressDialog;
 
@@ -42,12 +39,8 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.R;
@@ -126,6 +119,60 @@ public class RegisterAccount extends Activity {
         }
     };
 
+    Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+        @Override
+        public void onResponse(JSONObject jsonObject) {
+            {
+                Log.d(TAG, "-->on response:" + jsonObject.toString());
+                try {
+                    int response = (int) jsonObject.get(ResponseState.RESPONSE_STATUS_KEY);
+                    switch (response) {
+                        case ResponseState.OK:
+                            Toast.makeText(RegisterAccount.this, "注册成功", Toast.LENGTH_SHORT).show();
+                            BubbleDatingApplication.userEntity = new UserEntity(-1,uName,uPw,uEmail
+                                    ,uGender,null,true);
+                            Intent jumpToMainActivity = new Intent(RegisterAccount.this,MainActivity.class);
+                            progressDialog.dismiss();
+                            startActivity(jumpToMainActivity);
+                            RegisterAccount.this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            finish();
+                            break;
+                        case ResponseState.USER_NAME_DUPLICATE:
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterAccount.this, "用户名已被使用，请重新输入", Toast.LENGTH_SHORT).show();
+                            break;
+                        case ResponseState.EMAIL_DUPLICATE:
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterAccount.this, "邮箱已被使用，请重新输入", Toast.LENGTH_SHORT).show();
+                            break;
+                        case ResponseState.UNKNOWN_ERROR:
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterAccount.this, "很抱歉，发生了未知的错误，请联系管理员", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterAccount.this, "未知", Toast.LENGTH_SHORT).show();
+                            break;
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    };
+
+    Response.ErrorListener errorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            progressDialog.dismiss();
+            Toast.makeText(RegisterAccount.this, R.string.volley_request_timeout_error, Toast.LENGTH_LONG).show();
+        }
+    };
+
+
+
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -167,55 +214,15 @@ public class RegisterAccount extends Activity {
                     jsonData.put("lat",String.valueOf(BubbleDatingApplication.userLatLng.latitude));
                     jsonData.put("lon",String.valueOf(BubbleDatingApplication.userLatLng.longitude));
 
-                    CustomRequest registerRequest = new CustomRequest(Request.Method.POST, REGISTER_URL, jsonData, new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject jsonObject) {
-                            Log.d(TAG, "-->on response:" + jsonObject.toString());
-                            try {
-                                int response = (int) jsonObject.get(ResponseState.RESPONSE_STATUS_KEY);
-                                switch (response) {
-                                    case ResponseState.OK:
-                                        Toast.makeText(RegisterAccount.this, "注册成功", Toast.LENGTH_SHORT).show();
-                                        BubbleDatingApplication.userEntity = new UserEntity(-1,uName,uPw,uEmail
-                                        ,uGender,null,true);
-                                        Intent jumpToMainActivity = new Intent(RegisterAccount.this,MainActivity.class);
-                                        progressDialog.dismiss();
-                                        startActivity(jumpToMainActivity);
-                                        RegisterAccount.this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                                        finish();
-                                        break;
-                                    case ResponseState.USER_NAME_DUPLICATE:
-                                        progressDialog.dismiss();
-                                        Toast.makeText(RegisterAccount.this, "用户名已被使用，请重新输入", Toast.LENGTH_SHORT).show();
-                                        break;
-                                    case ResponseState.EMAIL_DUPLICATE:
-                                        progressDialog.dismiss();
-                                        Toast.makeText(RegisterAccount.this, "邮箱已被使用，请重新输入", Toast.LENGTH_SHORT).show();
-                                        break;
-                                    case ResponseState.UNKNOWN_ERROR:
-                                        progressDialog.dismiss();
-                                        Toast.makeText(RegisterAccount.this, "很抱歉，发生了未知的错误，请联系管理员", Toast.LENGTH_SHORT).show();
-                                        break;
-                                    default:
-                                        progressDialog.dismiss();
-                                        Toast.makeText(RegisterAccount.this, "未知", Toast.LENGTH_SHORT).show();
-                                        break;
-
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                            Log.i(TAG, "--> on error response:" + volleyError.toString());
-                        }
-                    });
+                    CustomRequest registerRequest = new CustomRequest(Request.Method.POST, REGISTER_URL, jsonData,
+                            responseListener, errorListener);
+                    RetryPolicy retryPolicy = new DefaultRetryPolicy(
+                            Configuration.REQUEST_TIMEOUT_MS,
+                            Configuration.MAX_RETRY_TIMES,
+                            Configuration.BACK_OFF_MULTI
+                    );
+                    registerRequest.setRetryPolicy(retryPolicy);
                     RequestManager.getInstance(context).add(registerRequest);
-
                     break;
                 case R.id.register_activity_quit:
                     RegisterAccount.this.finish();
@@ -235,30 +242,13 @@ public class RegisterAccount extends Activity {
         switch (requestCode) {
             case REQUEST_TAKE_PHOTO:
                 if (resultCode == RESULT_OK) {
-//                    Bundle bundle = data.getExtras();
-//                    Bitmap imageBitmap = (Bitmap)bundle.get("data");
-//                    Log.d(TAG,"-->imageBitmap:"+imageBitmap.toString());
                     File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),"default1.png");
-//                    if(file.exists()){
-//                        file.delete();
-//                        try {
-//                            file.createNewFile();
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
                     startPhotoZoom(Uri.fromFile(file));
                 }
                 break;
             case REQUEST_FROM_GALLERY:
                 if (resultCode == RESULT_OK) {
                     startPhotoZoom(data.getData());
-//                    try {
-//                        Bitmap b = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-//                        userAvatar.setImageBitmap(b);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
                 }
                 break;
             case REQUEST_PHOTO_ZOOM:
@@ -270,20 +260,11 @@ public class RegisterAccount extends Activity {
                         userAvatar.setImageDrawable(drawable);
 
                         try {
-                            //create a file
-//                            mCroppedAvatar = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),"user.png");
-//                            mCroppedAvatar.createNewFile();
-                            //convert bitmap to byte array
                             ByteArrayOutputStream bos = new ByteArrayOutputStream();
                             bitmap.compress(Bitmap.CompressFormat.PNG,0,bos);
                             byte[] mBitmapData = bos.toByteArray();
                             uAvatarString = Base64.encodeToString(mBitmapData,Base64.DEFAULT);
 
-                            //write bytes in file
-//                            FileOutputStream fileOutputStream = new FileOutputStream(mCroppedAvatar);
-//                            fileOutputStream.write(mBitmapData);
-//                            fileOutputStream.flush();
-//                            fileOutputStream.close();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -295,19 +276,6 @@ public class RegisterAccount extends Activity {
         }
     }
 
-    Response.Listener<JSONObject> jsonObjectListener = new Response.Listener<JSONObject>() {
-        @Override
-        public void onResponse(JSONObject jsonObject) {
-            Log.d(TAG, "-->response:" + jsonObject.toString());
-        }
-    };
-
-    Response.ErrorListener jsonOjectErrorListener = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError volleyError) {
-            Log.d(TAG, "-->error response :" + volleyError.toString());
-        }
-    };
 
     public void showOptionDialog() {
         new AlertDialog.Builder(this)

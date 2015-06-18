@@ -10,8 +10,10 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 
 import org.json.JSONException;
@@ -81,6 +83,12 @@ public class InvitationActivity extends ActionBarActivity {
 
                 mProgressDialog.show();
                 CustomRequest request = new CustomRequest(Request.Method.POST, url, data, reponseListener, errorListener);
+                RetryPolicy retryPolicy = new DefaultRetryPolicy(
+                        Configuration.REQUEST_TIMEOUT_MS,
+                        Configuration.MAX_RETRY_TIMES,
+                        Configuration.BACK_OFF_MULTI
+                );
+                request.setRetryPolicy(retryPolicy);
                 RequestManager.getInstance(this).add(request);
                 return true;
             case android.R.id.home:
@@ -119,7 +127,7 @@ public class InvitationActivity extends ActionBarActivity {
         @Override
         public void onErrorResponse(VolleyError error) {
             mProgressDialog.dismiss();
-            Toast.makeText(InvitationActivity.this, R.string.activity_invitation_error_response, Toast.LENGTH_LONG).show();
+            Toast.makeText(InvitationActivity.this, R.string.volley_request_timeout_error, Toast.LENGTH_LONG).show();
         }
     };
 

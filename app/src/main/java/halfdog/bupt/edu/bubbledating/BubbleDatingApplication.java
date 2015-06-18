@@ -93,7 +93,7 @@ public class BubbleDatingApplication extends Application {
     }
 
     public void initHX(){
-        Context appContext = this;
+        Context appContext = getApplicationContext();
         int pid = android.os.Process.myPid();
         String processAppName = getAppName(pid);
         // 如果app启用了远程的service，此application:onCreate会被调用2次
@@ -107,15 +107,16 @@ public class BubbleDatingApplication extends Application {
             // 则此application::onCreate 是被service 调用的，直接返回
             return;
         }
-        EMChat.getInstance().init(getApplicationContext());
+        EMChat.getInstance().init(appContext);
         /**
          * debugMode == true 时为打开，sdk 会在log里输入调试信息
          * @param debugMode
          * 在做代码混淆的时候需要设置成false
          */
         EMChat.getInstance().setDebugMode(true);//在做打包混淆时，要关闭debug模式，如果未被关闭，则会出现程序无法运行问题
+        Log.d(TAG,"-->set EMChat, debug mode=true");
 
-        HXSDKHelper.getInstance().onInit(this);
+        HXSDKHelper.getInstance().onInit(appContext);
 
     }
 

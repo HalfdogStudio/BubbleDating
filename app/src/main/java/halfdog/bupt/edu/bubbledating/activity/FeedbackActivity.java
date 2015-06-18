@@ -13,8 +13,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -82,6 +84,12 @@ public class FeedbackActivity extends ActionBarActivity {
                         }
                         CustomRequest request = new CustomRequest(Request.Method.POST, Configuration.FEED_BACK_REQUEST,
                                 data,okListener,errorListener);
+                        RetryPolicy retryPolicy = new DefaultRetryPolicy(
+                                Configuration.REQUEST_TIMEOUT_MS,
+                                Configuration.MAX_RETRY_TIMES,
+                                Configuration.BACK_OFF_MULTI
+                                );
+                        request.setRetryPolicy(retryPolicy);
                         RequestManager.getInstance(FeedbackActivity.this).add(request);
                         progressDialog.show();
                     }

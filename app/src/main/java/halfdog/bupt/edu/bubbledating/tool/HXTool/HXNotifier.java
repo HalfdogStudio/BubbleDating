@@ -24,6 +24,9 @@ import com.easemob.util.EasyUtils;
 import java.util.HashSet;
 import java.util.Locale;
 
+import halfdog.bupt.edu.bubbledating.R;
+import halfdog.bupt.edu.bubbledating.tool.ProcessManager;
+
 /**
  * 新消息提醒class
  * 2.1.8把新消息提示相关的api移除出sdk，方便开发者自由修改
@@ -33,6 +36,7 @@ import java.util.Locale;
  */
 public class HXNotifier {
     private final static String TAG = "notify";
+
     Ringtone ringtone = null;
 
     public final static String[] msg_eng = { "sent a message", "sent a picture", "sent a voice",
@@ -70,6 +74,7 @@ public class HXNotifier {
     public HXNotifier init(Context context){
         appContext = context;
         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Log.d(TAG,"-->init NotificationManager in HXNotifier");
 
         packageName = appContext.getApplicationInfo().packageName;
         if (Locale.getDefault().getLanguage().equals("zh")) {
@@ -111,20 +116,30 @@ public class HXNotifier {
      *
      * @param message
      */
-    public synchronized void onNewMsg(final EMMessage message) {
+    public synchronized void onNewMsg(final EMMessage message,Context context) {
 //        if(EMChatManager.getInstance().isSlientMessage(message)){
 //            return;
 //        }
-
+//        Log.d(TAG,"-->on New Msg in HX Notifier");
         // 判断app是否在后台
-        if (!EasyUtils.isAppRunningForeground(appContext)) {
-            Log.d(TAG, "-->app is running in backgroud");
+        if(ProcessManager.isBackGround(context)){
+            Log.d(TAG,"--> process is in background");
             sendNotification(message, false);
-        } else {
-            Log.d(TAG, "-->app is running in foreground");
+        }else{
+            Log.d(TAG,"--> app is in foreground");
             sendNotification(message, true);
-
         }
+
+
+
+//        if (!EasyUtils.isAppRunningForeground(appContext)) {
+//            Log.d(TAG, "-->app is running in backgroud");
+//            sendNotification(message, false);
+//        } else {
+//            Log.d(TAG, "-->app is running in foreground");
+//            sendNotification(message, true);
+//
+//        }
 
         Log.d(TAG,"--> vibrate and play tone");
         viberateAndPlayTone(message);
@@ -143,44 +158,39 @@ public class HXNotifier {
             String notifyText = username + " ";
             switch (message.getType()) {
                 case TXT:
-                    notifyText += msgs[0];
+                    notifyText += message.getBody();
                     break;
                 case IMAGE:
-                    notifyText += msgs[1];
                     break;
                 case VOICE:
-
-                    notifyText += msgs[2];
                     break;
                 case LOCATION:
-                    notifyText += msgs[3];
                     break;
                 case VIDEO:
-                    notifyText += msgs[4];
                     break;
                 case FILE:
-                    notifyText += msgs[5];
                     break;
             }
 
             PackageManager packageManager = appContext.getPackageManager();
             String appname = (String) packageManager.getApplicationLabel(appContext.getApplicationInfo());
+            Log.d(TAG,"-->app name:"+appname);
 
             // notification titile
             String contentTitle = appname;
-            if (notificationInfoProvider != null) {
-                String customNotifyText = notificationInfoProvider.getDisplayedText(message);
-                String customCotentTitle = notificationInfoProvider.getTitle(message);
-                if (customNotifyText != null){
-                    // 设置自定义的状态栏提示内容
-                    notifyText = customNotifyText;
-                }
-
-                if (customCotentTitle != null){
-                    // 设置自定义的通知栏标题
-                    contentTitle = customCotentTitle;
-                }
-            }
+//            if (notificationInfoProvider != null) {
+//                String customNotifyText = notificationInfoProvider.getDisplayedText(message);
+//                String customCotentTitle = notificationInfoProvider.getTitle(message);
+//                if (customNotifyText != null){
+//                    // 设置自定义的状态栏提示内容
+//                    notifyText = customNotifyText;
+//                }
+//
+//                if (customCotentTitle != null){
+//                    // 设置自定义的通知栏标题
+//                    contentTitle = customCotentTitle;
+//                }
+//            }
 
             // create and send notificaiton
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(appContext)
@@ -189,10 +199,10 @@ public class HXNotifier {
                     .setAutoCancel(true);
 
             Intent msgIntent = appContext.getPackageManager().getLaunchIntentForPackage(packageName);
-            if (notificationInfoProvider != null) {
-                // 设置自定义的notification点击跳转intent
-                msgIntent = notificationInfoProvider.getLaunchIntent(message);
-            }
+//            if (notificationInfoProvider != null) {
+//                // 设置自定义的notification点击跳转intent
+//                msgIntent = notificationInfoProvider.getLaunchIntent(message);
+//            }
 
             PendingIntent pendingIntent = PendingIntent.getActivity(appContext, notifyID, msgIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -201,32 +211,36 @@ public class HXNotifier {
             fromUsers.add(message.getFrom());
 
             int fromUsersNum = fromUsers.size();
-            String summaryBody = msgs[6].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2",Integer.toString(notificationNum));
+//            String summaryBody = msgs[6].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2",Integer.toString(notificationNum));
 
-            if (notificationInfoProvider != null) {
-                // lastest text
-                String customSummaryBody = notificationInfoProvider.getLatestText(message, fromUsersNum,notificationNum);
-                if (customSummaryBody != null){
-                    summaryBody = customSummaryBody;
-                }
+//            if (notificationInfoProvider != null) {
+//                // lastest text
+//                String customSummaryBody = notificationInfoProvider.getLatestText(message, fromUsersNum,notificationNum);
+//                if (customSummaryBody != null){
+//                    summaryBody = customSummaryBody;
+//                }
+//
+//                // small icon
+//                int smallIcon = notificationInfoProvider.getSmallIcon(message);
+//                if (smallIcon != 0){
+//                    mBuilder.setSmallIcon(smallIcon);
+//                }
+//            }
 
-                // small icon
-                int smallIcon = notificationInfoProvider.getSmallIcon(message);
-                if (smallIcon != 0){
-                    mBuilder.setSmallIcon(smallIcon);
-                }
-            }
-
-            mBuilder.setContentTitle(contentTitle);
-            mBuilder.setTicker(notifyText);
-            mBuilder.setContentText(summaryBody);
+            String appName = appContext.getResources().getString(R.string.app_name);
+            String msgEnd = appContext.getResources().getString(R.string.notification_end);
+            String msgFromHint = appContext.getResources().getString(R.string.notification_from_hint);
+            mBuilder.setContentTitle(appName+":"+msgFromHint+message.getFrom()+msgEnd);
+//            mBuilder.setTicker(notifyText);
+            mBuilder.setContentText(notifyText);
             mBuilder.setContentIntent(pendingIntent);
             // mBuilder.setNumber(notificationNum);
             Notification notification = mBuilder.build();
+            Log.d(TAG,"-->notification == null?"+(notification == null));
 
             if (isForeground) {
                 notificationManager.notify(foregroundNotifyID, notification);
-                notificationManager.cancel(foregroundNotifyID);
+//                notificationManager.cancel(foregroundNotifyID);
             } else {
                 notificationManager.notify(notifyID, notification);
             }
