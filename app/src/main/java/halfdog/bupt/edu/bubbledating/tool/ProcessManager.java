@@ -21,10 +21,8 @@ public class ProcessManager {
         for(ActivityManager.RunningAppProcessInfo processInfo:appProcesses){
             if(processInfo.processName.equals(context.getPackageName())){
                 if(processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND){
-                    Log.i(TAG,"-->Background App:"+processInfo.processName);
                     return true;
                 }else{
-                    Log.i(TAG,"-->Foreground App:"+processInfo.processName);
                     return false;
                 }
             }

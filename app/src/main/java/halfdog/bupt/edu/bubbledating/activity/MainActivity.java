@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.os.PersistableBundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -28,10 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easemob.EMCallBack;
-import com.easemob.EMEventListener;
-import com.easemob.EMNotifierEvent;
 import com.easemob.chat.EMChatManager;
-import com.easemob.chat.EMMessage;
 
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.adapter.LeftDrawerListAdapter;
@@ -42,14 +40,13 @@ import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.DateFragment;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.MessageFragment;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.SwimDailyFragment;
-import halfdog.bupt.edu.bubbledating.service.MonitorNetworkStateService;
+import halfdog.bupt.edu.bubbledating.service.BackgroundService;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
-import halfdog.bupt.edu.bubbledating.tool.HXTool.HXNotifier;
 import halfdog.bupt.edu.bubbledating.tool.HXTool.HXSDKHelper;
 import halfdog.bupt.edu.bubbledating.tool.NetworkStatusTool;
 
 
-public class MainActivity extends ActionBarActivity implements EMEventListener,DateFragment.OnDatingFragmentInteractionListener,
+public class MainActivity extends ActionBarActivity implements DateFragment.OnDatingFragmentInteractionListener,
         MessageFragment.OnMessageFragmentInteractionListener,SwimDailyFragment.OnSwimDailyFragmentInteractionListener{
 
     public static final String TAG = "MainActivity";
@@ -71,6 +68,13 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
     private Menu mMenu;
 
     private final int MENU_ADD_ID = R.id.action_add;
+
+    public Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    };
 
 
     @Override
@@ -197,6 +201,7 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
             MySQLiteOpenHelper.getInstance(this,Offline.OFFLINE_DB);
             DataCache.initOfflineCacheData(context);
         }else{
+//            deleteDatabase(BubbleDatingApplication.userEntity.getmName()+".db");
             MySQLiteOpenHelper.getInstance(this,BubbleDatingApplication.userEntity.getmName()+".db");
             DataCache.initCacheData(context);
         }
@@ -225,7 +230,7 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
 
     public void initService(Context context){
         /* start network state monitoring service */
-        Intent startMonitorNetworkState = new Intent(context, MonitorNetworkStateService.class);
+        Intent startMonitorNetworkState = new Intent(context, BackgroundService.class);
         context.startService(startMonitorNetworkState);
     }
 
@@ -309,26 +314,31 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
     @Override
     protected void onResume() {
         super.onResume();
-        // register this event listener when this activity enters the background
-        HXSDKHelper sdkHelper =  HXSDKHelper.getInstance();
-        sdkHelper.pushActivity(this);
 
-        // register the event listener when enter the foreground
-        EMChatManager.getInstance().registerEventListener(this);
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        // register this event listener when this activity enters the background
+        HXSDKHelper sdkHelper =  HXSDKHelper.getInstance();
+        sdkHelper.pushActivity(this);
+
+        // register the event listener when enter the foreground
+//        EMChatManager.getInstance().registerEventListener(this);
+//        Log.d(TAG,"-->注册消息监听");
         if(!NetworkStatusTool.isConnected(MainActivity.this)){
             Toast.makeText(this, R.string.network_state_not_connected,Toast.LENGTH_LONG).show();
         }
     }
 
+
+
     @Override
     protected void onStop() {
-        EMChatManager.getInstance().unregisterEventListener(this);
+//        EMChatManager.getInstance().unregisterEventListener(this);
+//        Log.d(TAG, "-->注销消息监听");
         HXSDKHelper sdkHelper =  HXSDKHelper.getInstance();
         sdkHelper.popActivity(this);
         super.onStop();
@@ -419,46 +429,46 @@ public class MainActivity extends ActionBarActivity implements EMEventListener,D
     protected void onDestroy() {
         super.onDestroy();
         /*关闭服务*/
-        Intent shutNetworkStateMonService = new Intent(this,MonitorNetworkStateService.class);
+        Intent shutNetworkStateMonService = new Intent(this,BackgroundService.class);
         stopService(shutNetworkStateMonService);
     }
 
-    @Override
-    public void onEvent(EMNotifierEvent emNotifierEvent) {
-        {
-            Log.d(TAG,"-->EMNotifierEvent:"+emNotifierEvent.getData().toString());
-            Log.d(TAG,"-->EMNotifierEvent:"+emNotifierEvent.getEvent().toString());
-
-            switch (emNotifierEvent.getEvent()) {
-                case EventNewMessage: //普通消息
-                {
-                    EMMessage message = (EMMessage) emNotifierEvent.getData();
-                    Log.d(TAG,"-->normal message:"+message.toString());
-                    //提示新消息
-                    HXSDKHelper instance = HXSDKHelper.getInstance();
-                    Log.d(TAG, "-->instance == null?:"+(instance == null));
-                    HXNotifier notifiier =  instance.getNotifier();
-                    Log.d(TAG, "-->notifiier == null?:"+(notifiier == null));
-                    Log.d(TAG,"-->notifier:"+notifiier.getClass().getName());
-                    notifiier.onNewMsg(message,this);
-
-//                    refreshUI();
-                    break;
-                }
-
-                case EventOfflineMessage:
-                {
-                    Log.d(TAG,"-->get offline message");
-//                    refreshUI();
-                    break;
-                }
-
-                default:
-                    Log.d(TAG,"-->get default message");
-                    break;
-            }
-        }
-    }
+//    @Override
+//    public void onEvent(EMNotifierEvent emNotifierEvent) {
+//        {
+//            Log.d(TAG,"-->EMNotifierEvent:"+emNotifierEvent.getData().toString());
+//            Log.d(TAG,"-->EMNotifierEvent:"+emNotifierEvent.getEvent().toString());
+//
+//            switch (emNotifierEvent.getEvent()) {
+//                case EventNewMessage: //普通消息
+//                {
+//                    EMMessage message = (EMMessage) emNotifierEvent.getData();
+//                    Log.d(TAG,"-->normal message:"+message.toString());
+//                    //提示新消息
+//                    HXSDKHelper instance = HXSDKHelper.getInstance();
+//                    Log.d(TAG, "-->instance == null?:"+(instance == null));
+//                    HXNotifier notifiier =  instance.getNotifier();
+//                    Log.d(TAG, "-->notifiier == null?:"+(notifiier == null));
+//                    Log.d(TAG,"-->notifier:"+notifiier.getClass().getName());
+//                    notifiier.onNewMsg(message,this);
+//
+////                    refreshUI();
+//                    break;
+//                }
+//
+//                case EventOfflineMessage:
+//                {
+//                    Log.d(TAG,"-->get offline message");
+////                    refreshUI();
+//                    break;
+//                }
+//
+//                default:
+//                    Log.d(TAG,"-->get default message");
+//                    break;
+//            }
+//        }
+//    }
 
     @Override
     public void onDatingFragmentInteraction(Uri uri) {

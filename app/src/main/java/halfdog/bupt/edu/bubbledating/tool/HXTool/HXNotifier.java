@@ -6,15 +6,18 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Message;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
@@ -24,7 +27,13 @@ import com.easemob.util.EasyUtils;
 import java.util.HashSet;
 import java.util.Locale;
 
+import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.R;
+import halfdog.bupt.edu.bubbledating.activity.ChatActivity;
+import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
+import halfdog.bupt.edu.bubbledating.tool.DataCache;
+import halfdog.bupt.edu.bubbledating.tool.MyDate;
 import halfdog.bupt.edu.bubbledating.tool.ProcessManager;
 
 /**
@@ -61,6 +70,8 @@ public class HXNotifier {
     public AudioManager audioManager;
     public Vibrator vibrator;
     public HXNotificationInfoProvider notificationInfoProvider;
+
+
 
     public HXNotifier() {
     }
@@ -116,7 +127,7 @@ public class HXNotifier {
      *
      * @param message
      */
-    public synchronized void onNewMsg(final EMMessage message,Context context) {
+    public synchronized void onNewMsg(final EMMessage message,Context context,SQLiteDatabase db) {
 //        if(EMChatManager.getInstance().isSlientMessage(message)){
 //            return;
 //        }
@@ -125,9 +136,30 @@ public class HXNotifier {
         if(ProcessManager.isBackGround(context)){
             Log.d(TAG,"--> process is in background");
             sendNotification(message, false);
+            ChatMsgEntity entity = new ChatMsgEntity(message.getFrom(),
+                    message.getBody().toString(),MyDate.getCurSimpleDateFormate().toString(),true);
+            ChatActivity.sendOrReceiveUiMsg(entity, true);
+            DataCache.updateUseMsgListAndContactUser(entity, db, true);
         }else{
-            Log.d(TAG,"--> app is in foreground");
+            Log.d(TAG, "--> app is in foreground");
             sendNotification(message, true);
+            ChatMsgEntity entity = new ChatMsgEntity(BubbleDatingApplication.userEntity.getmName(),
+                    message.getBody().toString(),MyDate.getCurSimpleDateFormate().toString(),true);
+
+            /*应该判断当前Activity是不是ChatActivity, 若是， 发送消息， 若不是， 只更新DataCache 和 sqlite的内容，
+            * 否则可能出现ChatActivity还没实例化，就已然调用ChatActivity的方法的错误。*/
+            Log.d(TAG,"-->current activity:"+BubbleDatingApplication.getCurrentActivity());
+            if(BubbleDatingApplication.getCurrentActivity() instanceof  ChatActivity){
+                Log.d(TAG,"-->UPDATE_CHAT_ACTIVITY_CONTACT");
+                Message msg = ChatActivity.mHandler.obtainMessage();
+                msg.what = Configuration.UPDATE_CHAT_ACTIVITY_CONTACT;
+                msg.obj = entity;
+                ChatActivity.mHandler.sendMessage(msg);
+//            ChatActivity.sendOrReceiveUiMsg(entity, true);
+            }
+
+
+            DataCache.updateUseMsgListAndContactUser(entity, db, true);
         }
 
 
@@ -155,7 +187,7 @@ public class HXNotifier {
         Log.d(TAG,"-->send Notification:"+message.toString()+",isForeground:"+isForeground);
         String username = message.getFrom();
         try {
-            String notifyText = username + " ";
+            String notifyText = "";
             switch (message.getType()) {
                 case TXT:
                     notifyText += message.getBody();
@@ -211,21 +243,6 @@ public class HXNotifier {
             fromUsers.add(message.getFrom());
 
             int fromUsersNum = fromUsers.size();
-//            String summaryBody = msgs[6].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2",Integer.toString(notificationNum));
-
-//            if (notificationInfoProvider != null) {
-//                // lastest text
-//                String customSummaryBody = notificationInfoProvider.getLatestText(message, fromUsersNum,notificationNum);
-//                if (customSummaryBody != null){
-//                    summaryBody = customSummaryBody;
-//                }
-//
-//                // small icon
-//                int smallIcon = notificationInfoProvider.getSmallIcon(message);
-//                if (smallIcon != 0){
-//                    mBuilder.setSmallIcon(smallIcon);
-//                }
-//            }
 
             String appName = appContext.getResources().getString(R.string.app_name);
             String msgEnd = appContext.getResources().getString(R.string.notification_end);
@@ -236,7 +253,6 @@ public class HXNotifier {
             mBuilder.setContentIntent(pendingIntent);
             // mBuilder.setNumber(notificationNum);
             Notification notification = mBuilder.build();
-            Log.d(TAG,"-->notification == null?"+(notification == null));
 
             if (isForeground) {
                 notificationManager.notify(foregroundNotifyID, notification);

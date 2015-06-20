@@ -37,6 +37,7 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
     <!--允许收到消息或者提醒时振动-->
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
 
     <!-- 使用相机 -->
@@ -115,7 +116,7 @@
         </activity>
 
         <service
-            android:name=".service.MonitorNetworkStateService"
+            android:name=".service.BackgroundService"
             android:enabled="true"
             android:exported="true" >
         </service>

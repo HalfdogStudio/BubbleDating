@@ -1,5 +1,6 @@
 package halfdog.bupt.edu.bubbledating;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
@@ -41,6 +42,8 @@ public class BubbleDatingApplication extends Application {
     public static  LatLng userLatLng;
     public static LocationClient mLocationClient = null;
 
+    private static Activity mCurrentActivity = null;
+
 
 
     public static int screenWidth;
@@ -51,9 +54,6 @@ public class BubbleDatingApplication extends Application {
     public static int mode = Mode.ONLINE_MODE;
 
     public BDLocationListener listener = new MyLocationListener();
-
-    public static HXSDKHelper hxSDKHelper = null;
-
 
     @Override
     public void onCreate() {
@@ -206,6 +206,13 @@ public class BubbleDatingApplication extends Application {
             }
         }
         return processName;
+    }
+
+    public static  Activity getCurrentActivity(){
+        return mCurrentActivity;
+    }
+    public static void setCurrentActivity(Activity mCur){
+        mCurrentActivity = mCur;
     }
 
 }

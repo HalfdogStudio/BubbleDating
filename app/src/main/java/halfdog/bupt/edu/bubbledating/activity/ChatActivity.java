@@ -1,8 +1,14 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.nfc.Tag;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,6 +33,7 @@ import java.util.List;
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.adapter.ChatMsgAdapter;
+import halfdog.bupt.edu.bubbledating.constants.Configuration;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.db.MySQLiteOpenHelper;
 import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
@@ -36,11 +43,11 @@ import halfdog.bupt.edu.bubbledating.tool.MyDate;
 public class ChatActivity extends ActionBarActivity {
     public final String TAG = "ChatActivity";
     private ButtonRectangle mSendMsg;
-    private EditText mInputContent;
-    private ListView mListView;
-    private List<ChatMsgEntity> mDataArray;
+    private static EditText mInputContent;
+    private static ListView mListView;
+    private static List<ChatMsgEntity> mDataArray;
     private static String chatter;
-    private ChatMsgAdapter adapter;
+    private static ChatMsgAdapter adapter;
     private SQLiteDatabase db;
 
     @Override
@@ -51,7 +58,64 @@ public class ChatActivity extends ActionBarActivity {
         initData();
         initListeners();
 
+
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //  update  data
+        mDataArray = DataCache.mUserMsgList.get(chatter);
+        if (mDataArray != null) {
+            adapter = new ChatMsgAdapter(this, mDataArray);
+            mListView.setAdapter(adapter);
+            mListView.setSelection(adapter.getCount() - 1);
+        } else {
+            mDataArray = new ArrayList<>();
+            adapter = new ChatMsgAdapter(this, mDataArray);
+            mListView.setAdapter(adapter);
+        }
+
+        db = MySQLiteOpenHelper.getInstance(this).getWritableDatabase();
+
+        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+        Log.d("", "-->pkg:" + cn.getPackageName());
+        Log.d("", "-->cls:" + cn.getClassName());
+
+        BubbleDatingApplication.setCurrentActivity(this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BubbleDatingApplication.setCurrentActivity(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        clearReferences();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        clearReferences();
+        if(db != null){
+            db.close();
+        }
+    }
+
+    private void clearReferences(){
+        Activity currActivity = BubbleDatingApplication.getCurrentActivity();
+        if (currActivity != null && currActivity.equals(this))
+            BubbleDatingApplication.setCurrentActivity(null);
+    }
+
+
 
     public void initViews() {
         mSendMsg = (ButtonRectangle) findViewById(R.id.chat_send_msg_button);
@@ -63,28 +127,33 @@ public class ChatActivity extends ActionBarActivity {
     public void initData() {
         Intent intent = getIntent();
         chatter = intent.getStringExtra("name");
-        mDataArray = DataCache.mUserMsgList.get(chatter);
-        if (mDataArray != null) {
-            adapter = new ChatMsgAdapter(this, mDataArray);
-            mListView.setAdapter(adapter);
-            mListView.setSelection(adapter.getCount() - 1);
-        } else {
-            mDataArray = new ArrayList<>();
-            adapter = new ChatMsgAdapter(this, mDataArray);
-            mListView.setAdapter(adapter);
-        }
+
         // set home icon as "<--" back button
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(chatter);
 
-        db = MySQLiteOpenHelper.getInstance(this).getWritableDatabase();
+
 
 
     }
 
     public void initListeners() {
         mSendMsg.setOnClickListener(mClickListener);
+    }
+
+    public static void sendOrReceiveUiMsg(ChatMsgEntity entity, boolean isReceive){
+        mDataArray.add(entity);
+        adapter.refreshData(mDataArray);
+        mListView.setSelection(mListView.getCount() - 1);
+        if(!isReceive){
+            mInputContent.setText("");
+        }
+
+    }
+
+    public static void refreshListView(){
+        mListView.invalidateViews();
     }
 
     View.OnClickListener mClickListener = new View.OnClickListener() {
@@ -96,74 +165,13 @@ public class ChatActivity extends ActionBarActivity {
                     String content = mInputContent.getText().toString();
                     if (!TextUtils.isEmpty(content)) {
                         ChatMsgEntity entity = new ChatMsgEntity(chatter, content, MyDate.getCurSimpleDateFormate(), false);
-                        mDataArray.add(entity);
-                        adapter.refreshData(mDataArray);
-                        mInputContent.setText("");
-                        mListView.setSelection(mListView.getCount() - 1);
-
-
+                        sendOrReceiveUiMsg(entity,true);
                         /* sqlite operation and update DataCache.mContactUser and DataCache.mUserMsgList    */
                         if (BubbleDatingApplication.mode != Mode.OFFLINE_MODE) {
-                        /* insert into contact_msg_list */
-                            String insertSql = "insert into " + MySQLiteOpenHelper.CONTACT_MSG_TABLE_NAME +
-                                    " (name,date,content,is_receive) values ('" + entity.getName() + "','" + entity.getDate() +
-                                    "','" + entity.getContent() + "','" + false + "')";
-                            Log.d(TAG, "-->INSERT SQL:" + insertSql);
-                            db.execSQL(insertSql);
-
-
-                            if (DataCache.mUserMsgList.containsKey(entity.getName())) {
-                                DataCache.mUserMsgList.get(entity.getName()).add(new ChatMsgEntity(entity.getName(), entity.getContent(),
-                                        entity.getDate(), false));
-                            } else {
-                                List<ChatMsgEntity> list = new ArrayList<>();
-                                list.add(new ChatMsgEntity(entity.getName(), entity.getContent(),
-                                        entity.getDate(), false));
-                                DataCache.mUserMsgList.put(entity.getName(), list);
-                            }
-
-                        /* update contact_list 最近的消息， message fragment */
-                            String querySql = "select * from " + MySQLiteOpenHelper.CONTACT_TABLE_NAME +
-                                    " where name='" + entity.getName() + "'";
-                            Log.d(TAG, "-->query 1:" + querySql);
-                            Cursor cursor = db.rawQuery(querySql, null);
-                            if (cursor.getCount() == 0) {
-                                String insertSql2 = "insert into " + MySQLiteOpenHelper.CONTACT_TABLE_NAME +
-                                        "(name,last_message,last_contact_date) values ('" +
-                                        entity.getName() + "','" + entity.getContent() + "','" + entity.getDate() + "')";
-                                Log.d(TAG, "--> insert sql 2: " + insertSql2);
-                                db.execSQL(insertSql2);
-                                cursor.close();
-
-                                DataCache.mContactUser.add(new ChatMsgEntity(entity.getName(), entity.getContent(),
-                                        entity.getDate(), false));
-                            } else {
-                                String updateSql = "update " + MySQLiteOpenHelper.CONTACT_TABLE_NAME + " set last_message='" +
-                                        entity.getContent() + "',last_contact_date='" + entity.getDate() + "'";
-                                Log.d(TAG, "-->updateSql:" + updateSql);
-                                db.execSQL(updateSql);
-
-                                int index = 0;
-                                for (; index <  DataCache.mContactUser.size(); index++) {
-                                    Log.d(TAG,"-->index:"+index);
-                                    if (TextUtils.equals(DataCache.mContactUser.get(index).getName(),entity.getName())){
-                                        break;
-                                    }
-                                }
-                                Log.d(TAG,"-->AFTER THE FOR LOOP, INDEX:"+index);
-                                if (TextUtils.equals(DataCache.mContactUser.get(index).getName(), entity.getName())) {
-
-                                    DataCache.mContactUser.get(index).setContent(entity.getContent());
-                                    DataCache.mContactUser.get(index).setDate(entity.getDate());
-                                }
-                            }
-
-                            /*  use HX Tool to send message */
-                            sendHXMsg(chatter,content);
-
+                        DataCache.updateUseMsgListAndContactUser(entity, db, false);
+                        /*  use HX Tool to send message */
+                        sendHXMsg(chatter, content);
                         }
-
-
                     }
                     break;
             }
@@ -231,6 +239,20 @@ public class ChatActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    static public Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch(msg.what){
+                case Configuration.UPDATE_CHAT_ACTIVITY_CONTACT:
+                    ChatMsgEntity entity = (ChatMsgEntity)msg.obj;
+                    Log.d("","-->entity from notifier:"+entity.toString());
+                    ChatActivity.sendOrReceiveUiMsg(entity, true);
+                    break;
+            }
+        }
+    };
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
