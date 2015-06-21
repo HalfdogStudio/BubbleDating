@@ -63,9 +63,9 @@ public class BubbleDatingApplication extends Application {
         //init cache size
         int maxMemory = (int)Runtime.getRuntime().maxMemory();
         mCacheSize = maxMemory/8;
-        if(Mode.DEBUG){
-            Log.d(TAG,"-->mCacheSize:"+mCacheSize);
-        }
+//        if(Mode.DEBUG){
+//            Log.d(TAG,"-->mCacheSize:"+mCacheSize);
+//        }
         // init RequestManager
         RequestManager.init(getApplicationContext());
         // init ImageCacheManager
@@ -114,7 +114,7 @@ public class BubbleDatingApplication extends Application {
          * 在做代码混淆的时候需要设置成false
          */
         EMChat.getInstance().setDebugMode(true);//在做打包混淆时，要关闭debug模式，如果未被关闭，则会出现程序无法运行问题
-        Log.d(TAG,"-->set EMChat, debug mode=true");
+//        Log.d(TAG,"-->set EMChat, debug mode=true");
 
         HXSDKHelper.getInstance().onInit(appContext);
 

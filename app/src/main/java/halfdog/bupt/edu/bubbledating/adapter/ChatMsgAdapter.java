@@ -78,10 +78,8 @@ public class ChatMsgAdapter extends BaseAdapter {
         ChatMsgEntity entity = data.get(position);
         int type = getItemViewType(position);
         ViewHolder holder = null;
-        String serverImgPath = Configuration.SERVER_IMG_CACHE_DIR  + entity.getName()+".png";
-        if(Mode.DEBUG){
-            Log.d(TAG,"-->chat msg adapter of "+entity.getName()+":"+serverImgPath);
-        }
+        String ownerServerImgPath = Configuration.SERVER_IMG_CACHE_DIR  + BubbleDatingApplication.userEntity.getmName()+".png";
+        String targetServerImgPath = Configuration.SERVER_IMG_CACHE_DIR  + entity.getName()+".png";
         // convertView 为空， 或者 convertView 没有ID， 或者 convertView 的 id 与 所需类型不同
         if ( convertView == null ){
             Log.d(TAG,"-->"+position+" convertView is null;");
@@ -103,17 +101,23 @@ public class ChatMsgAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener( holder.mUserHead,
-                R.drawable.avatar_default_m, R.drawable.avatar_default_m);
-        ImageCacheManager.getInstance().getImage(serverImgPath,userAvatorListener);
+//        ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener( holder.mUserHead,
+//                R.drawable.avatar_default_m, R.drawable.avatar_default_m);
+//        ImageCacheManager.getInstance().getImage(serverImgPath,userAvatorListener);
 //        holder.mUserHead.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_m));
         holder.mPostTime.setText(entity.getDate());
         holder.mContent.setText(entity.getContent());
 //        holder.mUserName.setText(entity.getName());
         if (type == IM_SEND){
             holder.mUserName.setText(BubbleDatingApplication.userEntity.getmName());
+            ImageLoader.ImageListener ownerAvatorListener = ImageLoader.getImageListener( holder.mUserHead,
+                    R.drawable.avatar_default_m, R.drawable.avatar_default_m);
+            ImageCacheManager.getInstance().getImage(ownerServerImgPath, ownerAvatorListener);
         }else{
             holder.mUserName.setText(entity.getName());
+            ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener( holder.mUserHead,
+                    R.drawable.avatar_default_m, R.drawable.avatar_default_m);
+            ImageCacheManager.getInstance().getImage(targetServerImgPath, userAvatorListener);
         }
 
         return convertView;

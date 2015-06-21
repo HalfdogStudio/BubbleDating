@@ -7,10 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.baidu.navisdk.model.datastruct.LocData;
 import com.easemob.EMEventListener;
 import com.easemob.EMNotifierEvent;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.db.MySQLiteOpenHelper;
@@ -75,10 +79,22 @@ public class BackgroundService extends Service implements EMEventListener {
                     {
                         EMMessage message = (EMMessage) emNotifierEvent.getData();
                         Log.d(TAG,"-->normal message:"+message.toString());
+                        String messageContent = null;
+
+                        switch(message.getType()){
+                            case TXT:
+                                Pattern pattern = Pattern.compile("txt:\"(.*)\"");
+                                Matcher matcher = pattern.matcher(message.toString());
+                                if(matcher.find()){
+//                                    Log.d(TAG,"-->message content:"+matcher.group(1));
+                                    messageContent = matcher.group(1);
+                                }
+                                break;
+                        }
                         //提示新消息
                         HXSDKHelper instance = HXSDKHelper.getInstance();
                         HXNotifier notifiier =  instance.getNotifier();
-                        notifiier.onNewMsg(message,this,db);
+                        notifiier.onNewMsg(message, this, db,messageContent);
 
 //                    refreshUI();
                         break;

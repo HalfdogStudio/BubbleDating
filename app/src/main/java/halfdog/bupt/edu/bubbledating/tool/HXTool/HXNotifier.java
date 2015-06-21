@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Message;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -127,7 +128,7 @@ public class HXNotifier {
      *
      * @param message
      */
-    public synchronized void onNewMsg(final EMMessage message,Context context,SQLiteDatabase db) {
+    public synchronized void onNewMsg(final EMMessage message,Context context,SQLiteDatabase db,String messageContent) {
 //        if(EMChatManager.getInstance().isSlientMessage(message)){
 //            return;
 //        }
@@ -135,21 +136,21 @@ public class HXNotifier {
         // 判断app是否在后台
         if(ProcessManager.isBackGround(context)){
             Log.d(TAG,"--> process is in background");
-            sendNotification(message, false);
+            sendNotification(message, false,messageContent);
             ChatMsgEntity entity = new ChatMsgEntity(message.getFrom(),
-                    message.getBody().toString(),MyDate.getCurSimpleDateFormate().toString(),true);
+                    messageContent,MyDate.getCurSimpleDateFormate().toString(),true);
             ChatActivity.sendOrReceiveUiMsg(entity, true);
             DataCache.updateUseMsgListAndContactUser(entity, db, true);
         }else{
             Log.d(TAG, "--> app is in foreground");
-            sendNotification(message, true);
-            ChatMsgEntity entity = new ChatMsgEntity(BubbleDatingApplication.userEntity.getmName(),
-                    message.getBody().toString(),MyDate.getCurSimpleDateFormate().toString(),true);
+            sendNotification(message, true,messageContent);
+            ChatMsgEntity entity = new ChatMsgEntity(message.getFrom(),
+                    messageContent,MyDate.getCurSimpleDateFormate().toString(),true);
 
             /*应该判断当前Activity是不是ChatActivity, 若是， 发送消息， 若不是， 只更新DataCache 和 sqlite的内容，
             * 否则可能出现ChatActivity还没实例化，就已然调用ChatActivity的方法的错误。*/
             Log.d(TAG,"-->current activity:"+BubbleDatingApplication.getCurrentActivity());
-            if(BubbleDatingApplication.getCurrentActivity() instanceof  ChatActivity){
+            if(BubbleDatingApplication.getCurrentActivity() instanceof  ChatActivity && TextUtils.equals(message.getFrom(),ChatActivity.chatter)){
                 Log.d(TAG,"-->UPDATE_CHAT_ACTIVITY_CONTACT");
                 Message msg = ChatActivity.mHandler.obtainMessage();
                 msg.what = Configuration.UPDATE_CHAT_ACTIVITY_CONTACT;
@@ -183,14 +184,14 @@ public class HXNotifier {
      * This can be override by subclass to provide customer implementation
      * @param message
      */
-    protected void sendNotification(EMMessage message, boolean isForeground) {
+    protected void sendNotification(EMMessage message, boolean isForeground,String messageContent) {
         Log.d(TAG,"-->send Notification:"+message.toString()+",isForeground:"+isForeground);
         String username = message.getFrom();
         try {
             String notifyText = "";
             switch (message.getType()) {
                 case TXT:
-                    notifyText += message.getBody();
+                    notifyText += messageContent;
                     break;
                 case IMAGE:
                     break;
@@ -206,7 +207,6 @@ public class HXNotifier {
 
             PackageManager packageManager = appContext.getPackageManager();
             String appname = (String) packageManager.getApplicationLabel(appContext.getApplicationInfo());
-            Log.d(TAG,"-->app name:"+appname);
 
             // notification titile
             String contentTitle = appname;

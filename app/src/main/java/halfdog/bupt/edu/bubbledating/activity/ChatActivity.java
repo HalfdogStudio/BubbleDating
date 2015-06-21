@@ -41,12 +41,12 @@ import halfdog.bupt.edu.bubbledating.tool.DataCache;
 import halfdog.bupt.edu.bubbledating.tool.MyDate;
 
 public class ChatActivity extends ActionBarActivity {
-    public final String TAG = "ChatActivity";
+    public static final String TAG = "ChatActivity";
     private ButtonRectangle mSendMsg;
     private static EditText mInputContent;
     private static ListView mListView;
     private static List<ChatMsgEntity> mDataArray;
-    private static String chatter;
+    public  static String chatter;
     private static ChatMsgAdapter adapter;
     private SQLiteDatabase db;
 
@@ -143,7 +143,9 @@ public class ChatActivity extends ActionBarActivity {
     }
 
     public static void sendOrReceiveUiMsg(ChatMsgEntity entity, boolean isReceive){
+//        Log.d(TAG,"-->mDataArray.size():"+mDataArray.size());
         mDataArray.add(entity);
+//        Log.d(TAG, "-->mDataArray.size():" + mDataArray.size());
         adapter.refreshData(mDataArray);
         mListView.setSelection(mListView.getCount() - 1);
         if(!isReceive){
@@ -165,7 +167,7 @@ public class ChatActivity extends ActionBarActivity {
                     String content = mInputContent.getText().toString();
                     if (!TextUtils.isEmpty(content)) {
                         ChatMsgEntity entity = new ChatMsgEntity(chatter, content, MyDate.getCurSimpleDateFormate(), false);
-                        sendOrReceiveUiMsg(entity,true);
+                        sendOrReceiveUiMsg(entity,false);
                         /* sqlite operation and update DataCache.mContactUser and DataCache.mUserMsgList    */
                         if (BubbleDatingApplication.mode != Mode.OFFLINE_MODE) {
                         DataCache.updateUseMsgListAndContactUser(entity, db, false);
