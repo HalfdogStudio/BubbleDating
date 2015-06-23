@@ -79,10 +79,21 @@ public class ChatMsgAdapter extends BaseAdapter {
         int type = getItemViewType(position);
         ViewHolder holder = null;
         String ownerServerImgPath = Configuration.SERVER_IMG_CACHE_DIR  + BubbleDatingApplication.userEntity.getmName()+".png";
-        String targetServerImgPath = Configuration.SERVER_IMG_CACHE_DIR  + entity.getName()+".png";
+        String targetServerImgPath = null;
+        String target = null;
+        if(type == IM_RECEIVE){
+            target  = entity.getmFrom();
+            targetServerImgPath = Configuration.SERVER_IMG_CACHE_DIR  + entity.getmFrom()+".png";
+        }else{
+            target = entity.getTo();
+            targetServerImgPath = Configuration.SERVER_IMG_CACHE_DIR  + entity.getTo()+".png";
+        }
+
+
+
         // convertView 为空， 或者 convertView 没有ID， 或者 convertView 的 id 与 所需类型不同
         if ( convertView == null ){
-            Log.d(TAG,"-->"+position+" convertView is null;");
+//            Log.d(TAG,"-->"+position+" convertView is null;");
             holder = new ViewHolder();
             if (type == IM_SEND) {
                 // send msg
@@ -97,7 +108,7 @@ public class ChatMsgAdapter extends BaseAdapter {
             holder.mContent = (TextView) convertView.findViewById(R.id.chat_msg_text_content);
             convertView.setTag(holder);
         } else {
-            Log.d(TAG,"-->"+position +" convertView is not null;");
+//            Log.d(TAG,"-->"+position +" convertView is not null;");
             holder = (ViewHolder) convertView.getTag();
         }
 
@@ -114,7 +125,7 @@ public class ChatMsgAdapter extends BaseAdapter {
                     R.drawable.avatar_default_m, R.drawable.avatar_default_m);
             ImageCacheManager.getInstance().getImage(ownerServerImgPath, ownerAvatorListener);
         }else{
-            holder.mUserName.setText(entity.getName());
+            holder.mUserName.setText(target);
             ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener( holder.mUserHead,
                     R.drawable.avatar_default_m, R.drawable.avatar_default_m);
             ImageCacheManager.getInstance().getImage(targetServerImgPath, userAvatorListener);

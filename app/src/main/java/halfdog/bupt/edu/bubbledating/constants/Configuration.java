@@ -17,4 +17,5 @@ public class Configuration {
     public static final int BACK_OFF_MULTI = 1;
 
     public static final int UPDATE_CHAT_ACTIVITY_CONTACT = 10;
+    public static final int UPDATE_MESSAGE_FRAGMENT = 11;
 }

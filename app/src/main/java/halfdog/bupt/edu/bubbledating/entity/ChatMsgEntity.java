@@ -1,28 +1,41 @@
 package halfdog.bupt.edu.bubbledating.entity;
 
+import android.text.method.HideReturnsTransformationMethod;
+
 /**
  * Created by andy on 2015/5/5.
  */
 public class ChatMsgEntity {
 
-    private String mName;
+    private String mTo;
+    private String mFrom;
     private String mContent;
     private String mDate;
+
     private final boolean mReceive;
 
-    public ChatMsgEntity(String mTo, String mContent, String mDate, boolean mReceive) {
-        this.mName = mTo;
+    public ChatMsgEntity(String mTo, String mFrom, String mContent, String mDate, boolean mReceive) {
+        this.mTo = mTo;
+        this.mFrom = mFrom;
         this.mContent = mContent;
         this.mDate = mDate;
         this.mReceive = mReceive;
     }
 
-    public String getName() {
-        return mName;
+    public String getTo() {
+        return mTo;
     }
 
-    public void setName(String mName) {
-        this.mName = mName;
+    public void setTo(String mTo) {
+        this.mTo = mTo;
+    }
+
+    public String getmFrom(){
+        return mFrom;
+    }
+
+    public void setmFrom(String mFrom){
+        this.mFrom = mFrom;
     }
 
     public String getContent() {
@@ -52,7 +65,7 @@ public class ChatMsgEntity {
     @Override
     public String toString() {
         return "ChatMsgEntity{" +
-                "mName='" + mName + '\'' +
+                "mName='" + mTo + '\'' +
                 ", mContent='" + mContent + '\'' +
                 ", mDate='" + mDate + '\'' +
                 ", mReceive=" + mReceive +

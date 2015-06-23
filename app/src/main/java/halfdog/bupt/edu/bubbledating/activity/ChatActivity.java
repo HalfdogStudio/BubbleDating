@@ -1,12 +1,8 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.nfc.Tag;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
@@ -46,7 +42,7 @@ public class ChatActivity extends ActionBarActivity {
     private static EditText mInputContent;
     private static ListView mListView;
     private static List<ChatMsgEntity> mDataArray;
-    public  static String chatter;
+    public static String chatter;
     private static ChatMsgAdapter adapter;
     private SQLiteDatabase db;
 
@@ -79,10 +75,10 @@ public class ChatActivity extends ActionBarActivity {
 
         db = MySQLiteOpenHelper.getInstance(this).getWritableDatabase();
 
-        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        Log.d("", "-->pkg:" + cn.getPackageName());
-        Log.d("", "-->cls:" + cn.getClassName());
+//        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+//        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+//        Log.d("", "-->pkg:" + cn.getPackageName());
+//        Log.d("", "-->cls:" + cn.getClassName());
 
         BubbleDatingApplication.setCurrentActivity(this);
 
@@ -104,17 +100,16 @@ public class ChatActivity extends ActionBarActivity {
     protected void onStop() {
         super.onStop();
         clearReferences();
-        if(db != null){
+        if (db != null) {
             db.close();
         }
     }
 
-    private void clearReferences(){
+    private void clearReferences() {
         Activity currActivity = BubbleDatingApplication.getCurrentActivity();
         if (currActivity != null && currActivity.equals(this))
             BubbleDatingApplication.setCurrentActivity(null);
     }
-
 
 
     public void initViews() {
@@ -134,27 +129,36 @@ public class ChatActivity extends ActionBarActivity {
         getSupportActionBar().setTitle(chatter);
 
 
-
-
     }
 
     public void initListeners() {
         mSendMsg.setOnClickListener(mClickListener);
     }
 
-    public static void sendOrReceiveUiMsg(ChatMsgEntity entity, boolean isReceive){
-//        Log.d(TAG,"-->mDataArray.size():"+mDataArray.size());
-        mDataArray.add(entity);
-//        Log.d(TAG, "-->mDataArray.size():" + mDataArray.size());
+    public static void sendOrReceiveUiMsg(ChatMsgEntity entity, boolean isReceive) throws IllegalStateException{
+        String chatter = null;
+        if(isReceive){
+            chatter = entity.getmFrom();
+        }else{
+            chatter = entity.getTo();
+        }
+        Log.d(TAG,"-->before get new msg, mDataArray.size():"+mDataArray.size());
+//        mDataArray.add(entity);
+        /* mDataArray 应该保持与 mUserMsgList 保持数据一致 */
+        if(DataCache.mUserMsgList.isEmpty()){
+            throw new IllegalStateException("mUserMsgList is null, cannot get mDataArray ");
+        }
+        mDataArray = DataCache.mUserMsgList.get(chatter);
+        Log.d(TAG, "-->ater get new msg, mDataArray.size():" + mDataArray.size());
         adapter.refreshData(mDataArray);
         mListView.setSelection(mListView.getCount() - 1);
-        if(!isReceive){
+        if (!isReceive) {
             mInputContent.setText("");
         }
 
     }
 
-    public static void refreshListView(){
+    public static void refreshListView() {
         mListView.invalidateViews();
     }
 
@@ -164,16 +168,25 @@ public class ChatActivity extends ActionBarActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.chat_send_msg_button:
+                    if(!mDataArray.isEmpty()){
+                        Log.d(TAG,"-->Before send operation, mDataArray has "+mDataArray.size() + " elements");
+                    }
                     String content = mInputContent.getText().toString();
                     if (!TextUtils.isEmpty(content)) {
-                        ChatMsgEntity entity = new ChatMsgEntity(chatter, content, MyDate.getCurSimpleDateFormate(), false);
-                        sendOrReceiveUiMsg(entity,false);
+                        ChatMsgEntity entity = new ChatMsgEntity(chatter,BubbleDatingApplication.userEntity.getmName(),  content, MyDate.getCurSimpleDateFormate(), false );
                         /* sqlite operation and update DataCache.mContactUser and DataCache.mUserMsgList    */
+                        DataCache.updateUsrMsgAndContacListInMemory(entity);
+
+                        sendOrReceiveUiMsg(entity, false);
+                        DataCache.updateUsrMsgAndContactListInDB(entity, db);
+
                         if (BubbleDatingApplication.mode != Mode.OFFLINE_MODE) {
-                        DataCache.updateUseMsgListAndContactUser(entity, db, false);
                         /*  use HX Tool to send message */
-                        sendHXMsg(chatter, content);
+                            sendHXMsg(chatter, content);
                         }
+                    }
+                    if(!mDataArray.isEmpty()){
+                        Log.d(TAG,"-->After send operation, mDataArray has "+mDataArray.size() + " elements");
                     }
                     break;
             }
@@ -188,7 +201,7 @@ public class ChatActivity extends ActionBarActivity {
         EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
         //如果是群聊，设置chattype,默认是单聊
 //        message.setChatType(EMMessage.ChatType.GroupChat);
-         //设置消息body
+        //设置消息body
         TextMessageBody txtBody = new TextMessageBody(content);
         message.addBody(txtBody);
         //设置接收人
@@ -199,12 +212,12 @@ public class ChatActivity extends ActionBarActivity {
         EMChatManager.getInstance().sendMessage(message, new EMCallBack() {
             @Override
             public void onSuccess() {
-                Log.d(TAG,"-->MSG SEND success");
+                Log.d(TAG, "-->MSG SEND success");
             }
 
             @Override
             public void onError(int i, String s) {
-                Log.d(TAG,"-->MSG SEND failed");
+                Log.d(TAG, "-->MSG SEND failed");
             }
 
             @Override
@@ -242,14 +255,14 @@ public class ChatActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    static public Handler mHandler = new Handler(){
+    static public Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch(msg.what){
+            switch (msg.what) {
                 case Configuration.UPDATE_CHAT_ACTIVITY_CONTACT:
-                    ChatMsgEntity entity = (ChatMsgEntity)msg.obj;
-                    Log.d("","-->entity from notifier:"+entity.toString());
+                    ChatMsgEntity entity = (ChatMsgEntity) msg.obj;
+                    Log.d("", "-->entity from notifier:" + entity.toString());
                     ChatActivity.sendOrReceiveUiMsg(entity, true);
                     break;
             }
@@ -258,9 +271,9 @@ public class ChatActivity extends ActionBarActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK){
+        if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
             this.finish();
-            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             return true;
         }
         return super.onKeyDown(keyCode, event);

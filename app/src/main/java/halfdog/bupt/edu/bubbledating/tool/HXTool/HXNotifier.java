@@ -18,12 +18,10 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMMessage;
 import com.easemob.util.EMLog;
-import com.easemob.util.EasyUtils;
 
 import java.util.HashSet;
 import java.util.Locale;
@@ -31,8 +29,10 @@ import java.util.Locale;
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.activity.ChatActivity;
+import halfdog.bupt.edu.bubbledating.activity.MainActivity;
 import halfdog.bupt.edu.bubbledating.constants.Configuration;
 import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
+import halfdog.bupt.edu.bubbledating.fragment.dummy.MessageFragment;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
 import halfdog.bupt.edu.bubbledating.tool.MyDate;
 import halfdog.bupt.edu.bubbledating.tool.ProcessManager;
@@ -135,32 +135,45 @@ public class HXNotifier {
 //        Log.d(TAG,"-->on New Msg in HX Notifier");
         // 判断app是否在后台
         if(ProcessManager.isBackGround(context)){
-            Log.d(TAG,"--> process is in background");
-            sendNotification(message, false,messageContent);
-            ChatMsgEntity entity = new ChatMsgEntity(message.getFrom(),
+            Log.d(TAG, "--> process is in background");
+            sendNotification(message, false, messageContent);
+            ChatMsgEntity entity = new ChatMsgEntity(message.getTo(),message.getFrom(),
                     messageContent,MyDate.getCurSimpleDateFormate().toString(),true);
+
+            DataCache.updateUsrMsgAndContacListInMemory(entity);
+
             ChatActivity.sendOrReceiveUiMsg(entity, true);
-            DataCache.updateUseMsgListAndContactUser(entity, db, true);
+            DataCache.updateUsrMsgAndContactListInDB(entity, db);
         }else{
             Log.d(TAG, "--> app is in foreground");
-            sendNotification(message, true,messageContent);
-            ChatMsgEntity entity = new ChatMsgEntity(message.getFrom(),
+            sendNotification(message, true, messageContent);
+            ChatMsgEntity entity = new ChatMsgEntity(message.getTo(),message.getFrom(),
                     messageContent,MyDate.getCurSimpleDateFormate().toString(),true);
+
+            DataCache.updateUsrMsgAndContacListInMemory(entity);
+
+
 
             /*应该判断当前Activity是不是ChatActivity, 若是， 发送消息， 若不是， 只更新DataCache 和 sqlite的内容，
             * 否则可能出现ChatActivity还没实例化，就已然调用ChatActivity的方法的错误。*/
-            Log.d(TAG,"-->current activity:"+BubbleDatingApplication.getCurrentActivity());
+            Log.d(TAG, "-->current activity:" + BubbleDatingApplication.getCurrentActivity());
             if(BubbleDatingApplication.getCurrentActivity() instanceof  ChatActivity && TextUtils.equals(message.getFrom(),ChatActivity.chatter)){
-                Log.d(TAG,"-->UPDATE_CHAT_ACTIVITY_CONTACT");
                 Message msg = ChatActivity.mHandler.obtainMessage();
                 msg.what = Configuration.UPDATE_CHAT_ACTIVITY_CONTACT;
                 msg.obj = entity;
                 ChatActivity.mHandler.sendMessage(msg);
-//            ChatActivity.sendOrReceiveUiMsg(entity, true);
+            }else if (BubbleDatingApplication.getCurrentActivity() instanceof MainActivity && MainActivity.currentFragment instanceof MessageFragment){
+                Log.d(TAG,"--> refresh message fragment.");
+                Message msg = MessageFragment.mhandler.obtainMessage(Configuration.UPDATE_MESSAGE_FRAGMENT,entity);
+                MessageFragment.mhandler.sendMessage(msg);
             }
+            /* 执行到中间部分会中断*/
+            DataCache.updateUsrMsgAndContactListInDB(entity, db);
 
 
-            DataCache.updateUseMsgListAndContactUser(entity, db, true);
+
+
+
         }
 
 

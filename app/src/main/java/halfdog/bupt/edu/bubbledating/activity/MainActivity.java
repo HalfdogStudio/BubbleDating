@@ -1,5 +1,6 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -56,7 +57,8 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
     private ImageView dateImage,messageImage,swimDailyImage;
     private TextView dateText,messageText,swimDailyText;
     private FrameLayout fragmentContainer;
-    private Fragment dateFragment,messageFragment,swimDailyFragment,currentFragment;
+    private Fragment dateFragment,messageFragment,swimDailyFragment;
+    public static Fragment currentFragment;
 
     private DrawerLayout drawerlayout;
     private ListView leftDrawerList;
@@ -314,6 +316,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
     @Override
     protected void onResume() {
         super.onResume();
+        BubbleDatingApplication.setCurrentActivity(this);
 
 
     }
@@ -325,6 +328,8 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         HXSDKHelper sdkHelper =  HXSDKHelper.getInstance();
         sdkHelper.pushActivity(this);
 
+        BubbleDatingApplication.setCurrentActivity(this);
+
         // register the event listener when enter the foreground
 //        EMChatManager.getInstance().registerEventListener(this);
 //        Log.d(TAG,"-->注册消息监听");
@@ -333,15 +338,22 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         }
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        clearReferences();
+    }
 
     @Override
     protected void onStop() {
 //        EMChatManager.getInstance().unregisterEventListener(this);
 //        Log.d(TAG, "-->注销消息监听");
+        super.onStop();
         HXSDKHelper sdkHelper =  HXSDKHelper.getInstance();
         sdkHelper.popActivity(this);
-        super.onStop();
+        clearReferences();
+
+
 
     }
 
@@ -352,6 +364,12 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         if(!NetworkStatusTool.isConnected(MainActivity.this)){
             Toast.makeText(this, R.string.network_state_not_connected,Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void clearReferences(){
+        Activity currActivity = BubbleDatingApplication.getCurrentActivity();
+        if (currActivity != null && currActivity.equals(this))
+            BubbleDatingApplication.setCurrentActivity(null);
     }
 
     AdapterView.OnItemClickListener leftDrawerItemClickListener = new AdapterView.OnItemClickListener() {

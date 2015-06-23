@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.baidu.navisdk.util.SysOSAPI;
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.activity.ChatActivity;
 import halfdog.bupt.edu.bubbledating.adapter.LatestMsgAdapter;
+import halfdog.bupt.edu.bubbledating.constants.Configuration;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
 
@@ -30,10 +33,10 @@ import halfdog.bupt.edu.bubbledating.tool.DataCache;
  * create an instance of this fragment.
  */
 public class MessageFragment extends Fragment {
-    private final String TAG = "MessageFragment";
-    private ListView mLatestMsgList;
-    private LatestMsgAdapter mLatestMsgAdapter;
-    private TextView mNoMsgTextView;
+    private static final String TAG = "MessageFragment";
+    private static ListView mLatestMsgList;
+    private static LatestMsgAdapter mLatestMsgAdapter;
+    private static TextView mNoMsgTextView;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -112,7 +115,7 @@ public class MessageFragment extends Fragment {
     AdapterView.OnItemClickListener onLattestMessageItemListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            String mUserName = DataCache.mContactUser.get(position).getName();
+            String mUserName = DataCache.mContactUser.get(position).getmFrom();
             Intent intent = new Intent(getActivity(), ChatActivity.class);
             intent.putExtra("name",mUserName);
             startActivity(intent);
@@ -142,6 +145,31 @@ public class MessageFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    public static Handler mhandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch(msg.what){
+                case Configuration.UPDATE_MESSAGE_FRAGMENT:
+                    if(DataCache.mHasHistoryMsg){
+                        if(Mode.DEBUG){
+                            Log.d(TAG,"-->has history msg,list view show");
+                        }
+                        mNoMsgTextView.setVisibility(View.GONE);
+                        mLatestMsgList.setVisibility(View.VISIBLE);
+
+                        mLatestMsgAdapter.refreshAdapter(DataCache.mContactUser);
+                    }else{
+                        if(Mode.DEBUG){
+                            Log.d(TAG,"-->no history msg,no msg textview show");
+                        }
+                        mNoMsgTextView.setVisibility(View.VISIBLE);
+                        mLatestMsgList.setVisibility(View.GONE);
+                    }
+            }
+        }
+    };
 
     /**
      * This interface must be implemented by activities that contain this

@@ -36,6 +36,12 @@ public class LatestMsgAdapter extends BaseAdapter {
         this.context = context;
         this.list = list;
     }
+
+    public void refreshAdapter(List<ChatMsgEntity>  list){
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         if(DataCache.mContactUser == null) return 0;
@@ -56,10 +62,19 @@ public class LatestMsgAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ChatMsgEntity entity = list.get(position);
         ViewHolder holder = null;
-        String serverImgPath = Configuration.SERVER_IP+ File.separator+Configuration.IMG_CACHE_PATH+File.separator+entity.getName()+".png";
-        if(Mode.DEBUG){
-            Log.d(TAG, "-->chat msg adapter of " + entity.getName() + ":" + serverImgPath);
+        String serverImgPath = null;
+        String chatter = null;
+        if(entity.isReceive()){
+            serverImgPath = Configuration.SERVER_IP+ File.separator+Configuration.IMG_CACHE_PATH+File.separator+entity.getmFrom()+".png";
+            chatter = entity.getmFrom();
+        }else{
+            serverImgPath = Configuration.SERVER_IP+ File.separator+Configuration.IMG_CACHE_PATH+File.separator+entity.getTo()+".png";
+            chatter = entity.getTo();
         }
+//        Configuration.SERVER_IP+ File.separator+Configuration.IMG_CACHE_PATH+File.separator+entity.from()+".png";
+//        if(Mode.DEBUG){
+//            Log.d(TAG, "-->chat msg adapter of " + entity.getName() + ":" + serverImgPath);
+//        }
         if(convertView == null){
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.message_fragment_msg_item,null);
@@ -75,7 +90,7 @@ public class LatestMsgAdapter extends BaseAdapter {
                 R.drawable.avatar_default_m, R.drawable.avatar_default_m);
         ImageCacheManager.getInstance().getImage(serverImgPath,userAvatorListener);
 //        holder.mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_m));
-        holder.mTitle.setText(entity.getName());
+        holder.mTitle.setText(chatter);
         holder.mContent.setText(entity.getContent());
         holder.mPosttime.setText(MyDate.diffDate(MyDate.getCurrentDate(),MyDate.parseSimpleDateFormate(entity.getDate())));
         return convertView;
