@@ -3,6 +3,7 @@ package halfdog.bupt.edu.bubbledating.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -45,6 +46,8 @@ public class LoginActivity extends Activity {
 
     private static EditText loginName;
     private static EditText loginPw;
+    private String username;
+    private String pw;
 
     private final Context context = LoginActivity.this;
     private static com.gc.materialdesign.widgets.ProgressDialog progressDialog;
@@ -68,6 +71,26 @@ public class LoginActivity extends Activity {
 
         progressDialog = new com.gc.materialdesign.widgets.ProgressDialog(LoginActivity.this,"请稍候");
 //        context = this;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        /* judge if account share preference exists  */
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(Configuration.ACOUNT_SHARE_PREFERENCE,
+                MODE_PRIVATE);
+        String uName = preferences.getString(UserInfoKeys.U_NAME, null);
+        String uPw = preferences.getString(UserInfoKeys.U_PASSWORD, null);
+
+        if( !TextUtils.isEmpty(uName) && !TextUtils.isEmpty(uPw)){
+            String email = preferences.getString(UserInfoKeys.U_EMAIL,null);
+            String gender = preferences.getString(UserInfoKeys.U_GENDER,null);
+            BubbleDatingApplication.userEntity = new UserEntity(-1,uName, uPw,email,gender,null,true);
+
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            this.finish();
+        }
     }
 
     View.OnClickListener buttonListener = new View.OnClickListener(){
@@ -140,7 +163,19 @@ public class LoginActivity extends Activity {
                                     res.getString(UserInfoKeys.U_NAME),res.getString(UserInfoKeys.U_PASSWORD),
                                     res.getString(UserInfoKeys.U_EMAIL),res.getString(UserInfoKeys.U_GENDER),null,
                                     res.getBoolean(UserInfoKeys.U_ONLINE));
-                            progressDialog.dismiss();
+                                    progressDialog.dismiss();
+
+                            /* save user info to "account" shared preference */
+                            SharedPreferences preferences = getApplicationContext().getSharedPreferences(Configuration.ACOUNT_SHARE_PREFERENCE,
+                                    MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putLong(UserInfoKeys.U_ID, BubbleDatingApplication.userEntity.getmId());
+                            editor.putString(UserInfoKeys.U_NAME,BubbleDatingApplication.userEntity.getmName());
+                            editor.putString(UserInfoKeys.U_PASSWORD,BubbleDatingApplication.userEntity.getmPw());
+                            editor.putString(UserInfoKeys.U_EMAIL,BubbleDatingApplication.userEntity.getmEmail());
+                            editor.putString(UserInfoKeys.U_GENDER,BubbleDatingApplication.userEntity.getmGender());
+                            editor.commit();
+
                             context.startActivity(toMainAcvitiy);
                             ((Activity)context).overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                             ((Activity) context).finish();
@@ -175,8 +210,8 @@ public class LoginActivity extends Activity {
 
 
     public  void  login(final Context context){
-        final String username = loginName.getText().toString();
-        String pw = loginPw.getText().toString();
+        username = loginName.getText().toString();
+        pw = loginPw.getText().toString();
         if(TextUtils.isEmpty(username)){
             Toast.makeText(context,"用户名不能为空",Toast.LENGTH_SHORT).show();
             return;
@@ -192,8 +227,6 @@ public class LoginActivity extends Activity {
         loginInfo.put("password",pw);
         loginInfo.put("lat",String.valueOf(BubbleDatingApplication.userLatLng.latitude));
         loginInfo.put("lon", String.valueOf(BubbleDatingApplication.userLatLng.longitude));
-        Log.d(TAG, "-->USERNAME:" + username);
-        Log.d(TAG,"-->pw:"+pw);
 
 
 //        RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -203,16 +236,4 @@ public class LoginActivity extends Activity {
         loginRequest.setRetryPolicy(retryPolicy);
         RequestManager.getInstance(context).add(loginRequest);
     }
-
-//    public static void  login(final Context context,String username,String pw){
-//        Map<String,String> loginInfo = new HashMap<>();
-//        loginInfo.put("username",username);
-//        loginInfo.put("password",pw);
-//        Log.d(TAG,"-->USERNAME:"+username);
-//        Log.d(TAG,"-->pw:"+pw);
-//
-////        RequestQueue requestQueue = Volley.newRequestQueue(context);
-//        CustomRequest loginRequest = new CustomRequest(Request.Method.POST,LOGIN_URL,loginInfo,response);
-//        RequestManager.getInstance(context).add(loginRequest);
-//    }
 }

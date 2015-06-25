@@ -55,6 +55,8 @@
     <dimen name="person_info_name_size">35sp</dimen>
     <dimen name="person_info_email_size">30sp</dimen>
     <dimen name="person_info_vertical_interval">10sp</dimen>
+    <dimen name="person_info_exit_login_margin_top">20dp</dimen>
+    <dimen name="person_info_exit_login_button_padding_left_right">10dp</dimen>
 
     <!--invitation activity-->
     <dimen name="invitation_activity_content_edittext_horizontal_padding">8dp</dimen>

@@ -43,6 +43,18 @@
         android:textSize="@dimen/person_info_email_size"
         android:layout_below="@id/person_info_gender"/>
 
+    <com.gc.materialdesign.views.ButtonRectangle
+        android:id="@+id/exit_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/person_info_exit_login_button_padding_left_right"
+        android:paddingRight="@dimen/person_info_exit_login_button_padding_left_right"
+        android:background="#ff4444"
+        android:text="@string/exit_login"
+        android:layout_marginTop="@dimen/person_info_exit_login_margin_top"
+        android:layout_below="@id/person_info_email"
+        android:layout_centerHorizontal="true"/>
+
 
 
 </RelativeLayout>

@@ -53,6 +53,7 @@ public class BubbleDatingApplication extends Application {
     public static int mCacheSize = 1024 * 1024 * 8;
     public static int mode = Mode.ONLINE_MODE;
 
+
     public BDLocationListener listener = new MyLocationListener();
 
     @Override

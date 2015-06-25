@@ -98,6 +98,8 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
             initHXLogin();
         }
 
+        Log.d(TAG,"--->on create");
+
 
 
 
@@ -185,7 +187,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         MySQLiteOpenHelper instance = MySQLiteOpenHelper.getInstance(this, Offline.OFFLINE_DB);
         SQLiteDatabase db = instance.getReadableDatabase();
         db.execSQL("insert into contact_list values(null,?,?,?)",new String[]{"joseph","OK","2015-06-01 21:40:00"});
-        db.execSQL("insert into contact_list values(null,?,?,?)",new String[]{"loly","不见不散","2015-05-29 8:19:47"});
+        db.execSQL("insert into contact_list values(null,?,?,?)", new String[]{"loly", "不见不散", "2015-05-29 8:19:47"});
         db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-06-01 21:40:00", "Hi,约么？", "false"});
         db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-06-01 21:41:05", "When?", "true"});
         db.execSQL("insert into contact_msg_list values(null,?,?,?,?)", new String[]{"joseph", "2015-06-01 21:43:32", "今晚9点，游泳馆门口见", "false"});
@@ -312,10 +314,19 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
 
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d(TAG,"--->on new intent");
+//        if(currentFragment == null){
+//            currentFragment = new DateFragment();
+//        }
+        addOrShowFragment(currentFragment);
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "--->on resume");
         BubbleDatingApplication.setCurrentActivity(this);
 
 
@@ -324,6 +335,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG, "--->on start");
         // register this event listener when this activity enters the background
         HXSDKHelper sdkHelper =  HXSDKHelper.getInstance();
         sdkHelper.pushActivity(this);
@@ -336,6 +348,11 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         if(!NetworkStatusTool.isConnected(MainActivity.this)){
             Toast.makeText(this, R.string.network_state_not_connected,Toast.LENGTH_LONG).show();
         }
+
+//        if(currentFragment == null){
+//            currentFragment = new DateFragment();
+//        }
+//        addOrShowFragment(currentFragment);
     }
 
     @Override

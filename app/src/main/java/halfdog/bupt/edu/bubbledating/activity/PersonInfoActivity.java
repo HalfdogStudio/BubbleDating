@@ -1,15 +1,20 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.gc.materialdesign.views.ButtonRectangle;
 
 import java.io.File;
 
@@ -28,6 +33,7 @@ public class PersonInfoActivity extends ActionBarActivity {
     private TextView mName;
     private ImageView mGender;
     private TextView mEmail;
+    private com.gc.materialdesign.views.ButtonRectangle mExitLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,9 @@ public class PersonInfoActivity extends ActionBarActivity {
         mName = (TextView)findViewById(R.id.person_info_name);
         mGender = (ImageView)findViewById(R.id.person_info_gender);
         mEmail = (TextView)findViewById(R.id.person_info_email);
+        mExitLogin = (ButtonRectangle)findViewById(R.id.exit_login);
+
+        mExitLogin.setOnClickListener(onClickListener);
 
         mName.setText(BubbleDatingApplication.userEntity.getmName());
         mEmail.setText(BubbleDatingApplication.userEntity.getmEmail());
@@ -87,6 +96,23 @@ public class PersonInfoActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch(v.getId()){
+                case R.id.exit_login:
+                    SharedPreferences sharedPreferences = getSharedPreferences(Configuration.ACOUNT_SHARE_PREFERENCE,
+                            MODE_PRIVATE);
+                    sharedPreferences.edit().clear().commit();
+                    Intent intent = new Intent(PersonInfoActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+
+            }
+        }
+    };
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

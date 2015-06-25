@@ -62,4 +62,6 @@
     <string name="notification_from_hint">来自</string>
     <string name="notification_end">的消息</string>
 
+    <string name="exit_login">退出登录</string>
+
 </resources>

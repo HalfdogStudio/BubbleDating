@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -45,6 +46,7 @@ import java.util.Map;
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.constants.UserInfoKeys;
 import halfdog.bupt.edu.bubbledating.entity.UserEntity;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.constants.ResponseState;
@@ -131,6 +133,19 @@ public class RegisterAccount extends Activity {
                             Toast.makeText(RegisterAccount.this, "注册成功", Toast.LENGTH_SHORT).show();
                             BubbleDatingApplication.userEntity = new UserEntity(-1,uName,uPw,uEmail
                                     ,uGender,null,true);
+
+                            /* save user info to "account" shared preference */
+                            SharedPreferences preferences = getApplicationContext().getSharedPreferences(Configuration.ACOUNT_SHARE_PREFERENCE,
+                                    MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putLong(UserInfoKeys.U_ID, -1);
+                            editor.putString(UserInfoKeys.U_NAME,uName);
+                            editor.putString(UserInfoKeys.U_PASSWORD,uPw);
+                            editor.putString(UserInfoKeys.U_EMAIL,uEmail);
+                            editor.putString(UserInfoKeys.U_GENDER,uGender);
+                            editor.commit();
+
+
                             Intent jumpToMainActivity = new Intent(RegisterAccount.this,MainActivity.class);
                             progressDialog.dismiss();
                             startActivity(jumpToMainActivity);

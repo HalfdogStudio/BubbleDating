@@ -18,4 +18,9 @@ public class Configuration {
 
     public static final int UPDATE_CHAT_ACTIVITY_CONTACT = 10;
     public static final int UPDATE_MESSAGE_FRAGMENT = 11;
+
+    public static final String ACOUNT_SHARE_PREFERENCE = "count";
+    public static final String ACOUNT_USERNAME = "username";
+    public static final String ACOUNT_PASSWORD = "password";
+
 }
