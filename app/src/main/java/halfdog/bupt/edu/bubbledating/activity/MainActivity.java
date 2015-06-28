@@ -97,12 +97,6 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         if(BubbleDatingApplication.mode != Mode.OFFLINE_MODE){
             initHXLogin();
         }
-
-        Log.d(TAG,"--->on create");
-
-
-
-
     }
 
     public void initUI(){
@@ -145,11 +139,9 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
     public void initTabs(){
         if(dateFragment == null){
             dateFragment = new DateFragment();
-            Log.d(TAG,"-->ADD DATING FRAGMENT");
         }
 
         if(!dateFragment.isAdded()){
-            Log.d(TAG,"--> DATING FRAGMENT IS NOT ADDED");
             getSupportFragmentManager().beginTransaction().add(R.id.main_activity_fragment_container,dateFragment).commit();
             currentFragment = dateFragment;
             dateImage.setImageDrawable(getResources().getDrawable(R.mipmap.swim_chozen));
@@ -311,6 +303,12 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         }
 
         currentFragment = fragment;
+
+        /* if current fragment is MessageFragment , msg list should refresh */
+        if( currentFragment != null && currentFragment instanceof  MessageFragment){
+            MessageFragment.mhandler.obtainMessage(halfdog.bupt.edu.bubbledating.constants.Configuration.UPDATE_MESSAGE_FRAGMENT,
+                    DataCache.mContactUser).sendToTarget();
+        }
 
     }
 
