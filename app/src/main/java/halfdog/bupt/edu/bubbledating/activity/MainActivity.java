@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -43,6 +44,7 @@ import halfdog.bupt.edu.bubbledating.fragment.dummy.MessageFragment;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.SwimDailyFragment;
 import halfdog.bupt.edu.bubbledating.service.BackgroundService;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
+import halfdog.bupt.edu.bubbledating.tool.HXTool.HXNotifier;
 import halfdog.bupt.edu.bubbledating.tool.HXTool.HXSDKHelper;
 import halfdog.bupt.edu.bubbledating.tool.NetworkStatusTool;
 
@@ -97,6 +99,9 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         if(BubbleDatingApplication.mode != Mode.OFFLINE_MODE){
             initHXLogin();
         }
+
+//        HXNotifier.getInstance().sendNotification(this);
+        TextUtils.isEmpty("");
     }
 
     public void initUI(){

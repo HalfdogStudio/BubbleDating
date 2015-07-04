@@ -64,4 +64,7 @@
 
     <string name="exit_login">退出登录</string>
 
+    <string name="wait_a_moment">请稍后</string>
+
+
 </resources>

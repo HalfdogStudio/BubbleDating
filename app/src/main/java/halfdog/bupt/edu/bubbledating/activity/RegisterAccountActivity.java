@@ -52,7 +52,7 @@ import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.constants.ResponseState;
 import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 
-public class RegisterAccount extends Activity {
+public class RegisterAccountActivity extends Activity {
     private static final String REGISTER_URL = Configuration.SERVER_IP + "/BubbleDatingServer/HandleRegistration";
     private static final String TAG = "RegisterAccount";
     private final int REQUEST_TAKE_PHOTO = 1;
@@ -76,13 +76,16 @@ public class RegisterAccount extends Activity {
     private String uGender;
     private String uAvatarString;
 
-    private final Context context  = RegisterAccount.this;
+    private final Context context  = RegisterAccountActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_account);
+        initUI();
+    }
 
+    public void initUI(){
         userName = (EditText) findViewById(R.id.register_activity_user_name);
         userPassword = (EditText) findViewById(R.id.register_activity_password);
         userEmail = (EditText) findViewById(R.id.register_activity_email);
@@ -98,7 +101,7 @@ public class RegisterAccount extends Activity {
         quit.setOnClickListener(clickListener);
         userAvatar.setOnClickListener(clickListener);
 
-        progressDialog = new ProgressDialog(RegisterAccount.this,"请稍候");
+        progressDialog = new ProgressDialog(RegisterAccountActivity.this,this.getResources().getString(R.string.wait_a_moment));
     }
 
     RadioGroup.OnCheckedChangeListener checkedChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -130,7 +133,7 @@ public class RegisterAccount extends Activity {
                     int response = (int) jsonObject.get(ResponseState.RESPONSE_STATUS_KEY);
                     switch (response) {
                         case ResponseState.OK:
-                            Toast.makeText(RegisterAccount.this, "注册成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterAccountActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                             BubbleDatingApplication.userEntity = new UserEntity(-1,uName,uPw,uEmail
                                     ,uGender,null,true);
 
@@ -146,27 +149,27 @@ public class RegisterAccount extends Activity {
                             editor.commit();
 
 
-                            Intent jumpToMainActivity = new Intent(RegisterAccount.this,MainActivity.class);
+                            Intent jumpToMainActivity = new Intent(RegisterAccountActivity.this,MainActivity.class);
                             progressDialog.dismiss();
                             startActivity(jumpToMainActivity);
-                            RegisterAccount.this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            RegisterAccountActivity.this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
                             break;
                         case ResponseState.USER_NAME_DUPLICATE:
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterAccount.this, "用户名已被使用，请重新输入", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterAccountActivity.this, "用户名已被使用，请重新输入", Toast.LENGTH_SHORT).show();
                             break;
                         case ResponseState.EMAIL_DUPLICATE:
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterAccount.this, "邮箱已被使用，请重新输入", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterAccountActivity.this, "邮箱已被使用，请重新输入", Toast.LENGTH_SHORT).show();
                             break;
                         case ResponseState.UNKNOWN_ERROR:
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterAccount.this, "很抱歉，发生了未知的错误，请联系管理员", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterAccountActivity.this, "很抱歉，发生了未知的错误，请联系管理员", Toast.LENGTH_SHORT).show();
                             break;
                         default:
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterAccount.this, "未知", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterAccountActivity.this, "未知", Toast.LENGTH_SHORT).show();
                             break;
 
                     }
@@ -182,7 +185,7 @@ public class RegisterAccount extends Activity {
         @Override
         public void onErrorResponse(VolleyError error) {
             progressDialog.dismiss();
-            Toast.makeText(RegisterAccount.this, R.string.volley_request_timeout_error, Toast.LENGTH_LONG).show();
+            Toast.makeText(RegisterAccountActivity.this, R.string.volley_request_timeout_error, Toast.LENGTH_LONG).show();
         }
     };
 
@@ -198,22 +201,22 @@ public class RegisterAccount extends Activity {
                     uEmail = userEmail.getText().toString();
                     uGender = male.isChecked() ? "m" : "f";
                     if (TextUtils.isEmpty(uName)) {
-                        Toast.makeText(RegisterAccount.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterAccountActivity.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
                         break;
                     }
                     if (TextUtils.isEmpty(uPw)) {
 //                            userPassword.setError("密码不能为空");
-                        Toast.makeText(RegisterAccount.this, "密码不能为空", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterAccountActivity.this, "密码不能为空", Toast.LENGTH_SHORT).show();
                         break;
                     }
                     if (TextUtils.isEmpty(uEmail)) {
 //                            userEmail.setError("邮箱不能为空");
-                        Toast.makeText(RegisterAccount.this, "邮箱不能为空", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterAccountActivity.this, "邮箱不能为空", Toast.LENGTH_SHORT).show();
                         break;
                     }
                     if (!Patterns.EMAIL_ADDRESS.matcher(uEmail).matches()) {
 //                            userEmail.setError("邮箱格式不合法");
-                        Toast.makeText(RegisterAccount.this, "邮箱格式不合法", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterAccountActivity.this, "邮箱格式不合法", Toast.LENGTH_SHORT).show();
                         break;
                     }
 
@@ -240,7 +243,7 @@ public class RegisterAccount extends Activity {
                     RequestManager.getInstance(context).add(registerRequest);
                     break;
                 case R.id.register_activity_quit:
-                    RegisterAccount.this.finish();
+                    RegisterAccountActivity.this.finish();
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
                 case R.id.register_activity_user_avatar:

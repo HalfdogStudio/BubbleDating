@@ -111,7 +111,7 @@ public class LoginActivity extends Activity {
                     login(LoginActivity.this);
                     break;
                 case R.id.login_activity_register:
-                    Intent toRegisterActivity = new Intent(LoginActivity.this,RegisterAccount.class);
+                    Intent toRegisterActivity = new Intent(LoginActivity.this,RegisterAccountActivity.class);
                     startActivity(toRegisterActivity);
                     overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
                     break;

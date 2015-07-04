@@ -49,28 +49,32 @@ public class HXNotifier {
 
     Ringtone ringtone = null;
 
-    public final static String[] msg_eng = { "sent a message", "sent a picture", "sent a voice",
-            "sent location message", "sent a video", "sent a file", "%1 contacts sent %2 messages"
-    };
-    public final static String[] msg_ch = { "发来一条消息", "发来一张图片", "发来一段语音", "发来位置信息", "发来一个视频", "发来一个文件",
-            "%1个联系人发来%2条消息"
-    };
+//    public final static String[] msg_eng = { "sent a message", "sent a picture", "sent a voice",
+//            "sent location message", "sent a video", "sent a file", "%1 contacts sent %2 messages"
+//    };
+//    public final static String[] msg_ch = { "发来一条消息", "发来一张图片", "发来一段语音", "发来位置信息", "发来一个视频", "发来一个文件",
+//            "%1个联系人发来%2条消息"
+//    };
 
     public static int notifyID = 0525; // start notification id
     public static int foregroundNotifyID = 0555;
 
-    public NotificationManager notificationManager = null;
+
 
     public HashSet<String> fromUsers = new HashSet<String>();
     public int notificationNum = 0;
 
-    public Context appContext;
+
     public String packageName;
     public String[] msgs;
     public long lastNotifiyTime;
     public AudioManager audioManager;
     public Vibrator vibrator;
     public HXNotificationInfoProvider notificationInfoProvider;
+
+    public static Context appContext;
+    public static NotificationManager notificationManager = null;
+    public static HXNotifier instance = new HXNotifier();
 
 
 
@@ -89,11 +93,11 @@ public class HXNotifier {
         Log.d(TAG,"-->init NotificationManager in HXNotifier");
 
         packageName = appContext.getApplicationInfo().packageName;
-        if (Locale.getDefault().getLanguage().equals("zh")) {
-            msgs = msg_ch;
-        } else {
-            msgs = msg_eng;
-        }
+//        if (Locale.getDefault().getLanguage().equals("zh")) {
+//            msgs = msg_ch;
+//        } else {
+//            msgs = msg_eng;
+//        }
 
         audioManager = (AudioManager) appContext.getSystemService(Context.AUDIO_SERVICE);
         vibrator = (Vibrator) appContext.getSystemService(Context.VIBRATOR_SERVICE);
@@ -118,6 +122,13 @@ public class HXNotifier {
     void cancelNotificaton() {
         if (notificationManager != null)
             notificationManager.cancel(notifyID);
+    }
+
+    /*
+    *       return the single instance of HXNotifier
+    * */
+    public static HXNotifier getInstance(){
+        return instance;
     }
 
     /**
@@ -146,7 +157,7 @@ public class HXNotifier {
             DataCache.updateUsrMsgAndContactListInDB(entity, db);
         }else{
             Log.d(TAG, "--> app is in foreground");
-            sendNotification(message, true, messageContent);
+//            sendNotification(message, true, messageContent);
             ChatMsgEntity entity = new ChatMsgEntity(message.getTo(),message.getFrom(),
                     messageContent,MyDate.getCurSimpleDateFormate().toString(),true);
 
@@ -158,8 +169,7 @@ public class HXNotifier {
             * 否则可能出现ChatActivity还没实例化，就已然调用ChatActivity的方法的错误。*/
             Log.d(TAG, "-->current activity:" + BubbleDatingApplication.getCurrentActivity());
             if(BubbleDatingApplication.getCurrentActivity() instanceof  ChatActivity && TextUtils.equals(message.getFrom(),ChatActivity.chatter)){
-                Message msg = ChatActivity.mHandler.obtainMessage();
-                msg.what = Configuration.UPDATE_CHAT_ACTIVITY_CONTACT;
+                Message msg = ChatActivity.mHandler.obtainMessage(Configuration.UPDATE_CHAT_ACTIVITY_CONTACT);
                 msg.obj = entity;
                 ChatActivity.mHandler.sendMessage(msg);
             }else if (BubbleDatingApplication.getCurrentActivity() instanceof MainActivity && MainActivity.currentFragment instanceof MessageFragment){
@@ -169,15 +179,7 @@ public class HXNotifier {
             }
             /* 执行到中间部分会中断*/
             DataCache.updateUsrMsgAndContactListInDB(entity, db);
-
-
-
-
-
         }
-
-
-
 //        if (!EasyUtils.isAppRunningForeground(appContext)) {
 //            Log.d(TAG, "-->app is running in backgroud");
 //            sendNotification(message, false);
@@ -186,7 +188,6 @@ public class HXNotifier {
 //            sendNotification(message, true);
 //
 //        }
-
         Log.d(TAG,"--> vibrate and play tone");
         viberateAndPlayTone(message);
         Toast.makeText(appContext,"receive message from:"+message.getFrom()+","+message.toString(),Toast.LENGTH_LONG).show();
@@ -218,24 +219,11 @@ public class HXNotifier {
                     break;
             }
 
-            PackageManager packageManager = appContext.getPackageManager();
-            String appname = (String) packageManager.getApplicationLabel(appContext.getApplicationInfo());
+//            PackageManager packageManager = appContext.getPackageManager();
+//            String appname = (String) packageManager.getApplicationLabel(appContext.getApplicationInfo());
 
             // notification titile
-            String contentTitle = appname;
-//            if (notificationInfoProvider != null) {
-//                String customNotifyText = notificationInfoProvider.getDisplayedText(message);
-//                String customCotentTitle = notificationInfoProvider.getTitle(message);
-//                if (customNotifyText != null){
-//                    // 设置自定义的状态栏提示内容
-//                    notifyText = customNotifyText;
-//                }
-//
-//                if (customCotentTitle != null){
-//                    // 设置自定义的通知栏标题
-//                    contentTitle = customCotentTitle;
-//                }
-//            }
+//            String contentTitle = appname;
 
             // create and send notificaiton
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(appContext)
@@ -243,19 +231,19 @@ public class HXNotifier {
                     .setWhen(System.currentTimeMillis())
                     .setAutoCancel(true);
 
-            Intent msgIntent = appContext.getPackageManager().getLaunchIntentForPackage(packageName);
-//            if (notificationInfoProvider != null) {
-//                // 设置自定义的notification点击跳转intent
-//                msgIntent = notificationInfoProvider.getLaunchIntent(message);
-//            }
+//            Intent msgIntent = appContext.getPackageManager().getLaunchIntentForPackage(packageName);
+//            msgIntent.setClass(appContext,ChatActivity.class);
+            Intent msgIntent = new Intent(appContext,ChatActivity.class);
+            msgIntent.putExtra("name",username);
+            msgIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(appContext, notifyID, msgIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
             // prepare latest event info section
-            notificationNum++;
-            fromUsers.add(message.getFrom());
-
-            int fromUsersNum = fromUsers.size();
+//            notificationNum++;
+//            fromUsers.add(message.getFrom());
+//
+//            int fromUsersNum = fromUsers.size();
 
             String appName = appContext.getResources().getString(R.string.app_name);
             String msgEnd = appContext.getResources().getString(R.string.notification_end);
@@ -266,18 +254,42 @@ public class HXNotifier {
             mBuilder.setContentIntent(pendingIntent);
             // mBuilder.setNumber(notificationNum);
             Notification notification = mBuilder.build();
-
-            if (isForeground) {
-                notificationManager.notify(foregroundNotifyID, notification);
-//                notificationManager.cancel(foregroundNotifyID);
-            } else {
-                notificationManager.notify(notifyID, notification);
-            }
+            notificationManager.notify(notifyID,notification);
+//            if (isForeground) {
+//                notificationManager.notify(foregroundNotifyID, notification);
+////                notificationManager.cancel(foregroundNotifyID);
+//            } else {
+//                notificationManager.notify(notifyID, notification);
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public void  sendNotification(Context context) {
+//            appContext = context;
+            Log.d(TAG,"-->appContext:"+appContext);
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(appContext);
+                    mBuilder.setSmallIcon(appContext.getApplicationInfo().icon)
+                    .setWhen(System.currentTimeMillis())
+                    .setAutoCancel(true);
+
+//            Intent msgIntent = appContext.getPackageManager().getLaunchIntentForPackage(packageName);
+//            msgIntent.setClass(appContext,ChatActivity.class);
+            Intent msgIntent = new Intent(appContext,ChatActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(appContext, notifyID, msgIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+            String appName = appContext.getResources().getString(R.string.app_name);
+            String msgEnd = appContext.getResources().getString(R.string.notification_end);
+            String msgFromHint = appContext.getResources().getString(R.string.notification_from_hint);
+            mBuilder.setContentTitle(appName);
+            mBuilder.setContentText("This is a notification");
+            mBuilder.setContentIntent(pendingIntent);
+            Notification notification = mBuilder.build();
+            notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(notifyID,notification);
+        }
 
     /**
      * 手机震动和声音提示

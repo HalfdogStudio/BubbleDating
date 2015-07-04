@@ -39,7 +39,7 @@ public class BubbleDatingApplication extends Application {
     public static final ImageCacheManager.CacheType CACHE_TYPE = ImageCacheManager.CacheType.MEMORY;
 
     public static UserEntity userEntity = null;
-    public static  LatLng userLatLng;
+    public static  LatLng userLatLng = new LatLng(0,0);
     public static LocationClient mLocationClient = null;
 
     private static Activity mCurrentActivity = null;
