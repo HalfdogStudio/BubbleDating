@@ -18,8 +18,8 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
     private static MySQLiteOpenHelper instance;
 
-    public static  final String CONTACT_TABLE_NAME = "contact_list";
-    public static  final String CONTACT_MSG_TABLE_NAME = "contact_msg_list";
+    public static  final String CONTACT_TABLE_NAME = "latest_msg";
+    public static  final String CONTACT_MSG_TABLE_NAME = "chat_record";
     private final String CREATE_COTACT_LIST = " create table if not exists "+CONTACT_TABLE_NAME +
             " (_id integer primary key autoincrement, name,last_message, last_contact_date) " ;
     private final String CREATE_MSG_LIST = "create table if not exists "+CONTACT_MSG_TABLE_NAME +

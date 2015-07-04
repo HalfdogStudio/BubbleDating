@@ -95,6 +95,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
 //        initOfflineData();
 
         initDataCache(this);
+        DataCache.showLatestMsgAndChatRecord();
         initService(this);
         if(BubbleDatingApplication.mode != Mode.OFFLINE_MODE){
             initHXLogin();
@@ -202,7 +203,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
             MySQLiteOpenHelper.getInstance(this,Offline.OFFLINE_DB);
             DataCache.initOfflineCacheData(context);
         }else{
-            deleteDatabase(BubbleDatingApplication.userEntity.getmName()+".db");
+//            deleteDatabase(BubbleDatingApplication.userEntity.getmName()+".db");
             MySQLiteOpenHelper.getInstance(this,BubbleDatingApplication.userEntity.getmName()+".db");
             DataCache.initCacheData(context);
         }

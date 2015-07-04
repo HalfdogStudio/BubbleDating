@@ -154,7 +154,7 @@ public class HXNotifier {
             DataCache.updateUsrMsgAndContacListInMemory(entity);
 
             ChatActivity.sendOrReceiveUiMsg(entity, true);
-            DataCache.updateUsrMsgAndContactListInDB(entity, db);
+            DataCache.updateUsrMsgAndContactListInDB(entity, db,context);
         }else{
             Log.d(TAG, "--> app is in foreground");
 //            sendNotification(message, true, messageContent);
@@ -178,7 +178,7 @@ public class HXNotifier {
                 MessageFragment.mhandler.sendMessage(msg);
             }
             /* 执行到中间部分会中断*/
-            DataCache.updateUsrMsgAndContactListInDB(entity, db);
+            DataCache.updateUsrMsgAndContactListInDB(entity, db,context);
         }
 //        if (!EasyUtils.isAppRunningForeground(appContext)) {
 //            Log.d(TAG, "-->app is running in backgroud");

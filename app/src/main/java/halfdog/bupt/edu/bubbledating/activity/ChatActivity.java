@@ -53,8 +53,6 @@ public class ChatActivity extends ActionBarActivity {
         initViews();
         initData();
         initListeners();
-
-
     }
 
     @Override
@@ -178,7 +176,7 @@ public class ChatActivity extends ActionBarActivity {
                         DataCache.updateUsrMsgAndContacListInMemory(entity);
 
                         sendOrReceiveUiMsg(entity, false);
-                        DataCache.updateUsrMsgAndContactListInDB(entity, db);
+                        DataCache.updateUsrMsgAndContactListInDB(entity,db,ChatActivity.this);
 
                         if (BubbleDatingApplication.mode != Mode.OFFLINE_MODE) {
                         /*  use HX Tool to send message */

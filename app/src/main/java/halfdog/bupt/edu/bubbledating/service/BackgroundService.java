@@ -33,7 +33,7 @@ public class BackgroundService extends Service implements EMEventListener {
     private static final String ACTION2 = "android.intent.action.USER_PRESENT";
     private ConnectionChangeReceiver receiver = new ConnectionChangeReceiver();
 
-    public SQLiteDatabase db;
+    public static SQLiteDatabase db;
 
     public BackgroundService() {
     }

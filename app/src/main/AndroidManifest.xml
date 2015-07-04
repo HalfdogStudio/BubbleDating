@@ -89,11 +89,6 @@
         <service android:name="com.easemob.chat.EMChatService" />
 
         <activity
-            android:name=".activity.BaiduMapDemoActivity"
-            android:label="@string/title_activity_baidu_map_demo"
-            android:launchMode="singleTask"
-            android:theme="@style/DiyActionBarTheme" />
-        <activity
             android:name=".activity.ChatActivity"
             android:label="@string/title_activity_chat"
             android:theme="@style/ChatActivityStyle"
