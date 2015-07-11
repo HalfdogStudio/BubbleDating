@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.internal.widget.CompatTextView;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -42,6 +43,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.R;
@@ -198,7 +201,16 @@ public class RegisterAccountActivity extends Activity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.register_activity_submit:
-                    uName = userName.getText().toString();
+
+                    uName = userName.getText().toString().trim();
+                    Pattern pattern = Pattern.compile("[a-z0-9_]*");
+                    Matcher matcher = pattern.matcher(uName);
+                    boolean res = matcher.matches();
+                    if(!res){
+                        Toast.makeText(context,context.getResources().getString(R.string.register_user_name_not_compliant),Toast.LENGTH_LONG).show();
+                        userName.setText("");
+                        return ;
+                    }
                     uPw = userPassword.getText().toString();
                     uEmail = userEmail.getText().toString();
                     uGender = male.isChecked() ? "m" : "f";

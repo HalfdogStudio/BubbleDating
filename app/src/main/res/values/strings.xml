@@ -69,4 +69,7 @@
     <!--login activity-->
     <string name="network_unavailabel">网络连接不可用，请检查</string>
 
+    <!--register activity-->
+    <string name="register_user_name_hint">只允许小写字母和数字</string>
+    <string name="register_user_name_not_compliant">用户名不符合要求，只允许小写字母和数字!</string>
 </resources>

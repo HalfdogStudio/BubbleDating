@@ -27,6 +27,7 @@
                 android:layout_width="@dimen/register_blank_edittext_width"
                 android:layout_height="@dimen/register_blank_edittext_height"
                 android:textColor="@color/register_edittext_input_letter"
+                android:hint="@string/register_user_name_hint"
                 android:singleLine="true"
                 android:background="#ffffff"/>
             </LinearLayout>

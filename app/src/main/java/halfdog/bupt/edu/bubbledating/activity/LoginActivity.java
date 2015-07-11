@@ -216,7 +216,7 @@ public class LoginActivity extends Activity {
 
 
     public  void  login(final Context context){
-        username = loginName.getText().toString();
+        username = loginName.getText().toString().toLowerCase();
         pw = loginPw.getText().toString();
         if(TextUtils.isEmpty(username)){
             Toast.makeText(context,"用户名不能为空",Toast.LENGTH_SHORT).show();
