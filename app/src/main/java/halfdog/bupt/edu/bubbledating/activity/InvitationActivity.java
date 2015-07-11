@@ -1,5 +1,6 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -28,18 +29,20 @@ import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.constants.Configuration;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.tool.MyDate;
+import halfdog.bupt.edu.bubbledating.tool.NetworkStatusTool;
 import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 
 public class InvitationActivity extends ActionBarActivity {
     private EditText mContent;
     private com.gc.materialdesign.widgets.ProgressDialog mProgressDialog;
-
+    private Context context;
     private final String TAG = "InvitationActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invitation);
+        context = this;
         mContent = (EditText) findViewById(R.id.invitation_activity_content);
         mProgressDialog = new com.gc.materialdesign.widgets.ProgressDialog(InvitationActivity.this,
                 getResources().getString(R.string.progress_bar_hint));
@@ -68,6 +71,11 @@ public class InvitationActivity extends ActionBarActivity {
                 String content = mContent.getText().toString();
                 if (TextUtils.isEmpty(content)) {
                     Toast.makeText(this, R.string.activity_invitation_empty_content_hint, Toast.LENGTH_LONG).show();
+                    return true;
+                }
+
+                if(!NetworkStatusTool.isConnected(context)){
+                    Toast.makeText(context,context.getResources().getString(R.string.network_unavailabel),Toast.LENGTH_LONG).show();
                     return true;
                 }
                 /* post a request to insert invitation to server */

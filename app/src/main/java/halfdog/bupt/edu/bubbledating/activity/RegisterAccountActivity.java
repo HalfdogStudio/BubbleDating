@@ -50,6 +50,7 @@ import halfdog.bupt.edu.bubbledating.constants.UserInfoKeys;
 import halfdog.bupt.edu.bubbledating.entity.UserEntity;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.constants.ResponseState;
+import halfdog.bupt.edu.bubbledating.tool.NetworkStatusTool;
 import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 
 public class RegisterAccountActivity extends Activity {
@@ -76,7 +77,7 @@ public class RegisterAccountActivity extends Activity {
     private String uGender;
     private String uAvatarString;
 
-    private final Context context  = RegisterAccountActivity.this;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,9 @@ public class RegisterAccountActivity extends Activity {
         initUI();
     }
 
-    public void initUI(){
+    public void initUI() {
+        context = this;
+
         userName = (EditText) findViewById(R.id.register_activity_user_name);
         userPassword = (EditText) findViewById(R.id.register_activity_password);
         userEmail = (EditText) findViewById(R.id.register_activity_email);
@@ -101,7 +104,7 @@ public class RegisterAccountActivity extends Activity {
         quit.setOnClickListener(clickListener);
         userAvatar.setOnClickListener(clickListener);
 
-        progressDialog = new ProgressDialog(RegisterAccountActivity.this,this.getResources().getString(R.string.wait_a_moment));
+        progressDialog = new ProgressDialog(RegisterAccountActivity.this, this.getResources().getString(R.string.wait_a_moment));
     }
 
     RadioGroup.OnCheckedChangeListener checkedChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -134,22 +137,22 @@ public class RegisterAccountActivity extends Activity {
                     switch (response) {
                         case ResponseState.OK:
                             Toast.makeText(RegisterAccountActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                            BubbleDatingApplication.userEntity = new UserEntity(-1,uName,uPw,uEmail
-                                    ,uGender,null,true);
+                            BubbleDatingApplication.userEntity = new UserEntity(-1, uName, uPw, uEmail
+                                    , uGender, null, true);
 
                             /* save user info to "account" shared preference */
                             SharedPreferences preferences = getApplicationContext().getSharedPreferences(Configuration.ACOUNT_SHARE_PREFERENCE,
                                     MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putLong(UserInfoKeys.U_ID, -1);
-                            editor.putString(UserInfoKeys.U_NAME,uName);
-                            editor.putString(UserInfoKeys.U_PASSWORD,uPw);
-                            editor.putString(UserInfoKeys.U_EMAIL,uEmail);
-                            editor.putString(UserInfoKeys.U_GENDER,uGender);
+                            editor.putString(UserInfoKeys.U_NAME, uName);
+                            editor.putString(UserInfoKeys.U_PASSWORD, uPw);
+                            editor.putString(UserInfoKeys.U_EMAIL, uEmail);
+                            editor.putString(UserInfoKeys.U_GENDER, uGender);
                             editor.commit();
 
 
-                            Intent jumpToMainActivity = new Intent(RegisterAccountActivity.this,MainActivity.class);
+                            Intent jumpToMainActivity = new Intent(RegisterAccountActivity.this, MainActivity.class);
                             progressDialog.dismiss();
                             startActivity(jumpToMainActivity);
                             RegisterAccountActivity.this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -190,7 +193,6 @@ public class RegisterAccountActivity extends Activity {
     };
 
 
-
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -220,6 +222,11 @@ public class RegisterAccountActivity extends Activity {
                         break;
                     }
 
+                    if (!NetworkStatusTool.isConnected(context)) {
+                        Toast.makeText(context, context.getResources().getString(R.string.network_unavailabel), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     progressDialog.show();
 
 //                    RequestQueue requestQueue = Volley.newRequestQueue(RegisterAccount.this);
@@ -228,9 +235,9 @@ public class RegisterAccountActivity extends Activity {
                     jsonData.put("password", uPw);
                     jsonData.put("email", uEmail);
                     jsonData.put("gender", uGender);
-                    jsonData.put("avatar",uAvatarString);
-                    jsonData.put("lat",String.valueOf(BubbleDatingApplication.userLatLng.latitude));
-                    jsonData.put("lon",String.valueOf(BubbleDatingApplication.userLatLng.longitude));
+                    jsonData.put("avatar", uAvatarString);
+                    jsonData.put("lat", String.valueOf(BubbleDatingApplication.userLatLng.latitude));
+                    jsonData.put("lon", String.valueOf(BubbleDatingApplication.userLatLng.longitude));
 
                     CustomRequest registerRequest = new CustomRequest(Request.Method.POST, REGISTER_URL, jsonData,
                             responseListener, errorListener);
@@ -260,7 +267,7 @@ public class RegisterAccountActivity extends Activity {
         switch (requestCode) {
             case REQUEST_TAKE_PHOTO:
                 if (resultCode == RESULT_OK) {
-                    File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),"default1.png");
+                    File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "default1.png");
                     startPhotoZoom(Uri.fromFile(file));
                 }
                 break;
@@ -270,18 +277,18 @@ public class RegisterAccountActivity extends Activity {
                 }
                 break;
             case REQUEST_PHOTO_ZOOM:
-                if(data != null){
+                if (data != null) {
                     Bundle extras = data.getExtras();
-                    if(extras != null){
+                    if (extras != null) {
                         Bitmap bitmap = extras.getParcelable("data");
-                        Drawable drawable = new BitmapDrawable(this.getResources(),bitmap);
+                        Drawable drawable = new BitmapDrawable(this.getResources(), bitmap);
                         userAvatar.setImageDrawable(drawable);
 
                         try {
                             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                            bitmap.compress(Bitmap.CompressFormat.PNG,0,bos);
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
                             byte[] mBitmapData = bos.toByteArray();
-                            uAvatarString = Base64.encodeToString(mBitmapData,Base64.DEFAULT);
+                            uAvatarString = Base64.encodeToString(mBitmapData, Base64.DEFAULT);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -332,7 +339,7 @@ public class RegisterAccountActivity extends Activity {
     * */
     public void startPhotoZoom(Uri uri) {
 
-        Log.d(TAG,"-->startPhotoZoom URI:"+uri.toString());
+        Log.d(TAG, "-->startPhotoZoom URI:" + uri.toString());
         Intent mStartPhotoZoom = new Intent("com.android.camera.action.CROP");
         mStartPhotoZoom.setDataAndType(uri, "image/*");
         // 设置剪裁参数
@@ -350,19 +357,17 @@ public class RegisterAccountActivity extends Activity {
                 MediaStore.EXTRA_OUTPUT ("output")  URI 将URI指向相应的file:///
         *
         * */
-        mStartPhotoZoom.putExtra("crop","true");
-        mStartPhotoZoom.putExtra("aspectX",1);
-        mStartPhotoZoom.putExtra("aspectY",1);
-        mStartPhotoZoom.putExtra("outputX",200);
-        mStartPhotoZoom.putExtra("outputY",200);
-        mStartPhotoZoom.putExtra("scale",true);
-        mStartPhotoZoom.putExtra("return-data",true);
-        startActivityForResult(mStartPhotoZoom,REQUEST_PHOTO_ZOOM);
+        mStartPhotoZoom.putExtra("crop", "true");
+        mStartPhotoZoom.putExtra("aspectX", 1);
+        mStartPhotoZoom.putExtra("aspectY", 1);
+        mStartPhotoZoom.putExtra("outputX", 200);
+        mStartPhotoZoom.putExtra("outputY", 200);
+        mStartPhotoZoom.putExtra("scale", true);
+        mStartPhotoZoom.putExtra("return-data", true);
+        startActivityForResult(mStartPhotoZoom, REQUEST_PHOTO_ZOOM);
 
 
-
-
-     }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

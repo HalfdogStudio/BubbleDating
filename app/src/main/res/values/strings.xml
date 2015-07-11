@@ -4,7 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_add">Add</string>
     <string name="title_activity_login">爱游</string>
-    <string name="login_title">泡沫之约</string>
+    <string name="login_title">爱游</string>
     <string name="login_without_username">直接使用</string>
     <string name="title_activity_register_account">RegisterAccount</string>
     <string name="login_activity_username_hint">用户名</string>
@@ -66,5 +66,7 @@
 
     <string name="wait_a_moment">请稍后</string>
 
+    <!--login activity-->
+    <string name="network_unavailabel">网络连接不可用，请检查</string>
 
 </resources>

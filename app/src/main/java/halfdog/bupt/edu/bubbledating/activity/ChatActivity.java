@@ -1,6 +1,7 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
@@ -35,6 +37,7 @@ import halfdog.bupt.edu.bubbledating.db.MySQLiteOpenHelper;
 import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
 import halfdog.bupt.edu.bubbledating.tool.MyDate;
+import halfdog.bupt.edu.bubbledating.tool.NetworkStatusTool;
 
 public class ChatActivity extends ActionBarActivity {
     public static final String TAG = "ChatActivity";
@@ -45,6 +48,7 @@ public class ChatActivity extends ActionBarActivity {
     public static String chatter;
     private static ChatMsgAdapter adapter;
     private SQLiteDatabase db;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +115,7 @@ public class ChatActivity extends ActionBarActivity {
 
 
     public void initViews() {
+        context = this;
         mSendMsg = (ButtonRectangle) findViewById(R.id.chat_send_msg_button);
         mInputContent = (EditText) findViewById(R.id.chat_input_content);
         mListView = (ListView) findViewById(R.id.chat_conversation_list);
@@ -166,6 +171,11 @@ public class ChatActivity extends ActionBarActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.chat_send_msg_button:
+                    if(!NetworkStatusTool.isConnected(context)){
+                        Toast.makeText(context, context.getResources().getString(R.string.network_unavailabel), Toast.LENGTH_LONG).show();
+                        return ;
+                    }
+
                     if(!mDataArray.isEmpty()){
                         Log.d(TAG,"-->Before send operation, mDataArray has "+mDataArray.size() + " elements");
                     }

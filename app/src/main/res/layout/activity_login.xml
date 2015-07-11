@@ -13,7 +13,7 @@
         android:textColor="#ffffff"
         android:background="@color/login_backgound"
         android:layout_alignParentRight="true"
-        android:textSize="15dp"/>
+        android:textSize="@dimen/direct_use"/>
     <TextView
         android:id="@+id/login_activity_title"
         android:layout_width="match_parent"

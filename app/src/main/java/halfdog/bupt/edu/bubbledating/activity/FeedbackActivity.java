@@ -1,6 +1,7 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
 import android.app.DownloadManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import halfdog.bupt.edu.bubbledating.constants.Configuration;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.entity.UserEntity;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
+import halfdog.bupt.edu.bubbledating.tool.NetworkStatusTool;
 import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 
 public class FeedbackActivity extends ActionBarActivity {
@@ -47,10 +49,12 @@ public class FeedbackActivity extends ActionBarActivity {
     private ButtonRectangle mSubmit;
     private ButtonRectangle mCancel;
     private static com.gc.materialdesign.widgets.ProgressDialog progressDialog;
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
+        context = this;
 
         mContent = (EditText)findViewById(R.id.feedback_activity_edittext);
         mSubmit = (ButtonRectangle)findViewById(R.id.feedback_activity_submit);
@@ -71,6 +75,10 @@ public class FeedbackActivity extends ActionBarActivity {
         public void onClick(View v) {
             switch(v.getId()){
                 case R.id.feedback_activity_submit:
+                    if(!NetworkStatusTool.isConnected(context)){
+                        Toast.makeText(context,context.getResources().getString(R.string.network_unavailabel),Toast.LENGTH_LONG).show();
+                        return ;
+                    }
                     String content = mContent.getText().toString();
                     if(TextUtils.isEmpty(content)){
                         Toast.makeText(FeedbackActivity.this,"反馈内容为空",Toast.LENGTH_LONG).show();

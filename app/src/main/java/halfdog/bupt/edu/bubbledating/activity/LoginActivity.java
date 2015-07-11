@@ -34,6 +34,7 @@ import halfdog.bupt.edu.bubbledating.entity.UserEntity;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.constants.ResponseState;
 import halfdog.bupt.edu.bubbledating.constants.UserInfoKeys;
+import halfdog.bupt.edu.bubbledating.tool.NetworkStatusTool;
 import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 
 public class LoginActivity extends Activity {
@@ -49,7 +50,7 @@ public class LoginActivity extends Activity {
     private String username;
     private String pw;
 
-    private final Context context = LoginActivity.this;
+    private Context context = null;
     private static com.gc.materialdesign.widgets.ProgressDialog progressDialog;
 
     @Override
@@ -70,7 +71,9 @@ public class LoginActivity extends Activity {
         loginButton.setOnClickListener(buttonListener);
 
         progressDialog = new com.gc.materialdesign.widgets.ProgressDialog(LoginActivity.this,"请稍候");
-//        context = this;
+
+//        context = LoginActivity.this;
+        context = this;
     }
 
     @Override
@@ -107,8 +110,11 @@ public class LoginActivity extends Activity {
                     finish();
                     break;
                 case R.id.login_activity_launch:
-
-                    login(LoginActivity.this);
+                    if(!NetworkStatusTool.isConnected(context)){
+                        Toast.makeText(context,context.getResources().getString(R.string.network_unavailabel),Toast.LENGTH_LONG).show();
+                        return ;
+                    }
+                    login(context);
                     break;
                 case R.id.login_activity_register:
                     Intent toRegisterActivity = new Intent(LoginActivity.this,RegisterAccountActivity.class);
