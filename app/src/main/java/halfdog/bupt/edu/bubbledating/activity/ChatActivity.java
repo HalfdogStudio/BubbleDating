@@ -31,7 +31,7 @@ import java.util.List;
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.adapter.ChatMsgAdapter;
-import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.constants.Configurations;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.db.MySQLiteOpenHelper;
 import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
@@ -268,7 +268,7 @@ public class ChatActivity extends ActionBarActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case Configuration.UPDATE_CHAT_ACTIVITY_CONTACT:
+                case Configurations.UPDATE_CHAT_ACTIVITY_CONTACT:
                     ChatMsgEntity entity = (ChatMsgEntity) msg.obj;
                     Log.d("", "-->entity from notifier:" + entity.toString());
                     ChatActivity.sendOrReceiveUiMsg(entity, true);

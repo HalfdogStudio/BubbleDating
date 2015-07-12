@@ -35,6 +35,7 @@ import com.easemob.chat.EMChatManager;
 
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.adapter.LeftDrawerListAdapter;
+import halfdog.bupt.edu.bubbledating.constants.Configurations;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.constants.Offline;
 import halfdog.bupt.edu.bubbledating.db.MySQLiteOpenHelper;
@@ -44,7 +45,6 @@ import halfdog.bupt.edu.bubbledating.fragment.dummy.MessageFragment;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.SwimDailyFragment;
 import halfdog.bupt.edu.bubbledating.service.BackgroundService;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
-import halfdog.bupt.edu.bubbledating.tool.HXTool.HXNotifier;
 import halfdog.bupt.edu.bubbledating.tool.HXTool.HXSDKHelper;
 import halfdog.bupt.edu.bubbledating.tool.NetworkStatusTool;
 
@@ -312,7 +312,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
 
         /* if current fragment is MessageFragment , msg list should refresh */
         if( currentFragment != null && currentFragment instanceof  MessageFragment){
-            MessageFragment.mhandler.obtainMessage(halfdog.bupt.edu.bubbledating.constants.Configuration.UPDATE_MESSAGE_FRAGMENT,
+            MessageFragment.mhandler.obtainMessage(Configurations.UPDATE_MESSAGE_FRAGMENT,
                     DataCache.mContactUser).sendToTarget();
         }
 
@@ -436,8 +436,15 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         switch(id){
             case R.id.action_add:
                 Intent toInvitationActivity = new Intent(MainActivity.this,InvitationActivity.class);
-                startActivity(toInvitationActivity);
+//                startActivity(toInvitationActivity);
+                startActivityForResult(toInvitationActivity,Configurations.REQUEST_ADD_INVITATION);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                break;
+            case R.id.action_refresh:
+//                DateFragment.mHandler.obtainMessage(Configurations.UPDATE_DATE_FRAGMENT).sendToTarget();
+                ((DateFragment)currentFragment).requestPeopleAround();
+                break;
+
 
         }
 
@@ -532,5 +539,14 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
     private void showMenuOption(int id){
         MenuItem item = mMenu.findItem(id);
         item.setVisible(true);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG,"-->request code:"+requestCode + ", result code:"+resultCode);
+        if(requestCode == Configurations.UPDATE_DATE_FRAGMENT && resultCode == Configurations.RESULT_ADD_INVITATION_OK){
+            ((DateFragment)currentFragment).requestPeopleAround();
+        }
     }
 }

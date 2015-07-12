@@ -1,6 +1,7 @@
 package halfdog.bupt.edu.bubbledating.fragment.dummy;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,6 +9,8 @@ import android.graphics.Color;
 import android.graphics.drawable.PaintDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,16 +21,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -53,7 +53,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.activity.ChatActivity;
 import halfdog.bupt.edu.bubbledating.cache.image.ImageCacheManager;
-import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.constants.Configurations;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.constants.Offline;
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
@@ -72,7 +72,7 @@ import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 public class DateFragment extends  Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    public final String REQUEST_PEOPLE_AROUND = Configuration.SERVER_IP+"/BubbleDatingServer/HandlePeopleAround";
+    public final String REQUEST_PEOPLE_AROUND = Configurations.SERVER_IP+"/BubbleDatingServer/HandlePeopleAround";
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -83,12 +83,14 @@ public class DateFragment extends  Fragment {
     private MapView mMapView;
     private BaiduMap mMap;
     private Context context;
+    private ProgressDialog mProgressDialog;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnDatingFragmentInteractionListener mListener;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -135,14 +137,25 @@ public class DateFragment extends  Fragment {
         View view  = inflater.inflate(R.layout.fragment_dating,container,false);
         mMapView = (MapView)view.findViewById(R.id.bmapView);
         mMap = mMapView.getMap();
-        mMap.clear();
         mMap.setOnMarkerClickListener(onMarkerClickListener);
-        MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(BubbleDatingApplication.userLatLng,17);
-        mMap.setMapStatus(update);
+
+
+        requestPeopleAround();
+
         /*
-        *       request to get people around
+        *       add loc icon
         * */
-        if(BubbleDatingApplication.mode == Mode.OFFLINE_MODE){
+//        Bitmap photoOfHead = ImageMerger.addTextOnBitmap("andy","m",getActivity());
+//        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(photoOfHead);
+//        Bundle extraInfo = new Bundle();
+//        extraInfo.putString("hobby","swimming");
+//        OverlayOptions options = new MarkerOptions().title("1").position(BubbleDatingApplication.userLatLng).icon(bitmap).extraInfo(extraInfo);
+//        mMap.addOverlay(options);
+        return view;
+    }
+
+    private void showOfflineMark(){
+        {
             Log.d(TAG,"-->OFFLINE branch");
             JSONObject item = null;
             for(int i = 0; i < Offline.offline_people_around.length(); i ++){
@@ -181,30 +194,7 @@ public class DateFragment extends  Fragment {
                     e.printStackTrace();
                 }
             }
-        }else{
-            /*
-            *       联网Mode
-            * */
-//            RequestQueue queue  = Volley.newRequestQueue(getActivity());
-            Log.d(TAG,"-->online branch");
-            JsonArrayRequest requestPeopleAround = new JsonArrayRequest(Request.Method.GET,REQUEST_PEOPLE_AROUND,responseListener,errorListener);
-            RequestManager.getInstance(context).add(requestPeopleAround);
         }
-
-
-        /*
-        *       add loc icon
-        * */
-//        Bitmap photoOfHead = ImageMerger.addTextOnBitmap("andy","m",getActivity());
-//        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(photoOfHead);
-//        Bundle extraInfo = new Bundle();
-//        extraInfo.putString("hobby","swimming");
-//        OverlayOptions options = new MarkerOptions().title("1").position(BubbleDatingApplication.userLatLng).icon(bitmap).extraInfo(extraInfo);
-//        mMap.addOverlay(options);
-        return view;
-
-
-
     }
 
 
@@ -258,7 +248,7 @@ public class DateFragment extends  Fragment {
             * */
             ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener(mUserAvatar,
                     R.drawable.avatar_default_m, R.drawable.avatar_default_f);
-            String ServerImgUrl = Configuration.SERVER_IMG_CACHE_DIR + File.separator + name + ".png";
+            String ServerImgUrl = Configurations.SERVER_IMG_CACHE_DIR + File.separator + name + ".png";
             if(Mode.DEBUG){
                 Log.d(TAG, "-->ServerImgUrl of "+mUserName + " is : "+ServerImgUrl);
             }
@@ -327,6 +317,8 @@ public class DateFragment extends  Fragment {
                     mMap.addOverlay(options);
                     mMapManager.addToMap();
 
+                    mProgressDialog.dismiss();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -334,9 +326,29 @@ public class DateFragment extends  Fragment {
         }
     };
 
+    public void  requestPeopleAround(){
+
+        mProgressDialog = new ProgressDialog(context);
+        mProgressDialog.setMessage("Please wait ...");
+        mMap.clear();
+        MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(BubbleDatingApplication.userLatLng,17);
+        mMap.setMapStatus(update);
+        /*
+        *       request to get people around
+        * */
+        if(BubbleDatingApplication.mode == Mode.OFFLINE_MODE){
+            showOfflineMark();
+        }else{
+            JsonArrayRequest requestPeopleAround = new JsonArrayRequest(Request.Method.GET,REQUEST_PEOPLE_AROUND,responseListener,errorListener);
+            RequestManager.getInstance(context).add(requestPeopleAround);
+        }
+
+    }
+
     Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError volleyError) {
+            mProgressDialog.dismiss();
             Log.d(TAG,"--> ERROR HAPPENED during query of people aroound");
         }
     };
@@ -385,7 +397,7 @@ public class DateFragment extends  Fragment {
             * */
             ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener(mUserAvatar,
                     R.drawable.avatar_default_m, R.drawable.avatar_default_m);
-            String ServerImgUrl = Configuration.SERVER_IMG_CACHE_DIR  + name + ".png";
+            String ServerImgUrl = Configurations.SERVER_IMG_CACHE_DIR  + name + ".png";
             if(Mode.DEBUG){
                 Log.d(TAG, "-->ServerImgUrl of "+name + " is : "+ServerImgUrl);
             }

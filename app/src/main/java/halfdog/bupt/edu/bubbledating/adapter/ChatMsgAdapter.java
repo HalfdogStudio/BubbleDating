@@ -1,7 +1,6 @@
 package halfdog.bupt.edu.bubbledating.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +10,12 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 
-import java.io.File;
 import java.util.List;
 
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.cache.image.ImageCacheManager;
-import halfdog.bupt.edu.bubbledating.constants.Configuration;
-import halfdog.bupt.edu.bubbledating.constants.Mode;
+import halfdog.bupt.edu.bubbledating.constants.Configurations;
 import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
 
 /**
@@ -78,15 +75,15 @@ public class ChatMsgAdapter extends BaseAdapter {
         ChatMsgEntity entity = data.get(position);
         int type = getItemViewType(position);
         ViewHolder holder = null;
-        String ownerServerImgPath = Configuration.SERVER_IMG_CACHE_DIR  + BubbleDatingApplication.userEntity.getmName()+".png";
+        String ownerServerImgPath = Configurations.SERVER_IMG_CACHE_DIR  + BubbleDatingApplication.userEntity.getmName()+".png";
         String targetServerImgPath = null;
         String target = null;
         if(type == IM_RECEIVE){
             target  = entity.getmFrom();
-            targetServerImgPath = Configuration.SERVER_IMG_CACHE_DIR  + entity.getmFrom()+".png";
+            targetServerImgPath = Configurations.SERVER_IMG_CACHE_DIR  + entity.getmFrom()+".png";
         }else{
             target = entity.getTo();
-            targetServerImgPath = Configuration.SERVER_IMG_CACHE_DIR  + entity.getTo()+".png";
+            targetServerImgPath = Configurations.SERVER_IMG_CACHE_DIR  + entity.getTo()+".png";
         }
 
 

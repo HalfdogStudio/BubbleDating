@@ -6,4 +6,10 @@
         android:orderInCategory="100"
         android:icon="@mipmap/ic_add"
         app:showAsAction="always" />
+    <item android:id="@+id/action_refresh"
+        android:title="@string/action_refresh"
+        android:orderInCategory="99"
+        android:icon="@mipmap/ic_refresh"
+        app:showAsAction="always"/>
+
 </menu>

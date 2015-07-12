@@ -1,7 +1,6 @@
 package halfdog.bupt.edu.bubbledating.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +11,11 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.cache.image.ImageCacheManager;
-import halfdog.bupt.edu.bubbledating.constants.Configuration;
-import halfdog.bupt.edu.bubbledating.constants.Mode;
+import halfdog.bupt.edu.bubbledating.constants.Configurations;
 import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
 import halfdog.bupt.edu.bubbledating.tool.MyDate;
@@ -65,13 +62,13 @@ public class LatestMsgAdapter extends BaseAdapter {
         String serverImgPath = null;
         String chatter = null;
         if(entity.isReceive()){
-            serverImgPath = Configuration.SERVER_IP+ File.separator+Configuration.IMG_CACHE_PATH+File.separator+entity.getmFrom()+".png";
+            serverImgPath = Configurations.SERVER_IP+ File.separator+ Configurations.IMG_CACHE_PATH+File.separator+entity.getmFrom()+".png";
             chatter = entity.getmFrom();
         }else{
-            serverImgPath = Configuration.SERVER_IP+ File.separator+Configuration.IMG_CACHE_PATH+File.separator+entity.getTo()+".png";
+            serverImgPath = Configurations.SERVER_IP+ File.separator+ Configurations.IMG_CACHE_PATH+File.separator+entity.getTo()+".png";
             chatter = entity.getTo();
         }
-//        Configuration.SERVER_IP+ File.separator+Configuration.IMG_CACHE_PATH+File.separator+entity.from()+".png";
+//        Configurations.SERVER_IP+ File.separator+Configurations.IMG_CACHE_PATH+File.separator+entity.from()+".png";
 //        if(Mode.DEBUG){
 //            Log.d(TAG, "-->chat msg adapter of " + entity.getName() + ":" + serverImgPath);
 //        }

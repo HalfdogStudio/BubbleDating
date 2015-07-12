@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import halfdog.bupt.edu.bubbledating.R;
-import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.constants.Configurations;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.entity.UserEntity;
@@ -39,7 +39,7 @@ import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 
 public class LoginActivity extends Activity {
     private static final String TAG = "LoginActivity";
-    private static final String LOGIN_URL = Configuration.SERVER_IP + "/BubbleDatingServer/HandleLogin";
+    private static final String LOGIN_URL = Configurations.SERVER_IP + "/BubbleDatingServer/HandleLogin";
 
     private com.gc.materialdesign.views.ButtonRectangle useWithoutLogin;
     private com.gc.materialdesign.views.ButtonRectangle registerButton;
@@ -80,7 +80,7 @@ public class LoginActivity extends Activity {
     protected void onStart() {
         super.onStart();
         /* judge if account share preference exists  */
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences(Configuration.ACOUNT_SHARE_PREFERENCE,
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(Configurations.ACOUNT_SHARE_PREFERENCE,
                 MODE_PRIVATE);
         String uName = preferences.getString(UserInfoKeys.U_NAME, null);
         String uPw = preferences.getString(UserInfoKeys.U_PASSWORD, null);
@@ -172,7 +172,7 @@ public class LoginActivity extends Activity {
                                     progressDialog.dismiss();
 
                             /* save user info to "account" shared preference */
-                            SharedPreferences preferences = getApplicationContext().getSharedPreferences(Configuration.ACOUNT_SHARE_PREFERENCE,
+                            SharedPreferences preferences = getApplicationContext().getSharedPreferences(Configurations.ACOUNT_SHARE_PREFERENCE,
                                     MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putLong(UserInfoKeys.U_ID, BubbleDatingApplication.userEntity.getmId());
@@ -237,8 +237,8 @@ public class LoginActivity extends Activity {
 
 //        RequestQueue requestQueue = Volley.newRequestQueue(context);
         CustomRequest loginRequest = new CustomRequest(Request.Method.POST,LOGIN_URL,loginInfo,reponseListener, errorListener);
-        RetryPolicy retryPolicy = new DefaultRetryPolicy(Configuration.REQUEST_TIMEOUT_MS,
-                Configuration.MAX_RETRY_TIMES,Configuration.BACK_OFF_MULTI);
+        RetryPolicy retryPolicy = new DefaultRetryPolicy(Configurations.REQUEST_TIMEOUT_MS,
+                Configurations.MAX_RETRY_TIMES, Configurations.BACK_OFF_MULTI);
         loginRequest.setRetryPolicy(retryPolicy);
         RequestManager.getInstance(context).add(loginRequest);
     }

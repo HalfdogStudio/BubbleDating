@@ -26,7 +26,7 @@ import java.util.Map;
 
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.R;
-import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.constants.Configurations;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.tool.MyDate;
 import halfdog.bupt.edu.bubbledating.tool.NetworkStatusTool;
@@ -79,7 +79,7 @@ public class InvitationActivity extends ActionBarActivity {
                     return true;
                 }
                 /* post a request to insert invitation to server */
-                String url = Configuration.SERVER_IP + File.separator + Configuration.SUBMIT_NEW_INVITATION;
+                String url = Configurations.SERVER_IP + File.separator + Configurations.SUBMIT_NEW_INVITATION;
                 Log.d(TAG, "-->insert invitation url:" + url);
                 Map<String, String> data = new HashMap<>();
                 data.put("name", BubbleDatingApplication.userEntity.getmName());
@@ -92,9 +92,9 @@ public class InvitationActivity extends ActionBarActivity {
                 mProgressDialog.show();
                 CustomRequest request = new CustomRequest(Request.Method.POST, url, data, reponseListener, errorListener);
                 RetryPolicy retryPolicy = new DefaultRetryPolicy(
-                        Configuration.REQUEST_TIMEOUT_MS,
-                        Configuration.MAX_RETRY_TIMES,
-                        Configuration.BACK_OFF_MULTI
+                        Configurations.REQUEST_TIMEOUT_MS,
+                        Configurations.MAX_RETRY_TIMES,
+                        Configurations.BACK_OFF_MULTI
                 );
                 request.setRetryPolicy(retryPolicy);
                 RequestManager.getInstance(this).add(request);
@@ -117,6 +117,7 @@ public class InvitationActivity extends ActionBarActivity {
                 int result = response.getInt("result");
                 if(result == 1){
                     Toast.makeText(InvitationActivity.this, R.string.activity_invitation_response_ok, Toast.LENGTH_LONG).show();
+                    setResult(Configurations.RESULT_ADD_INVITATION_OK);
                     InvitationActivity.this.finish();
                     overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 

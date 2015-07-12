@@ -15,12 +15,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.baidu.navisdk.util.SysOSAPI;
-
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.activity.ChatActivity;
 import halfdog.bupt.edu.bubbledating.adapter.LatestMsgAdapter;
-import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.constants.Configurations;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
 
@@ -151,7 +149,7 @@ public class MessageFragment extends Fragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch(msg.what){
-                case Configuration.UPDATE_MESSAGE_FRAGMENT:
+                case Configurations.UPDATE_MESSAGE_FRAGMENT:
                     if(DataCache.mHasHistoryMsg){
                         if(Mode.DEBUG){
                             Log.d(TAG,"-->has history msg,list view show");

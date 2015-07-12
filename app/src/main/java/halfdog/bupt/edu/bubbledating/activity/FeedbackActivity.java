@@ -1,8 +1,6 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
-import android.app.DownloadManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,24 +17,18 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.baidu.navisdk.ui.widget.NewerGuideDialog;
 import com.gc.materialdesign.views.ButtonRectangle;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Method;
-import java.math.MathContext;
 import java.util.HashMap;
 import java.util.Map;
 
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.R;
-import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.constants.Configurations;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
-import halfdog.bupt.edu.bubbledating.entity.UserEntity;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
 import halfdog.bupt.edu.bubbledating.tool.NetworkStatusTool;
 import halfdog.bupt.edu.bubbledating.tool.RequestManager;
@@ -88,14 +80,14 @@ public class FeedbackActivity extends ActionBarActivity {
                         data.put("username", BubbleDatingApplication.userEntity.getmName());
                         if(Mode.DEBUG){
                             Log.d(TAG,"-->data;"+content+",username:"+ BubbleDatingApplication.userEntity.getmName());
-                            Log.d(TAG,"--> target url:"+Configuration.FEED_BACK_REQUEST);
+                            Log.d(TAG,"--> target url:"+ Configurations.FEED_BACK_REQUEST);
                         }
-                        CustomRequest request = new CustomRequest(Request.Method.POST, Configuration.FEED_BACK_REQUEST,
+                        CustomRequest request = new CustomRequest(Request.Method.POST, Configurations.FEED_BACK_REQUEST,
                                 data,okListener,errorListener);
                         RetryPolicy retryPolicy = new DefaultRetryPolicy(
-                                Configuration.REQUEST_TIMEOUT_MS,
-                                Configuration.MAX_RETRY_TIMES,
-                                Configuration.BACK_OFF_MULTI
+                                Configurations.REQUEST_TIMEOUT_MS,
+                                Configurations.MAX_RETRY_TIMES,
+                                Configurations.BACK_OFF_MULTI
                                 );
                         request.setRetryPolicy(retryPolicy);
                         RequestManager.getInstance(FeedbackActivity.this).add(request);

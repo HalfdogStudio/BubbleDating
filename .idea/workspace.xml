@@ -45,11 +45,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a377a464-e391-4dfb-a12f-fcd60a039474" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_refresh.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_refresh.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_refresh.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_refresh.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/ChatActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/ChatActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/adapter/ChatMsgAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/adapter/ChatMsgAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/fragment/dummy/DateFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/fragment/dummy/DateFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/FeedbackActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/FeedbackActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/HXTool/HXNotifier.java" afterPath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/HXTool/HXNotifier.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/InvitationActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/InvitationActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/adapter/LatestMsgAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/adapter/LatestMsgAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/LoginActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/MainActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/fragment/dummy/MessageFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/fragment/dummy/MessageFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/PersonInfoActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/PersonInfoActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/RegisterAccountActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/RegisterAccountActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_register_account.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_register_account.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="F:\dev\workspace\android_studio\BubbleDating\app\src\main\java\halfdog\bupt\edu\bubbledating\constants\Configuration.java" afterPath="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/constants/Configurations.java" />
     </list>
     <ignored path="BubbleDating.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -100,10 +115,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ChatActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ChatActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/ChatActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3204868">
+            <state vertical-scroll-proportion="0.0">
               <caret line="149" column="23" selection-start-line="149" selection-start-column="23" selection-end-line="149" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -115,79 +130,136 @@
       <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/LoginActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.1355934">
+            <state vertical-scroll-proportion="0.0">
               <caret line="219" column="42" selection-start-line="219" selection-start-column="42" selection-end-line="219" selection-end-column="42" />
-              <folding>
-                <element signature="e#3904#5355#0" expanded="true" />
-                <element signature="e#5354#5355#0" expanded="true" />
-                <element signature="e#6144#9373#0" expanded="true" />
-                <element signature="e#9372#9373#0" expanded="true" />
-                <element signature="e#9419#9697#0" expanded="true" />
-                <element signature="e#9616#9653#0" expanded="true" />
-                <element signature="e#9696#9697#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RegisterAccountActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/RegisterAccountActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.016949">
-              <caret line="211" column="32" selection-start-line="211" selection-start-column="32" selection-end-line="211" selection-end-column="32" />
-              <folding>
-                <element signature="method#onCreate#0;class#RegisterAccountActivity#0" expanded="false" />
-                <element signature="method#initUI#0;class#RegisterAccountActivity#0" expanded="false" />
-                <element signature="e#8937#9012#0" expanded="true" />
-                <element signature="method#onActivityResult#0;class#RegisterAccountActivity#0" expanded="false" />
-                <element signature="method#showOptionDialog#0;class#RegisterAccountActivity#0" expanded="false" />
-                <element signature="method#startPhotoZoom#0;class#RegisterAccountActivity#0" expanded="false" />
-                <element signature="method#onCreateOptionsMenu#0;class#RegisterAccountActivity#0" expanded="false" />
-                <element signature="method#onOptionsItemSelected#0;class#RegisterAccountActivity#0" expanded="false" />
-                <element signature="e#17120#17178#0" expanded="false" />
-                <element signature="method#onKeyDown#0;class#RegisterAccountActivity#0" expanded="false" />
-                <marker date="1436583983975" expanded="true" signature="0:17849" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_register_account.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_register_account.xml">
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.333333">
-              <caret line="29" column="47" selection-start-line="29" selection-start-column="47" selection-end-line="29" selection-end-column="47" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="activity_login.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
+      <file leaf-file-name="InvitationActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/InvitationActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.0674157">
-              <caret line="74" column="52" selection-start-line="74" selection-start-column="52" selection-end-line="74" selection-end-column="52" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="119" column="69" selection-start-line="119" selection-start-column="69" selection-end-line="119" selection-end-column="69" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DateFragment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/fragment/dummy/DateFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="73.15254">
+              <caret line="148" column="61" selection-start-line="148" selection-start-column="61" selection-end-line="148" selection-end-column="61" />
               <folding>
-                <element signature="e#533#565#0" expanded="true" />
-                <element signature="e#726#745#0" expanded="true" />
-                <element signature="e#1050#1071#0" expanded="true" />
-                <element signature="e#1150#1175#0" expanded="true" />
+                <element signature="docComment;class#DateFragment#0" expanded="false" />
+                <element signature="docComment;method#newInstance#0;class#DateFragment#0" expanded="false" />
+                <element signature="class#7764:11965" expanded="false" />
+                <element signature="e#7861#7862#0" expanded="true" />
+                <element signature="e#7896#7897#0" expanded="true" />
+                <element signature="e#8761#8830#0" expanded="true" />
+                <element signature="e#8857#8927#0" expanded="true" />
+                <element signature="e#10925#11232#0" expanded="true" />
+                <element signature="e#11231#11232#0" expanded="true" />
+                <element signature="e#11307#11376#0" expanded="true" />
+                <element signature="e#11382#11452#0" expanded="true" />
+                <element signature="e#15449#15691#0" expanded="true" />
+                <element signature="e#15690#15691#0" expanded="true" />
+                <element signature="e#15753#19838#0" expanded="true" />
+                <element signature="e#16654#16723#0" expanded="true" />
+                <element signature="e#16750#16820#0" expanded="true" />
+                <element signature="e#18798#19105#0" expanded="true" />
+                <element signature="e#19104#19105#0" expanded="true" />
+                <element signature="e#19180#19249#0" expanded="true" />
+                <element signature="e#19255#19325#0" expanded="true" />
+                <element signature="e#19837#19838#0" expanded="true" />
+                <element signature="docComment;class#OnDatingFragmentInteractionListener#0;class#DateFragment#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dimens.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.4059406">
+              <caret line="546" column="80" selection-start-line="546" selection-start-column="80" selection-end-line="546" selection-end-column="80" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#onCreate#0;class#MainActivity#0" expanded="false" />
+                <element signature="e#3295#3356#0" expanded="false" />
+                <element signature="e#4546#4633#0" expanded="false" />
+                <element signature="e#5429#5435#0" expanded="false" />
+                <element signature="method#initListeners#0;class#MainActivity#0" expanded="false" />
+                <element signature="e#6577#6641#0" expanded="false" />
+                <element signature="method#initOfflineData#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#initDataCache#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#initHXLogin#0;class#MainActivity#0" expanded="false" />
+                <element signature="class#9307:9863" expanded="false" />
+                <element signature="method#onSuccess#0;class#9307:9863" expanded="false" />
+                <element signature="method#onProgress#0;class#9307:9863" expanded="false" />
+                <element signature="method#initService#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#onNewIntent#0;class#MainActivity#0" expanded="false" />
+                <element signature="e#13866#13904#0" expanded="false" />
+                <element signature="method#onResume#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#onStart#0;class#MainActivity#0" expanded="false" />
+                <element signature="e#14549#14605#0" expanded="false" />
+                <element signature="e#14878#14916#0" expanded="false" />
+                <element signature="method#onPause#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#onStop#0;class#MainActivity#0" expanded="false" />
+                <element signature="e#15182#15250#0" expanded="false" />
+                <element signature="method#onPostCreate#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#clearReferences#0;class#MainActivity#0" expanded="false" />
+                <element signature="e#17636#17694#0" expanded="false" />
+                <element signature="method#onConfigurationChanged#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#onBackPressed#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#onDatingFragmentInteraction#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#onMessageFragmentInteraction#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#onSwimDailyFragmentInteraction#0;class#MainActivity#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Mode.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/constants/Mode.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="13" column="29" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="29" />
+              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Configurations.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/constants/Configurations.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="24" column="52" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="52" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="menu_main.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+              <folding>
+                <element signature="e#264#284#0" expanded="true" />
+                <element signature="e#463#487#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="value.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/value.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -196,31 +268,8 @@
       <file leaf-file-name="strings.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.12">
-              <caret line="73" column="50" selection-start-line="73" selection-start-column="18" selection-end-line="73" selection-end-column="50" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SwimDailyFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/fragment/dummy/SwimDailyFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="76" column="54" selection-start-line="76" selection-start-column="54" selection-end-line="76" selection-end-column="54" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fragment_swim_daily.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_swim_daily.xml">
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="-4.0">
+              <caret line="5" column="32" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -1606,7 +1655,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/HXTool/HXSDKModel.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/HXTool/DefaultHXSDKModel.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/HXTool/DemoHXSDKHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/entity/UserEntity.java" />
@@ -1620,14 +1668,12 @@
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/NetworkStatusTool.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/receiver/ConnectionChangeReceiver.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/constants/Offline.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_baidu_map_demo.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_chat.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_login.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_register_account.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_invitation.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_invitation.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/fragment/dummy/DateFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/MyDate.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/HXTool/HXSDKHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/service/MonitorNetworkStateService.java" />
@@ -1642,21 +1688,24 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/BubbleDatingApplication.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/constants/Configuration.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/db/MySQLiteOpenHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/service/BackgroundService.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/DataCache.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/tool/HXTool/HXNotifier.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/ChatActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/FeedbackActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/InvitationActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/LoginActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_register_account.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/RegisterAccountActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/constants/Configuration.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/constants/Configurations.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/InvitationActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/fragment/dummy/DateFragment.java" />
       </list>
     </option>
   </component>
@@ -1758,96 +1807,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BubbleDating" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BubbleDating" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BubbleDating" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BubbleDating" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BubbleDating" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BubbleDating" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BubbleDating" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BubbleDating" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BubbleDating" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bubbledating" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="Scope">
         <subPane subId="Changed Files">
           <PATH>
@@ -1890,6 +1849,134 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bubbledating" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bubbledating" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="constants" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bubbledating" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="activity" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="PackagesPane">
         <subPane>
           <PATH>
@@ -1906,6 +1993,132 @@
       </pane>
       <pane id="Scratches">
         <subPane />
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BubbleDating" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
       </pane>
     </panes>
   </component>
@@ -2216,10 +2429,11 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.64735943" sideWeight="0.5771558" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18739353" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.11073254" sideWeight="0.5975794" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16183986" sideWeight="0.5975794" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.2784522" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27987897" sideWeight="0.5" order="0" side_tool="true" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22827938" sideWeight="0.4515885" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928678" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -2232,7 +2446,6 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22827938" sideWeight="0.4969743" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.78194207" sideWeight="0.5" order="14" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1890971" sideWeight="0.4515885" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -2251,7 +2464,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/RegisterAccountActivity.java</url>
-          <line>199</line>
+          <line>198</line>
           <properties />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
@@ -2261,63 +2474,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/constants/UserInfoKeys.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/PersonInfoActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="47" column="53" selection-start-line="47" selection-start-column="53" selection-end-line="47" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_person_info.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="50" column="85" selection-start-line="50" selection-start-column="85" selection-end-line="50" selection-end-column="85" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://F:/Program Files (x86)/Android/android-sdk/sources/android-22/android/os/Message.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="414" column="16" selection-start-line="414" selection-start-column="16" selection-end-line="414" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://F:/Program Files (x86)/Android/android-sdk/sources/android-22/android/content/Intent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4052" column="11" selection-start-line="4052" selection-start-column="11" selection-end-line="4052" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://F:/Program Files (x86)/Android/android-sdk/extras/android/m2repository/com/android/support/support-v4/22.0.0/support-v4-22.0.0-sources.jar!/android/support/v4/app/NotificationCompat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1530" column="28" selection-start-line="1530" selection-start-column="28" selection-end-line="1530" selection-end-column="28" />
-          <folding>
-            <element signature="e#59933#59934#0" expanded="false" />
-            <element signature="e#59980#59981#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://F:/Program Files (x86)/Android/android-sdk/sources/android-22/android/app/PendingIntent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="249" column="32" selection-start-line="249" selection-start-column="32" selection-end-line="250" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/fragment/dummy/MessageFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2346,7 +2502,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7382199">
           <caret line="106" column="38" selection-start-line="106" selection-start-column="32" selection-end-line="106" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2378,13 +2533,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/constants/Mode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18115942">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/constants/Offline.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.79710144">
@@ -2396,14 +2544,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.15544042">
           <caret line="3" column="19" selection-start-line="3" selection-start-column="19" selection-end-line="3" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/constants/Configuration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15720524">
-          <caret line="9" column="31" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="31" />
           <folding />
         </state>
       </provider>
@@ -2427,7 +2567,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="96" column="36" selection-start-line="96" selection-start-column="36" selection-end-line="96" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2539,7 +2678,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="459" column="26" selection-start-line="459" selection-start-column="26" selection-end-line="459" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2549,29 +2687,29 @@
           <caret line="158" column="51" selection-start-line="158" selection-start-column="51" selection-end-line="158" selection-end-column="51" />
           <folding>
             <element signature="docComment;class#HXNotifier#0" expanded="false" />
-            <element signature="e#1649#1747#0" expanded="false" />
+            <element signature="e#1583#1681#0" expanded="false" />
             <element signature="method#HXNotifier#0;class#HXNotifier#0" expanded="false" />
             <element signature="docComment;method#init#0;class#HXNotifier#0" expanded="false" />
             <element signature="method#init#0;class#HXNotifier#0" expanded="false" />
-            <element signature="e#3064#3127#0" expanded="false" />
+            <element signature="e#2998#3061#0" expanded="false" />
             <element signature="docComment;method#reset#0;class#HXNotifier#0" expanded="false" />
             <element signature="method#reset#0;class#HXNotifier#0" expanded="false" />
             <element signature="method#resetNotificationCount#0;class#HXNotifier#0" expanded="false" />
             <element signature="method#cancelNotificaton#0;class#HXNotifier#0" expanded="false" />
             <element signature="docComment;method#onNewMsg#0;class#HXNotifier#0" expanded="false" />
-            <element signature="e#4213#4280#0" expanded="false" />
-            <element signature="e#6412#6474#0" expanded="false" />
+            <element signature="e#4147#4214#0" expanded="false" />
+            <element signature="e#6348#6410#0" expanded="false" />
             <element signature="docComment;method#sendNotification#0;class#HXNotifier#0" expanded="false" />
             <element signature="method#sendNotification#0;class#HXNotifier#0" expanded="false" />
-            <element signature="e#7797#7874#0" expanded="false" />
-            <element signature="e#8375#8478#0" expanded="false" />
-            <element signature="e#8880#8916#0" expanded="false" />
-            <element signature="e#9743#9776#0" expanded="false" />
+            <element signature="e#7733#7810#0" expanded="false" />
+            <element signature="e#8311#8414#0" expanded="false" />
+            <element signature="e#8816#8852#0" expanded="false" />
+            <element signature="e#9679#9712#0" expanded="false" />
             <element signature="method#sendNotification#1;class#HXNotifier#0" expanded="false" />
-            <element signature="e#10532#10635#0" expanded="false" />
+            <element signature="e#10468#10571#0" expanded="false" />
             <element signature="docComment;method#viberateAndPlayTone#0;class#HXNotifier#0" expanded="false" />
             <element signature="method#viberateAndPlayTone#0;class#HXNotifier#0" expanded="false" />
-            <element signature="e#13198#13250#0" expanded="false" />
+            <element signature="e#13134#13186#0" expanded="false" />
             <element signature="method#setNotificationInfoProvider#0;class#HXNotifier#0" expanded="false" />
             <element signature="class#HXNotificationInfoProvider#0;class#HXNotifier#0" expanded="false" />
             <element signature="docComment;method#getDisplayedText#0;class#HXNotificationInfoProvider#0;class#HXNotifier#0" expanded="false" />
@@ -2587,10 +2725,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="79" column="32" selection-start-line="79" selection-start-column="32" selection-end-line="79" selection-end-column="32" />
-          <folding>
-            <element signature="e#2583#2657#0" expanded="false" />
-            <element signature="e#2990#3052#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2601,40 +2735,6 @@
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/InvitationActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="82" column="42" selection-start-line="82" selection-start-column="42" selection-end-line="82" selection-end-column="42" />
-          <folding>
-            <element signature="e#1712#1764#0" expanded="false" />
-            <element signature="e#2710#2757#0" expanded="false" />
-            <element signature="e#2942#3004#0" expanded="false" />
-            <element signature="e#5059#5099#0" expanded="false" />
-            <element signature="e#5359#5403#0" expanded="false" />
-            <element signature="e#5583#5627#0" expanded="false" />
-            <element signature="e#5929#5966#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="207" column="28" selection-start-line="207" selection-start-column="28" selection-end-line="207" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/fragment/dummy/DateFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="141" column="10" selection-start-line="141" selection-start-column="10" selection-end-line="141" selection-end-column="10" />
           <folding />
         </state>
       </provider>
@@ -2666,27 +2766,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.1355934">
-          <caret line="219" column="42" selection-start-line="219" selection-start-column="42" selection-end-line="219" selection-end-column="42" />
-          <folding>
-            <element signature="e#3904#5355#0" expanded="true" />
-            <element signature="e#5354#5355#0" expanded="true" />
-            <element signature="e#6144#9373#0" expanded="true" />
-            <element signature="e#9372#9373#0" expanded="true" />
-            <element signature="e#9419#9697#0" expanded="true" />
-            <element signature="e#9616#9653#0" expanded="true" />
-            <element signature="e#9696#9697#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://F:/Program Files (x86)/Android/android-sdk/sources/android-22/java/lang/String.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3326572">
           <caret line="1352" column="18" selection-start-line="1352" selection-start-column="18" selection-end-line="1352" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2695,14 +2778,9 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.0674157">
+        <state vertical-scroll-proportion="0.0">
           <caret line="74" column="52" selection-start-line="74" selection-start-column="52" selection-end-line="74" selection-end-column="52" />
-          <folding>
-            <element signature="e#533#565#0" expanded="true" />
-            <element signature="e#726#745#0" expanded="true" />
-            <element signature="e#1050#1071#0" expanded="true" />
-            <element signature="e#1150#1175#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2711,46 +2789,221 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.333333">
+        <state vertical-scroll-proportion="0.0">
           <caret line="29" column="47" selection-start-line="29" selection-start-column="47" selection-end-line="29" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.12">
-          <caret line="73" column="50" selection-start-line="73" selection-start-column="18" selection-end-line="73" selection-end-column="50" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/RegisterAccountActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.016949">
+        <state vertical-scroll-proportion="0.0">
           <caret line="211" column="32" selection-start-line="211" selection-start-column="32" selection-end-line="211" selection-end-column="32" />
           <folding>
+            <element signature="imports" expanded="false" />
             <element signature="method#onCreate#0;class#RegisterAccountActivity#0" expanded="false" />
             <element signature="method#initUI#0;class#RegisterAccountActivity#0" expanded="false" />
-            <element signature="e#8937#9012#0" expanded="true" />
+            <element signature="e#4218#4877#0" expanded="false" />
+            <element signature="e#4876#4877#0" expanded="false" />
+            <element signature="e#4933#8011#0" expanded="false" />
+            <element signature="e#8010#8011#0" expanded="false" />
+            <element signature="e#8057#8339#0" expanded="false" />
+            <element signature="e#8338#8339#0" expanded="false" />
+            <element signature="e#8384#12260#0" expanded="false" />
+            <element signature="e#10790#10806#0" expanded="false" />
+            <element signature="e#12259#12260#0" expanded="false" />
             <element signature="method#onActivityResult#0;class#RegisterAccountActivity#0" expanded="false" />
             <element signature="method#showOptionDialog#0;class#RegisterAccountActivity#0" expanded="false" />
+            <element signature="e#14032#15280#0" expanded="false" />
+            <element signature="e#15279#15280#0" expanded="false" />
+            <element signature="e#15306#15494#0" expanded="false" />
+            <element signature="e#15493#15494#0" expanded="false" />
             <element signature="method#startPhotoZoom#0;class#RegisterAccountActivity#0" expanded="false" />
             <element signature="method#onCreateOptionsMenu#0;class#RegisterAccountActivity#0" expanded="false" />
             <element signature="method#onOptionsItemSelected#0;class#RegisterAccountActivity#0" expanded="false" />
-            <element signature="e#17120#17178#0" expanded="false" />
+            <element signature="e#17068#17126#0" expanded="false" />
             <element signature="method#onKeyDown#0;class#RegisterAccountActivity#0" expanded="false" />
-            <marker date="1436583983975" expanded="true" signature="0:17849" placeholder="..." />
+            <marker date="1436672418659" expanded="true" signature="-1:-1" placeholder="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_dating.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/app/libs/BaiduLBS_Android.jar!/com/baidu/mapapi/map/BaiduMap.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.24">
+          <caret line="115" column="22" selection-start-line="115" selection-start-column="22" selection-end-line="115" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://F:/Program Files (x86)/Android/android-sdk/sources/android-22/android/app/ProgressDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="80" column="11" selection-start-line="80" selection-start-column="11" selection-end-line="80" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_add.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.0">
+          <caret line="5" column="32" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+          <folding>
+            <element signature="e#264#284#0" expanded="true" />
+            <element signature="e#463#487#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/value.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/constants/Mode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="219" column="42" selection-start-line="219" selection-start-column="42" selection-end-line="219" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/constants/Configurations.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="52" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/InvitationActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="119" column="69" selection-start-line="119" selection-start-column="69" selection-end-line="119" selection-end-column="69" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/ChatActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3204868">
+        <state vertical-scroll-proportion="0.0">
           <caret line="149" column="23" selection-start-line="149" selection-start-column="23" selection-end-line="149" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/fragment/dummy/DateFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="73.15254">
+          <caret line="148" column="61" selection-start-line="148" selection-start-column="61" selection-end-line="148" selection-end-column="61" />
+          <folding>
+            <element signature="docComment;class#DateFragment#0" expanded="false" />
+            <element signature="docComment;method#newInstance#0;class#DateFragment#0" expanded="false" />
+            <element signature="class#7764:11965" expanded="false" />
+            <element signature="e#7861#7862#0" expanded="true" />
+            <element signature="e#7896#7897#0" expanded="true" />
+            <element signature="e#8761#8830#0" expanded="true" />
+            <element signature="e#8857#8927#0" expanded="true" />
+            <element signature="e#10925#11232#0" expanded="true" />
+            <element signature="e#11231#11232#0" expanded="true" />
+            <element signature="e#11307#11376#0" expanded="true" />
+            <element signature="e#11382#11452#0" expanded="true" />
+            <element signature="e#15449#15691#0" expanded="true" />
+            <element signature="e#15690#15691#0" expanded="true" />
+            <element signature="e#15753#19838#0" expanded="true" />
+            <element signature="e#16654#16723#0" expanded="true" />
+            <element signature="e#16750#16820#0" expanded="true" />
+            <element signature="e#18798#19105#0" expanded="true" />
+            <element signature="e#19104#19105#0" expanded="true" />
+            <element signature="e#19180#19249#0" expanded="true" />
+            <element signature="e#19255#19325#0" expanded="true" />
+            <element signature="e#19837#19838#0" expanded="true" />
+            <element signature="docComment;class#OnDatingFragmentInteractionListener#0;class#DateFragment#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/halfdog/bupt/edu/bubbledating/activity/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4059406">
+          <caret line="546" column="80" selection-start-line="546" selection-start-column="80" selection-end-line="546" selection-end-column="80" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#onCreate#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#3295#3356#0" expanded="false" />
+            <element signature="e#4546#4633#0" expanded="false" />
+            <element signature="e#5429#5435#0" expanded="false" />
+            <element signature="method#initListeners#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#6577#6641#0" expanded="false" />
+            <element signature="method#initOfflineData#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#initDataCache#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#initHXLogin#0;class#MainActivity#0" expanded="false" />
+            <element signature="class#9307:9863" expanded="false" />
+            <element signature="method#onSuccess#0;class#9307:9863" expanded="false" />
+            <element signature="method#onProgress#0;class#9307:9863" expanded="false" />
+            <element signature="method#initService#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onNewIntent#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#13866#13904#0" expanded="false" />
+            <element signature="method#onResume#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onStart#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#14549#14605#0" expanded="false" />
+            <element signature="e#14878#14916#0" expanded="false" />
+            <element signature="method#onPause#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onStop#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#15182#15250#0" expanded="false" />
+            <element signature="method#onPostCreate#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#clearReferences#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#17636#17694#0" expanded="false" />
+            <element signature="method#onConfigurationChanged#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onBackPressed#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onDatingFragmentInteraction#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onMessageFragmentInteraction#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#onSwimDailyFragmentInteraction#0;class#MainActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>

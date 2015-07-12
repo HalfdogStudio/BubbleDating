@@ -1,6 +1,5 @@
 package halfdog.bupt.edu.bubbledating.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
@@ -18,11 +17,10 @@ import com.gc.materialdesign.views.ButtonRectangle;
 
 import java.io.File;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.cache.image.ImageCacheManager;
-import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.constants.Configurations;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 
 public class PersonInfoActivity extends ActionBarActivity {
@@ -65,7 +63,7 @@ public class PersonInfoActivity extends ActionBarActivity {
                     R.drawable.avatar_default_f, R.drawable.avatar_default_f);
             mGender.setImageDrawable(getResources().getDrawable(R.mipmap.ic_w));
         }
-        String ServerImgUrl = Configuration.SERVER_IMG_CACHE_DIR + File.separator + name + ".png";
+        String ServerImgUrl = Configurations.SERVER_IMG_CACHE_DIR + File.separator + name + ".png";
         if(Mode.DEBUG){
             Log.d(TAG, "-->ServerImgUrl of " + name + " is : " + ServerImgUrl);
         }
@@ -102,7 +100,7 @@ public class PersonInfoActivity extends ActionBarActivity {
         public void onClick(View v) {
             switch(v.getId()){
                 case R.id.exit_login:
-                    SharedPreferences sharedPreferences = getSharedPreferences(Configuration.ACOUNT_SHARE_PREFERENCE,
+                    SharedPreferences sharedPreferences = getSharedPreferences(Configurations.ACOUNT_SHARE_PREFERENCE,
                             MODE_PRIVATE);
                     sharedPreferences.edit().clear().commit();
                     Intent intent = new Intent(PersonInfoActivity.this, LoginActivity.class);

@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.media.Ringtone;
@@ -24,13 +23,12 @@ import com.easemob.chat.EMMessage;
 import com.easemob.util.EMLog;
 
 import java.util.HashSet;
-import java.util.Locale;
 
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.R;
 import halfdog.bupt.edu.bubbledating.activity.ChatActivity;
 import halfdog.bupt.edu.bubbledating.activity.MainActivity;
-import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.constants.Configurations;
 import halfdog.bupt.edu.bubbledating.entity.ChatMsgEntity;
 import halfdog.bupt.edu.bubbledating.fragment.dummy.MessageFragment;
 import halfdog.bupt.edu.bubbledating.tool.DataCache;
@@ -169,12 +167,12 @@ public class HXNotifier {
             * 否则可能出现ChatActivity还没实例化，就已然调用ChatActivity的方法的错误。*/
             Log.d(TAG, "-->current activity:" + BubbleDatingApplication.getCurrentActivity());
             if(BubbleDatingApplication.getCurrentActivity() instanceof  ChatActivity && TextUtils.equals(message.getFrom(),ChatActivity.chatter)){
-                Message msg = ChatActivity.mHandler.obtainMessage(Configuration.UPDATE_CHAT_ACTIVITY_CONTACT);
+                Message msg = ChatActivity.mHandler.obtainMessage(Configurations.UPDATE_CHAT_ACTIVITY_CONTACT);
                 msg.obj = entity;
                 ChatActivity.mHandler.sendMessage(msg);
             }else if (BubbleDatingApplication.getCurrentActivity() instanceof MainActivity && MainActivity.currentFragment instanceof MessageFragment){
                 Log.d(TAG,"--> refresh message fragment.");
-                Message msg = MessageFragment.mhandler.obtainMessage(Configuration.UPDATE_MESSAGE_FRAGMENT,entity);
+                Message msg = MessageFragment.mhandler.obtainMessage(Configurations.UPDATE_MESSAGE_FRAGMENT,entity);
                 MessageFragment.mhandler.sendMessage(msg);
             }
             /* 执行到中间部分会中断*/

@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.internal.widget.CompatTextView;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -48,7 +47,7 @@ import java.util.regex.Pattern;
 
 import halfdog.bupt.edu.bubbledating.BubbleDatingApplication;
 import halfdog.bupt.edu.bubbledating.R;
-import halfdog.bupt.edu.bubbledating.constants.Configuration;
+import halfdog.bupt.edu.bubbledating.constants.Configurations;
 import halfdog.bupt.edu.bubbledating.constants.UserInfoKeys;
 import halfdog.bupt.edu.bubbledating.entity.UserEntity;
 import halfdog.bupt.edu.bubbledating.tool.CustomRequest;
@@ -57,7 +56,7 @@ import halfdog.bupt.edu.bubbledating.tool.NetworkStatusTool;
 import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 
 public class RegisterAccountActivity extends Activity {
-    private static final String REGISTER_URL = Configuration.SERVER_IP + "/BubbleDatingServer/HandleRegistration";
+    private static final String REGISTER_URL = Configurations.SERVER_IP + "/BubbleDatingServer/HandleRegistration";
     private static final String TAG = "RegisterAccount";
     private final int REQUEST_TAKE_PHOTO = 1;
     private final int REQUEST_FROM_GALLERY = 2;
@@ -144,7 +143,7 @@ public class RegisterAccountActivity extends Activity {
                                     , uGender, null, true);
 
                             /* save user info to "account" shared preference */
-                            SharedPreferences preferences = getApplicationContext().getSharedPreferences(Configuration.ACOUNT_SHARE_PREFERENCE,
+                            SharedPreferences preferences = getApplicationContext().getSharedPreferences(Configurations.ACOUNT_SHARE_PREFERENCE,
                                     MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putLong(UserInfoKeys.U_ID, -1);
@@ -254,9 +253,9 @@ public class RegisterAccountActivity extends Activity {
                     CustomRequest registerRequest = new CustomRequest(Request.Method.POST, REGISTER_URL, jsonData,
                             responseListener, errorListener);
                     RetryPolicy retryPolicy = new DefaultRetryPolicy(
-                            Configuration.REQUEST_TIMEOUT_MS,
-                            Configuration.MAX_RETRY_TIMES,
-                            Configuration.BACK_OFF_MULTI
+                            Configurations.REQUEST_TIMEOUT_MS,
+                            Configurations.MAX_RETRY_TIMES,
+                            Configurations.BACK_OFF_MULTI
                     );
                     registerRequest.setRetryPolicy(retryPolicy);
                     RequestManager.getInstance(context).add(registerRequest);
