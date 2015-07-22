@@ -133,11 +133,15 @@ public class RegisterAccountActivity extends Activity {
         @Override
         public void onResponse(JSONObject jsonObject) {
             {
+                /*enable submit button again */
+                submit.setClickable(true);
                 Log.d(TAG, "-->on response:" + jsonObject.toString());
+
                 try {
                     int response = (int) jsonObject.get(ResponseState.RESPONSE_STATUS_KEY);
                     switch (response) {
                         case ResponseState.OK:
+
                             Toast.makeText(RegisterAccountActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                             BubbleDatingApplication.userEntity = new UserEntity(-1, uName, uPw, uEmail
                                     , uGender, null, true);
@@ -168,9 +172,17 @@ public class RegisterAccountActivity extends Activity {
                             progressDialog.dismiss();
                             Toast.makeText(RegisterAccountActivity.this, "邮箱已被使用，请重新输入", Toast.LENGTH_SHORT).show();
                             break;
-                        case ResponseState.UNKNOWN_ERROR:
+                        case ResponseState.INSERT_FAILED:
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterAccountActivity.this, "很抱歉，发生了未知的错误，请联系管理员", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterAccountActivity.this, "数据库插入失败，请稍后再试", Toast.LENGTH_SHORT).show();
+                            break;
+                        case ResponseState.SQL_EXCEPTION:
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterAccountActivity.this, "服务器SQL异常，请联系管理员", Toast.LENGTH_SHORT).show();
+                            break;
+                        case ResponseState.HX_REGISTER_FAILED:
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterAccountActivity.this, "HX注册失败，请更换用户名重试", Toast.LENGTH_SHORT).show();
                             break;
                         default:
                             progressDialog.dismiss();
@@ -189,6 +201,7 @@ public class RegisterAccountActivity extends Activity {
     Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
+            submit.setClickable(true);
             progressDialog.dismiss();
             Toast.makeText(RegisterAccountActivity.this, R.string.volley_request_timeout_error, Toast.LENGTH_LONG).show();
         }
@@ -200,6 +213,8 @@ public class RegisterAccountActivity extends Activity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.register_activity_submit:
+                    /*disable submit , forbidding twice clicks*/
+                    submit.setClickable(false);
 
                     uName = userName.getText().toString().trim();
                     Pattern pattern = Pattern.compile("[a-z0-9_]*");

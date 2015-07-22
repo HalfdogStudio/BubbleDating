@@ -157,6 +157,7 @@ public class LoginActivity extends Activity {
         @Override
         public void onResponse(JSONObject response) {
             {
+                loginButton.setClickable(true);
                 Log.d(TAG, "-->log in response:" + response.toString());
                 try {
                     int status = response.getInt(ResponseState.RESPONSE_STATUS_KEY);
@@ -194,6 +195,9 @@ public class LoginActivity extends Activity {
                             progressDialog.dismiss();
                             Toast.makeText(context,"密码与用户名不匹配",Toast.LENGTH_SHORT).show();
                             break;
+                        case ResponseState.HX_REGISTER_FAILED:
+                            Toast.makeText(context,"HX注册失败，请更换用户名重试",Toast.LENGTH_SHORT).show();
+                            break;
                         default:
                             progressDialog.dismiss();
                             Toast.makeText(context,"未知的错误",Toast.LENGTH_SHORT).show();
@@ -209,6 +213,7 @@ public class LoginActivity extends Activity {
     Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError volleyError) {
+            loginButton.setClickable(true);
             progressDialog.dismiss();
             Toast.makeText(LoginActivity.this, R.string.volley_request_timeout_error, Toast.LENGTH_LONG).show();
         }
@@ -216,6 +221,8 @@ public class LoginActivity extends Activity {
 
 
     public  void  login(final Context context){
+        /*disable login button , avoiding multiple clicks*/
+        loginButton.setClickable(false);
         username = loginName.getText().toString().toLowerCase();
         pw = loginPw.getText().toString();
         if(TextUtils.isEmpty(username)){

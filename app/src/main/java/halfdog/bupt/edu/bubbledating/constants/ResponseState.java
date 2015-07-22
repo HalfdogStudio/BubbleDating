@@ -12,6 +12,8 @@ public class ResponseState {
     public static final int UNKNOWN_ERROR = 3;
     public static final int UNKOWN_USERNAME = 4;
     public static final int USERNAME_PASSWORD_UNCOMPATIBLE = 5;
-    public static final int USER_NOT_ON_HX = 6;
+    public static final int HX_REGISTER_FAILED = 6;
+    public static final int INSERT_FAILED = 7;
+    public static final int SQL_EXCEPTION = 8;
 
 }
