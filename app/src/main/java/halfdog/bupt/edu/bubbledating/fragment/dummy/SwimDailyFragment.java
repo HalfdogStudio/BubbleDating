@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -78,12 +79,25 @@ public class SwimDailyFragment extends Fragment {
         webViewDaily = (WebView)view.findViewById(R.id.webview_daily);
         webViewDaily.getSettings().setJavaScriptEnabled(true);
         webViewDaily.getSettings().setBuiltInZoomControls(false);
+        webViewDaily.getSettings().setTextZoom(160);
 
         //设置自适应手机屏幕
         webViewDaily.getSettings().setUseWideViewPort(true);
         webViewDaily.getSettings().setLoadWithOverviewMode(true);
 
         webViewDaily.loadUrl(SWIM_DAILY_URL);
+
+        /*try to remove side blanks*/
+        webViewDaily.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+
+        final Activity activity = this.getActivity();
+        webViewDaily.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                activity.setProgress(1000 * newProgress);
+            }
+        });
+
         webViewDaily.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
