@@ -91,7 +91,9 @@ public class FeedbackActivity extends ActionBarActivity {
                                 );
                         request.setRetryPolicy(retryPolicy);
                         RequestManager.getInstance(FeedbackActivity.this).add(request);
+                        mSubmit.setClickable(false);
                         progressDialog.show();
+
                     }
                     break;
                 case R.id.feedback_activity_cancel:
@@ -132,6 +134,7 @@ public class FeedbackActivity extends ActionBarActivity {
     Response.Listener<JSONObject> okListener = new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject response) {
+            mSubmit.setClickable(true);
             progressDialog.dismiss();
             try {
                 int status = response.getInt("result");
@@ -154,6 +157,7 @@ public class FeedbackActivity extends ActionBarActivity {
     Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
+            mSubmit.setClickable(true);
             progressDialog.dismiss();
             Toast.makeText(FeedbackActivity.this,"发生未知错误，请稍后重试",Toast.LENGTH_LONG).show();
         }

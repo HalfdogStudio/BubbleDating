@@ -13,6 +13,7 @@
         android:layout_marginRight="@dimen/feedback_activity_edittext_side_margin"
         android:layout_width="match_parent"
         android:cursorVisible="true"
+        android:gravity="top"
         android:layout_height="@dimen/feedback_activity_edittext_height" />
     <RelativeLayout
         android:layout_centerHorizontal="true"

@@ -72,6 +72,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
     private Menu mMenu;
 
     private final int MENU_ADD_ID = R.id.action_add;
+    private final int MENU_REFRESH_ID = R.id.action_refresh;
 
     public Handler mHandler = new Handler(){
         @Override
@@ -267,6 +268,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         swimDailyText.setTextColor(getResources().getColor(R.color.main_activity_bottom_tab_not_selected));
         mToolbar.setTitle("约游");
         showMenuOption(MENU_ADD_ID);
+        showMenuOption(MENU_REFRESH_ID);
     }
 
     public void clickMessageContainer(){
@@ -282,6 +284,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         swimDailyText.setTextColor(getResources().getColor(R.color.main_activity_bottom_tab_not_selected));
         mToolbar.setTitle("消息");
         hideMenuOption(MENU_ADD_ID);
+        hideMenuOption(MENU_REFRESH_ID);
     }
 
     public void clickSwimDailyContainer(){
@@ -297,6 +300,7 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
         swimDailyText.setTextColor(getResources().getColor(R.color.main_activity_bottom_tab_selected));
         mToolbar.setTitle("游泳日报");
         hideMenuOption(MENU_ADD_ID);
+        hideMenuOption(MENU_REFRESH_ID);
     }
 
     private void addOrShowFragment( Fragment fragment){
@@ -530,6 +534,8 @@ public class MainActivity extends ActionBarActivity implements DateFragment.OnDa
     public void onSwimDailyFragmentInteraction(Uri uri) {
 
     }
+
+
 
     private void hideMenuOption(int id){
         MenuItem item = mMenu.findItem(id);

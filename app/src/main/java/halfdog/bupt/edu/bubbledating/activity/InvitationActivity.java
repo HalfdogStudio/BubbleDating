@@ -115,6 +115,7 @@ public class InvitationActivity extends ActionBarActivity {
             mProgressDialog.dismiss();
             try {
                 int result = response.getInt("result");
+                Log.e(TAG,"-->new invitation response code:"+result);
                 if(result == 1){
                     Toast.makeText(InvitationActivity.this, R.string.activity_invitation_response_ok, Toast.LENGTH_LONG).show();
                     setResult(Configurations.RESULT_ADD_INVITATION_OK);
@@ -126,7 +127,7 @@ public class InvitationActivity extends ActionBarActivity {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(InvitationActivity.this, R.string.activity_invitation_response_not_ok, Toast.LENGTH_LONG).show();
+                Toast.makeText(InvitationActivity.this, R.string.activity_invitation_response_parse_error, Toast.LENGTH_LONG).show();
             }
 
         }

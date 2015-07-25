@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.android.volley.Request;
@@ -69,10 +70,10 @@ import halfdog.bupt.edu.bubbledating.tool.RequestManager;
  * Use the {@link DateFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DateFragment extends  Fragment {
+public class DateFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    public final String REQUEST_PEOPLE_AROUND = Configurations.SERVER_IP+"/BubbleDatingServer/HandlePeopleAround";
+    public final String REQUEST_PEOPLE_AROUND = Configurations.SERVER_IP + "/BubbleDatingServer/HandlePeopleAround";
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -120,7 +121,7 @@ public class DateFragment extends  Fragment {
         super.onCreate(savedInstanceState);
 //        SDKInitializer.initialize(getApplicationContext())
         context = getActivity();
-        Log.d("","--> on create");
+        Log.d("", "--> on create");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -133,9 +134,9 @@ public class DateFragment extends  Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.d(" ","-->on create view");
-        View view  = inflater.inflate(R.layout.fragment_dating,container,false);
-        mMapView = (MapView)view.findViewById(R.id.bmapView);
+        Log.d(" ", "-->on create view");
+        View view = inflater.inflate(R.layout.fragment_dating, container, false);
+        mMapView = (MapView) view.findViewById(R.id.bmapView);
         mMap = mMapView.getMap();
         mMap.setOnMarkerClickListener(onMarkerClickListener);
 
@@ -154,13 +155,13 @@ public class DateFragment extends  Fragment {
         return view;
     }
 
-    private void showOfflineMark(){
+    private void showOfflineMark() {
         {
-            Log.d(TAG,"-->OFFLINE branch");
+            Log.d(TAG, "-->OFFLINE branch");
             JSONObject item = null;
-            for(int i = 0; i < Offline.offline_people_around.length(); i ++){
+            for (int i = 0; i < Offline.offline_people_around.length(); i++) {
                 try {
-                    item = (JSONObject)Offline.offline_people_around.get(i);
+                    item = (JSONObject) Offline.offline_people_around.get(i);
 //                    int uId = item.getInt("u_id");
                     String uName = item.getString("u_name");
                     String uInviName = item.getString("u_invi");
@@ -171,23 +172,23 @@ public class DateFragment extends  Fragment {
                     Date uDate = df.parse(item.getString("u_posttime"));
                     Date now = MyDate.getCurrentDate();
                     //上传时间距离现在的差 eg: XXX天前， XXX 小时前
-                    String dateDiff = MyDate.diffDate(now,uDate);
+                    String dateDiff = MyDate.diffDate(now, uDate);
 
-                    Log.d(TAG,"-->uName:"+uName+" uInviName:"+uInviName+" uGender:"+uGender+
-                            " uLat:"+uLat+" uLong:"+uLong+" uDate:"+uDate.toString());
-                    Log.d(TAG,"-->uGender:"+uGender);
+                    Log.d(TAG, "-->uName:" + uName + " uInviName:" + uInviName + " uGender:" + uGender +
+                            " uLat:" + uLat + " uLong:" + uLong + " uDate:" + uDate.toString());
+                    Log.d(TAG, "-->uGender:" + uGender);
                     // add loc icon
-                    if(uLat == 0 && uLong == 0){
+                    if (uLat == 0 && uLong == 0) {
                         continue;
                     }
-                    Bitmap photoOfHead = ImageMerger.addTextOnBitmap(uName,uGender,getActivity());
+                    Bitmap photoOfHead = ImageMerger.addTextOnBitmap(uName, uGender, getActivity());
                     BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(photoOfHead);
                     Bundle extraInfo = new Bundle();
                     extraInfo.putString("uName", uName);
-                    extraInfo.putString("uGender",uGender);
-                    extraInfo.putString("uInvi",uInviName);
+                    extraInfo.putString("uGender", uGender);
+                    extraInfo.putString("uInvi", uInviName);
                     extraInfo.putString("uDiffDate", dateDiff);
-                    OverlayOptions options = new MarkerOptions().title(""+uName).position(new LatLng(uLat,uLong)).icon(bitmap).extraInfo(extraInfo);
+                    OverlayOptions options = new MarkerOptions().title("" + uName).position(new LatLng(uLat, uLong)).icon(bitmap).extraInfo(extraInfo);
                     mMap.addOverlay(options);
                     mMapManager.addToMap();
                 } catch (Exception e) {
@@ -198,7 +199,7 @@ public class DateFragment extends  Fragment {
     }
 
 
-    OverlayManager mMapManager = new OverlayManager(mMap){
+    OverlayManager mMapManager = new OverlayManager(mMap) {
 
         @Override
         public List<OverlayOptions> getOverlayOptions() {
@@ -207,39 +208,39 @@ public class DateFragment extends  Fragment {
 
         @Override
         public boolean onMarkerClick(Marker marker) {
-            Bundle extra  = marker.getExtraInfo();
-            if(extra == null) return true;
+            Bundle extra = marker.getExtraInfo();
+            if (extra == null) return true;
             int uId = extra.getInt("uId");
             String gender = extra.getString("uGender");
             String diffDate = extra.getString("uDiffDate");
             final String name = extra.getString("uName");
             String info = extra.getString("uInvi");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            if(Mode.DEBUG){
-                Log.d(TAG,"-->clicked: name:"+name+",gender:"+gender+",gender.equals(f):"+gender.equals("f"));
+            if (Mode.DEBUG) {
+                Log.d(TAG, "-->clicked: name:" + name + ",gender:" + gender + ",gender.equals(f):" + gender.equals("f"));
             }
-            View userInfoView = getActivity().getLayoutInflater().inflate(R.layout.user_info_view,null);
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams((int)getResources().getDimension(R.dimen.date_fragment_popup_window_width),
-                    (int)getResources().getDimension(R.dimen.date_fragment_popup_window_height));
+            View userInfoView = getActivity().getLayoutInflater().inflate(R.layout.user_info_view, null);
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams((int) getResources().getDimension(R.dimen.date_fragment_popup_window_width),
+                    (int) getResources().getDimension(R.dimen.date_fragment_popup_window_height));
             userInfoView.setLayoutParams(layoutParams);
-            TextView mUserName = (TextView)userInfoView.findViewById(R.id.user_info_name);
-            ImageView mUserGender = (ImageView)userInfoView.findViewById(R.id.user_info_gender);
-            TextView mUserInviContent = (TextView)userInfoView.findViewById(R.id.user_info_invitation_content);
-            TextView mUserPosttime = (TextView)userInfoView.findViewById(R.id.user_info_posttime);
-            final CircleImageView mUserAvatar = (CircleImageView)userInfoView.findViewById(R.id.user_info_avatar);
-            ButtonRectangle mUserChat = (ButtonRectangle)userInfoView.findViewById(R.id.user_info_chat_button);
+            TextView mUserName = (TextView) userInfoView.findViewById(R.id.user_info_name);
+            ImageView mUserGender = (ImageView) userInfoView.findViewById(R.id.user_info_gender);
+            TextView mUserInviContent = (TextView) userInfoView.findViewById(R.id.user_info_invitation_content);
+            TextView mUserPosttime = (TextView) userInfoView.findViewById(R.id.user_info_posttime);
+            final CircleImageView mUserAvatar = (CircleImageView) userInfoView.findViewById(R.id.user_info_avatar);
+//            ButtonRectangle mUserChat = (ButtonRectangle)userInfoView.findViewById(R.id.user_info_chat_button);
             mUserName.setText(name);
             mUserPosttime.setText(diffDate);
-            if(gender.equals("m")){
+            if (gender.equals("m")) {
                 mUserGender.setImageResource(R.mipmap.ic_m);
 //                mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_m));
-            }else if (gender.equals("f")){
+            } else if (gender.equals("f")) {
                 mUserGender.setImageResource(R.mipmap.ic_w);
 //                mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_f));
             }
-            if(TextUtils.isEmpty(info)){
+            if (TextUtils.isEmpty(info)) {
                 mUserInviContent.setVisibility(View.GONE);
-            }else{
+            } else {
                 mUserInviContent.setText(info);
             }
 
@@ -249,25 +250,28 @@ public class DateFragment extends  Fragment {
             ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener(mUserAvatar,
                     R.drawable.avatar_default_m, R.drawable.avatar_default_f);
             String ServerImgUrl = Configurations.SERVER_IMG_CACHE_DIR + File.separator + name + ".png";
-            if(Mode.DEBUG){
-                Log.d(TAG, "-->ServerImgUrl of "+mUserName + " is : "+ServerImgUrl);
+            if (Mode.DEBUG) {
+                Log.d(TAG, "-->ServerImgUrl of " + mUserName + " is : " + ServerImgUrl);
             }
-            ImageCacheManager.getInstance().getImage(ServerImgUrl,userAvatorListener);
-            mUserChat.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), ChatActivity.class);
-                    intent.putExtra("name",name);
-                    startActivity(intent);
-                }
-            });
-            PopupWindow popupWindow = new PopupWindow(userInfoView,(int)getResources().getDimension(R.dimen.date_fragment_popup_window_width),(int)getResources().getDimension(R.dimen.date_fragment_popup_window_height),true);
+            ImageCacheManager.getInstance().getImage(ServerImgUrl, userAvatorListener);
+//            mUserChat.setOnClickListener(new View.OnClickListener(){
+//                @Override
+//                public void onClick(View v) {
+//                    Log.d(TAG,"-->NAME:"+name+",userName:"+BubbleDatingApplication.userEntity.getmName()+",equals:"+
+//                    TextUtils.equals(name,BubbleDatingApplication.userEntity.getmName()));
+//
+//                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+//                    intent.putExtra("name",name);
+//                    startActivity(intent);
+//                }
+//            });
+            PopupWindow popupWindow = new PopupWindow(userInfoView, (int) getResources().getDimension(R.dimen.date_fragment_popup_window_width), (int) getResources().getDimension(R.dimen.date_fragment_popup_window_height), true);
             //通过设置背景图片可以使popup window出现后能够通过点击旁白或者back键让它消失
             //popupwindow背景设置成为透明色，以防设圆角时显示黑色
-            popupWindow.setBackgroundDrawable(new PaintDrawable(Color.TRANSPARENT) );
+            popupWindow.setBackgroundDrawable(new PaintDrawable(Color.TRANSPARENT));
             popupWindow.setTouchable(true);
             popupWindow.setOutsideTouchable(true);
-            popupWindow.showAtLocation(getView(), Gravity.CENTER_HORIZONTAL,0,0);
+            popupWindow.showAtLocation(getView(), Gravity.CENTER_HORIZONTAL, 0, 0);
 //            Toast.makeText(getActivity(),"'"+info+"'"+" by "+name,Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -276,12 +280,12 @@ public class DateFragment extends  Fragment {
     Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
         @Override
         public void onResponse(JSONArray jsonArray) {
-            Log.d(TAG,"--> get reponse with json array from server ");
-            for(int i = 0; i < jsonArray.length(); i ++ ){
+            Log.d(TAG, "--> get reponse with json array from server ");
+            for (int i = 0; i < jsonArray.length(); i++) {
                 try {
 
                     JSONObject item = jsonArray.getJSONObject(i);
-                    Log.d(TAG,"-->request invitation:"+i+":"+item.toString());
+                    Log.d(TAG, "-->request invitation:" + i + ":" + item.toString());
 //                    int uId = item.getInt("u_id");
                     String uName = item.getString("u_name");
                     String uInviName = item.getString("u_invi");
@@ -290,30 +294,30 @@ public class DateFragment extends  Fragment {
                     double uLong = item.getDouble("u_loc_long");
 //                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String uDateDiff = null;
-                   try{
-                       Date uDate = new Date(item.getLong("u_posttime"));
-                       Date now = MyDate.getCurrentDate();
-                       //上传时间距离现在的差 eg: XXX天前， XXX 小时前
-                       uDateDiff = MyDate.diffDate(now,uDate);
-                     }catch(Exception e){
-                       Log.d(TAG,"-->exception occurred while parsing posttime");
-                   }
+                    try {
+                        Date uDate = new Date(item.getLong("u_posttime"));
+                        Date now = MyDate.getCurrentDate();
+                        //上传时间距离现在的差 eg: XXX天前， XXX 小时前
+                        uDateDiff = MyDate.diffDate(now, uDate);
+                    } catch (Exception e) {
+                        Log.d(TAG, "-->exception occurred while parsing posttime");
+                    }
 
-                    Log.d(TAG,"-->uName:"+uName+" uInviName:"+uInviName+" uGender:"+uGender+
-                    " uLat:"+uLat+" uLong:"+uLong+" uDateDiff:"+uDateDiff);
+                    Log.d(TAG, "-->uName:" + uName + " uInviName:" + uInviName + " uGender:" + uGender +
+                            " uLat:" + uLat + " uLong:" + uLong + " uDateDiff:" + uDateDiff);
                     // add loc icon
-                    if(uLat == 0 && uLong == 0){
-                        Log.d(TAG,"-->lat or long is 0, continue, username:"+uName);
+                    if (uLat == 0 && uLong == 0) {
+                        Log.d(TAG, "-->lat or long is 0, continue, username:" + uName);
                         continue;
                     }
-                    Bitmap photoOfHead = ImageMerger.addTextOnBitmap(uName,uGender,getActivity());
+                    Bitmap photoOfHead = ImageMerger.addTextOnBitmap(uName, uGender, getActivity());
                     BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(photoOfHead);
                     Bundle extraInfo = new Bundle();
                     extraInfo.putString("uName", uName);
-                    extraInfo.putString("uGender",uGender);
-                    extraInfo.putString("uInvi",uInviName);
-                    extraInfo.putString("uDiffDate", uDateDiff );
-                    OverlayOptions options = new MarkerOptions().title(""+uName).position(new LatLng(uLat,uLong)).icon(bitmap).extraInfo(extraInfo).visible(true);
+                    extraInfo.putString("uGender", uGender);
+                    extraInfo.putString("uInvi", uInviName);
+                    extraInfo.putString("uDiffDate", uDateDiff);
+                    OverlayOptions options = new MarkerOptions().title("" + uName).position(new LatLng(uLat, uLong)).icon(bitmap).extraInfo(extraInfo).visible(true);
                     mMap.addOverlay(options);
                     mMapManager.addToMap();
 
@@ -326,20 +330,20 @@ public class DateFragment extends  Fragment {
         }
     };
 
-    public void  requestPeopleAround(){
+    public void requestPeopleAround() {
 
         mProgressDialog = new ProgressDialog(context);
         mProgressDialog.setMessage("Please wait ...");
         mMap.clear();
-        MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(BubbleDatingApplication.userLatLng,17);
+        MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(BubbleDatingApplication.userLatLng, 17);
         mMap.setMapStatus(update);
         /*
         *       request to get people around
         * */
-        if(BubbleDatingApplication.mode == Mode.OFFLINE_MODE){
+        if (BubbleDatingApplication.mode == Mode.OFFLINE_MODE) {
             showOfflineMark();
-        }else{
-            JsonArrayRequest requestPeopleAround = new JsonArrayRequest(Request.Method.GET,REQUEST_PEOPLE_AROUND,responseListener,errorListener);
+        } else {
+            JsonArrayRequest requestPeopleAround = new JsonArrayRequest(Request.Method.GET, REQUEST_PEOPLE_AROUND, responseListener, errorListener);
             RequestManager.getInstance(context).add(requestPeopleAround);
         }
 
@@ -349,46 +353,46 @@ public class DateFragment extends  Fragment {
         @Override
         public void onErrorResponse(VolleyError volleyError) {
             mProgressDialog.dismiss();
-            Log.d(TAG,"--> ERROR HAPPENED during query of people aroound");
+            Log.d(TAG, "--> ERROR HAPPENED during query of people aroound");
         }
     };
 
     BaiduMap.OnMarkerClickListener onMarkerClickListener = new BaiduMap.OnMarkerClickListener() {
         @Override
         public boolean onMarkerClick(Marker marker) {
-            Bundle extra  = marker.getExtraInfo();
-            if(extra == null) return true;
+            Bundle extra = marker.getExtraInfo();
+            if (extra == null) return true;
             int uId = extra.getInt("uId");
             String gender = extra.getString("uGender");
             String diffDate = extra.getString("uDiffDate");
             final String name = extra.getString("uName");
             String info = extra.getString("uInvi");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            if(Mode.DEBUG){
-                Log.d(TAG,"-->clicked: name:"+name+",gender:"+gender+",gender.equals(f):"+gender.equals("f"));
+            if (Mode.DEBUG) {
+                Log.d(TAG, "-->clicked: name:" + name + ",gender:" + gender + ",gender.equals(f):" + gender.equals("f"));
             }
-            View userInfoView = getActivity().getLayoutInflater().inflate(R.layout.user_info_view,null);
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams((int)getResources().getDimension(R.dimen.date_fragment_popup_window_width),
-                    (int)getResources().getDimension(R.dimen.date_fragment_popup_window_height));
+            View userInfoView = getActivity().getLayoutInflater().inflate(R.layout.user_info_view, null);
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams((int) getResources().getDimension(R.dimen.date_fragment_popup_window_width),
+                    (int) getResources().getDimension(R.dimen.date_fragment_popup_window_height));
             userInfoView.setLayoutParams(layoutParams);
-            TextView mUserName = (TextView)userInfoView.findViewById(R.id.user_info_name);
-            ImageView mUserGender = (ImageView)userInfoView.findViewById(R.id.user_info_gender);
-            TextView mUserInviContent = (TextView)userInfoView.findViewById(R.id.user_info_invitation_content);
-            TextView mUserPosttime = (TextView)userInfoView.findViewById(R.id.user_info_posttime);
-            final CircleImageView mUserAvatar = (CircleImageView)userInfoView.findViewById(R.id.user_info_avatar);
-            ButtonRectangle mUserChat = (ButtonRectangle)userInfoView.findViewById(R.id.user_info_chat_button);
+            TextView mUserName = (TextView) userInfoView.findViewById(R.id.user_info_name);
+            ImageView mUserGender = (ImageView) userInfoView.findViewById(R.id.user_info_gender);
+            TextView mUserInviContent = (TextView) userInfoView.findViewById(R.id.user_info_invitation_content);
+            TextView mUserPosttime = (TextView) userInfoView.findViewById(R.id.user_info_posttime);
+            final CircleImageView mUserAvatar = (CircleImageView) userInfoView.findViewById(R.id.user_info_avatar);
+            ButtonRectangle mUserChat = (ButtonRectangle) userInfoView.findViewById(R.id.user_info_chat_button);
             mUserName.setText(name);
             mUserPosttime.setText(diffDate);
-            if(gender.equals("m")){
+            if (gender.equals("m")) {
                 mUserGender.setImageResource(R.mipmap.ic_m);
 //                mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_m));
-            }else if (gender.equals("f")){
+            } else if (gender.equals("f")) {
                 mUserGender.setImageResource(R.mipmap.ic_w);
 //                mUserAvatar.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_default_f));
             }
-            if(TextUtils.isEmpty(info)){
+            if (TextUtils.isEmpty(info)) {
                 mUserInviContent.setVisibility(View.GONE);
-            }else{
+            } else {
                 mUserInviContent.setText(info);
             }
 
@@ -397,26 +401,30 @@ public class DateFragment extends  Fragment {
             * */
             ImageLoader.ImageListener userAvatorListener = ImageLoader.getImageListener(mUserAvatar,
                     R.drawable.avatar_default_m, R.drawable.avatar_default_m);
-            String ServerImgUrl = Configurations.SERVER_IMG_CACHE_DIR  + name + ".png";
-            if(Mode.DEBUG){
-                Log.d(TAG, "-->ServerImgUrl of "+name + " is : "+ServerImgUrl);
+            String ServerImgUrl = Configurations.SERVER_IMG_CACHE_DIR + name + ".png";
+            if (Mode.DEBUG) {
+                Log.d(TAG, "-->ServerImgUrl of " + name + " is : " + ServerImgUrl);
             }
-            ImageCacheManager.getInstance().getImage(ServerImgUrl,userAvatorListener);
-             mUserChat.setOnClickListener(new View.OnClickListener(){
+            ImageCacheManager.getInstance().getImage(ServerImgUrl, userAvatorListener);
+            mUserChat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (TextUtils.equals(name, BubbleDatingApplication.userEntity.getmName())) {
+                        Toast.makeText(getActivity(), R.string.cannot_chat_with_self, Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     Intent intent = new Intent(getActivity(), ChatActivity.class);
-                    intent.putExtra("name",name);
+                    intent.putExtra("name", name);
                     startActivity(intent);
                 }
             });
-            PopupWindow popupWindow = new PopupWindow(userInfoView,(int)getResources().getDimension(R.dimen.date_fragment_popup_window_width),(int)getResources().getDimension(R.dimen.date_fragment_popup_window_height),true);
+            PopupWindow popupWindow = new PopupWindow(userInfoView, (int) getResources().getDimension(R.dimen.date_fragment_popup_window_width), (int) getResources().getDimension(R.dimen.date_fragment_popup_window_height), true);
             //通过设置背景图片可以使popup window出现后能够通过点击旁白或者back键让它消失
             //popupwindow背景设置成为透明色，以防设圆角时显示黑色
-            popupWindow.setBackgroundDrawable(new PaintDrawable(Color.TRANSPARENT) );
+            popupWindow.setBackgroundDrawable(new PaintDrawable(Color.TRANSPARENT));
             popupWindow.setTouchable(true);
             popupWindow.setOutsideTouchable(true);
-            popupWindow.showAtLocation(getView(), Gravity.CENTER_HORIZONTAL,0,0);
+            popupWindow.showAtLocation(getView(), Gravity.CENTER_HORIZONTAL, 0, 0);
 //            Toast.makeText(getActivity(),"'"+info+"'"+" by "+name,Toast.LENGTH_SHORT).show();
             return true;
         }
