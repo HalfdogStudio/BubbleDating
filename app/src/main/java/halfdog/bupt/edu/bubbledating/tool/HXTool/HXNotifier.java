@@ -36,9 +36,6 @@ import halfdog.bupt.edu.bubbledating.tool.MyDate;
 import halfdog.bupt.edu.bubbledating.tool.ProcessManager;
 
 /**
- * 新消息提醒class
- * 2.1.8把新消息提示相关的api移除出sdk，方便开发者自由修改
- * 开发者也可以继承此类实现相关的接口
  *
  * this class is subject to be inherited and implement the relative APIs
  */
@@ -47,12 +44,6 @@ public class HXNotifier {
 
     Ringtone ringtone = null;
 
-//    public final static String[] msg_eng = { "sent a message", "sent a picture", "sent a voice",
-//            "sent location message", "sent a video", "sent a file", "%1 contacts sent %2 messages"
-//    };
-//    public final static String[] msg_ch = { "发来一条消息", "发来一张图片", "发来一段语音", "发来位置信息", "发来一个视频", "发来一个文件",
-//            "%1个联系人发来%2条消息"
-//    };
 
     public static int notifyID = 0525; // start notification id
     public static int foregroundNotifyID = 0555;
@@ -80,7 +71,6 @@ public class HXNotifier {
     }
 
     /**
-     * 开发者可以重载此函数
      * this function can be override
      * @param context
      * @return
@@ -104,7 +94,6 @@ public class HXNotifier {
     }
 
     /**
-     * 开发者可以重载此函数
      * this function can be override
      */
     public void reset(){
@@ -130,9 +119,6 @@ public class HXNotifier {
     }
 
     /**
-     * 处理新收到的消息，然后发送通知
-     *
-     * 开发者可以重载此函数
      * this function can be override
      *
      * @param message
@@ -142,7 +128,6 @@ public class HXNotifier {
 //            return;
 //        }
 //        Log.d(TAG,"-->on New Msg in HX Notifier");
-        // 判断app是否在后台
         if(ProcessManager.isBackGround(context)){
             Log.d(TAG, "--> process is in background");
             sendNotification(message, false, messageContent);
@@ -163,8 +148,6 @@ public class HXNotifier {
 
 
 
-            /*应该判断当前Activity是不是ChatActivity, 若是， 发送消息， 若不是， 只更新DataCache 和 sqlite的内容，
-            * 否则可能出现ChatActivity还没实例化，就已然调用ChatActivity的方法的错误。*/
             Log.d(TAG, "-->current activity:" + BubbleDatingApplication.getCurrentActivity());
             if(BubbleDatingApplication.getCurrentActivity() instanceof  ChatActivity && TextUtils.equals(message.getFrom(),ChatActivity.chatter)){
                 Message msg = ChatActivity.mHandler.obtainMessage(Configurations.UPDATE_CHAT_ACTIVITY_CONTACT);
@@ -175,7 +158,6 @@ public class HXNotifier {
                 Message msg = MessageFragment.mhandler.obtainMessage(Configurations.UPDATE_MESSAGE_FRAGMENT,entity);
                 MessageFragment.mhandler.sendMessage(msg);
             }
-            /* 执行到中间部分会中断*/
             DataCache.updateUsrMsgAndContactListInDB(entity, db,context);
         }
 //        if (!EasyUtils.isAppRunningForeground(appContext)) {
@@ -192,7 +174,6 @@ public class HXNotifier {
     }
 
     /**
-     * 发送通知栏提示
      * This can be override by subclass to provide customer implementation
      * @param message
      */
@@ -273,8 +254,6 @@ public class HXNotifier {
                     .setWhen(System.currentTimeMillis())
                     .setAutoCancel(true);
 
-//            Intent msgIntent = appContext.getPackageManager().getLaunchIntentForPackage(packageName);
-//            msgIntent.setClass(appContext,ChatActivity.class);
             Intent msgIntent = new Intent(appContext,ChatActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(appContext, notifyID, msgIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -290,7 +269,6 @@ public class HXNotifier {
         }
 
     /**
-     * 手机震动和声音提示
      */
     public void viberateAndPlayTone(EMMessage message) {
         if(EMChatManager.getInstance().isSlientMessage(message)){
@@ -310,7 +288,7 @@ public class HXNotifier {
         try {
             lastNotifiyTime = System.currentTimeMillis();
 
-            // 判断是否处于静音模式
+            // whether phone is in silent mode
             if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
                 EMLog.e(TAG, "in slient mode now");
                 return;
@@ -363,7 +341,7 @@ public class HXNotifier {
 
 
     /**
-     * 设置NotificationInfoProvider
+     *  set NotificationInfoProvider
      *
      * @param provider
      */
@@ -372,51 +350,14 @@ public class HXNotifier {
     }
 
     public interface HXNotificationInfoProvider {
-        /**
-         * 设置发送notification时状态栏提示新消息的内容(比如Xxx发来了一条图片消息)
-         *
-         * @param message
-         *            接收到的消息
-         * @return null为使用默认
-         */
         String getDisplayedText(EMMessage message);
 
-        /**
-         * 设置notification持续显示的新消息提示(比如2个联系人发来了5条消息)
-         *
-         * @param message
-         *            接收到的消息
-         * @param fromUsersNum
-         *            发送人的数量
-         * @param messageNum
-         *            消息数量
-         * @return null为使用默认
-         */
         String getLatestText(EMMessage message, int fromUsersNum, int messageNum);
 
-        /**
-         * 设置notification标题
-         *
-         * @param message
-         * @return null为使用默认
-         */
         String getTitle(EMMessage message);
 
-        /**
-         * 设置小图标
-         *
-         * @param message
-         * @return 0使用默认图标
-         */
         int getSmallIcon(EMMessage message);
 
-        /**
-         * 设置notification点击时的跳转intent
-         *
-         * @param message
-         *            显示在notification上最近的一条消息
-         * @return null为使用默认
-         */
         Intent getLaunchIntent(EMMessage message);
     }
 }

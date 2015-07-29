@@ -75,7 +75,7 @@ public class BackgroundService extends Service implements EMEventListener {
                 Log.d(TAG,"-->EMNotifierEvent:"+emNotifierEvent.getEvent().toString());
 
                 switch (emNotifierEvent.getEvent()) {
-                    case EventNewMessage: //普通消息
+                    case EventNewMessage: //normal msg
                     {
                         EMMessage message = (EMMessage) emNotifierEvent.getData();
                         Log.d(TAG,"-->normal message:"+message.toString());
@@ -91,7 +91,7 @@ public class BackgroundService extends Service implements EMEventListener {
                                 }
                                 break;
                         }
-                        //提示新消息
+                        //notify new msg
                         HXSDKHelper instance = HXSDKHelper.getInstance();
                         HXNotifier notifiier =  instance.getNotifier();
                         notifiier.onNewMsg(message, this, db,messageContent);

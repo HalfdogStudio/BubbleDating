@@ -72,7 +72,7 @@ public  class HXSDKHelper {
     }
 
     /**
-     * 用来记录foreground Activity
+     * to record foreground Activity
      */
     private List<Activity> activityList = new ArrayList<Activity>();
 
@@ -91,11 +91,6 @@ public  class HXSDKHelper {
      *
      * @return boolean true if caller can continue to call HuanXin related APIs after calling onInit, otherwise false.
      *
-     * 环信初始化SDK帮助函数
-     * 返回true如果正确初始化，否则false，如果返回为false，请在后续的调用中不要调用任何和环信相关的代码
-     *
-     * for example:
-     * 例子：
      *
      * public class DemoHXSDKHelper extends HXSDKHelper
      *
@@ -125,29 +120,15 @@ public  class HXSDKHelper {
 //
 //        Log.d(TAG, "-->process app name : " + processAppName);
 
-        // 如果app启用了远程的service，此application:onCreate会被调用2次
-        // 为了防止环信SDK被初始化2次，加此判断会保证SDK被初始化1次
-        // 默认的app会在以包名为默认的process name下运行，如果查到的process name不是app的process name就立即返回
-//        if (processAppName == null || !processAppName.equalsIgnoreCase(hxModel.getAppProcessName())) {
-//            Log.e(TAG, "enter the service process!");
-//
-//            // 则此application::onCreate 是被service 调用的，直接返回
-//            return false;
+
+//        if(hxModel.isSandboxMode()){
+//            EMChat.getInstance().setEnv(EMChatConfig.EMEnvMode.EMSandboxMode);
 //        }
 
-        // 初始化环信SDK,一定要先调用init()
-//        EMChat.getInstance().init(context);
-
-        // 设置sandbox测试环境
-        // 建议开发者开发时设置此模式
-        if(hxModel.isSandboxMode()){
-            EMChat.getInstance().setEnv(EMChatConfig.EMEnvMode.EMSandboxMode);
-        }
-
-        if(hxModel.isDebugMode()){
-            // set debug mode in development process
-            EMChat.getInstance().setDebugMode(true);
-        }
+//        if(hxModel.isDebugMode()){
+//            // set debug mode in development process
+//            EMChat.getInstance().setDebugMode(true);
+//        }
 
         Log.d(TAG, "-->initialize EMChat SDK");
 
@@ -206,18 +187,6 @@ public  class HXSDKHelper {
     public void initHXOptions(){
         Log.d(TAG, "-->init HuanXin Options");
 
-//        // 获取到EMChatOptions对象
-//        EMChatOptions options = EMChatManager.getInstance().getChatOptions();
-//        // 默认添加好友时，是不需要验证的，改成需要验证
-//        options.setAcceptInvitationAlways(hxModel.getAcceptInvitationAlways());
-//        // 默认环信是不维护好友关系列表的，如果app依赖环信的好友关系，把这个属性设置为true
-//        options.setUseRoster(hxModel.getUseHXRoster());
-//        // 设置是否需要已读回执
-//        options.setRequireAck(hxModel.getRequireReadAck());
-//        // 设置是否需要已送达回执
-//        options.setRequireDeliveryAck(hxModel.getRequireDeliveryAck());
-//        // 设置从db初始化加载时, 每个conversation需要加载msg的个数
-//        options.setNumberOfMessagesLoaded(1);
 
         notifier = new HXNotifier();
         notifier.init(appContext);
@@ -271,7 +240,6 @@ public  class HXSDKHelper {
     }
 
     /**
-     * 检查是否已经登录过
      * @return
      */
     public boolean isLogined(){
@@ -307,7 +275,6 @@ public  class HXSDKHelper {
             }
         };
 
-        //注册连接监听
         EMChatManager.getInstance().addConnectionListener(connectionListener);
     }
 

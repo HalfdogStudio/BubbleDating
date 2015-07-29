@@ -11,9 +11,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class HXPreferenceUtils {
-    /**
-     * 保存Preference的name
-     */
     public static final String PREFERENCE_NAME = "saveInfo";
     private static SharedPreferences mSharedPreferences;
     private static HXPreferenceUtils mPreferenceUtils;
@@ -38,9 +35,7 @@ public class HXPreferenceUtils {
     }
 
     /**
-     * 单例模式，获取instance实例
-     *
-     *
+     * singleton, get single instance
      */
     public static HXPreferenceUtils getInstance() {
         if (mPreferenceUtils == null) {

@@ -147,7 +147,7 @@ public class ChatActivity extends ActionBarActivity {
         }
         Log.d(TAG,"-->before get new msg, mDataArray.size():"+mDataArray.size());
 //        mDataArray.add(entity);
-        /* mDataArray 应该保持与 mUserMsgList 保持数据一致 */
+        /* data of mDataArray should be consistent with that of  mUserMsgList  */
         if(DataCache.mUserMsgList.isEmpty()){
             throw new IllegalStateException("mUserMsgList is null, cannot get mDataArray ");
         }
@@ -203,20 +203,12 @@ public class ChatActivity extends ActionBarActivity {
 
 
     public void sendHXMsg(String username, String content) {
-        //获取到与聊天人的会话对象。参数username为聊天人的userid或者groupid，后文中的username皆是如此
         EMConversation conversation = EMChatManager.getInstance().getConversation(username);
-        //创建一条文本消息
         EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
-        //如果是群聊，设置chattype,默认是单聊
-//        message.setChatType(EMMessage.ChatType.GroupChat);
-        //设置消息body
         TextMessageBody txtBody = new TextMessageBody(content);
         message.addBody(txtBody);
-        //设置接收人
         message.setReceipt(username);
-        //把消息加入到此会话对象中
         conversation.addMessage(message);
-        //发送消息
         EMChatManager.getInstance().sendMessage(message, new EMCallBack() {
             @Override
             public void onSuccess() {
