@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -26,6 +27,7 @@ import java.util.List;
 import halfdog.bupt.edu.bubbledating.cache.image.ImageCacheManager;
 import halfdog.bupt.edu.bubbledating.constants.Mode;
 import halfdog.bupt.edu.bubbledating.entity.UserEntity;
+import halfdog.bupt.edu.bubbledating.service.BackgroundService;
 import halfdog.bupt.edu.bubbledating.tool.HXTool.HXSDKHelper;
 import halfdog.bupt.edu.bubbledating.tool.RequestManager;
 
@@ -74,8 +76,14 @@ public class BubbleDatingApplication extends Application {
                 IMAGE_CACHE_COMPRESS_FORMAT, IMAGE_CACHE_QUALITY, CACHE_TYPE);
         initBaiduMap();
         initHX();
+        initService();
 
 
+    }
+
+    public void initService(){
+        Intent intent = new Intent(getApplicationContext(), BackgroundService.class);
+        startService(intent);
     }
 
     public void initBaiduMap(){

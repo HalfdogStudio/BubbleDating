@@ -55,6 +55,12 @@ public class BackgroundService extends Service implements EMEventListener {
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return Service.START_REDELIVER_INTENT;
+//        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         this.unregisterReceiver(receiver);
