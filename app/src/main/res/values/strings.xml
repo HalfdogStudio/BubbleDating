@@ -11,6 +11,23 @@
     <string name="login_activity_username_hint">用户名</string>
     <string name="login_activity_password_hint">密码</string>
     <string name="main_activity_name">约游</string>
+    <string name="login_success">登陆成功</string>
+    <string name="wrong_username">用户名错误</string>
+    <string name="username_password_not_match">密码与用户名不匹配</string>
+    <string name="hx_register_failed">HX注册失败，请更换用户名重试</string>
+    <string name="unknown_error">未知的错误，请联系管理员</string>
+    <string name="empty_username">用户名不能为空</string>
+    <string name="empty_pw">密码不能为空</string>
+    <string name="empty_email">邮箱不能为空</string>
+    <string name="illegal_email_format">邮箱格式不合法</string>
+    <string name="register_success">注册成功</string>
+    <string name="repeated_username">用户名已被使用，请重新输入</string>
+    <string name="repeated_email">邮箱已被使用，请重新输入</string>
+    <string name="insert_failed">数据库插入失败，请稍后再试</string>
+    <string name="sql_exceptiion">服务器SQL异常，请联系管理员</string>
+    <string name="set_avatar">设置头像</string>
+    <string name="choose_local_pic">选择本地图片</string>
+    <string name="take_photo">拍照</string>
 
     
     <string name="drawer_open">drawer open</string>

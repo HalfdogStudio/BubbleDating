@@ -163,7 +163,7 @@ public class LoginActivity extends Activity {
                     int status = response.getInt(ResponseState.RESPONSE_STATUS_KEY);
                     switch(status){
                         case ResponseState.OK:
-                            Toast.makeText(context,"登陆成功",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,R.string.login_success,Toast.LENGTH_SHORT).show();
                             JSONObject res = (JSONObject)response.get("user_info");
                             Intent toMainAcvitiy = new Intent(context,MainActivity.class);
                             BubbleDatingApplication.userEntity = new UserEntity(res.getInt(UserInfoKeys.U_ID),
@@ -189,18 +189,18 @@ public class LoginActivity extends Activity {
                             break;
                         case ResponseState.UNKOWN_USERNAME:
                             progressDialog.dismiss();
-                            Toast.makeText(context,"用户名错误",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,R.string.wrong_username,Toast.LENGTH_SHORT).show();
                             break;
                         case ResponseState.USERNAME_PASSWORD_UNCOMPATIBLE:
                             progressDialog.dismiss();
-                            Toast.makeText(context,"密码与用户名不匹配",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.username_password_not_match,Toast.LENGTH_SHORT).show();
                             break;
                         case ResponseState.HX_REGISTER_FAILED:
-                            Toast.makeText(context,"HX注册失败，请更换用户名重试",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.hx_register_failed,Toast.LENGTH_SHORT).show();
                             break;
                         default:
                             progressDialog.dismiss();
-                            Toast.makeText(context,"未知的错误",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,R.string.unknown_error,Toast.LENGTH_SHORT).show();
                             break;
                     }
                 } catch (JSONException e) {
@@ -226,11 +226,11 @@ public class LoginActivity extends Activity {
         username = loginName.getText().toString().toLowerCase();
         pw = loginPw.getText().toString();
         if(TextUtils.isEmpty(username)){
-            Toast.makeText(context,"用户名不能为空",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,R.string.empty_username,Toast.LENGTH_SHORT).show();
             return;
         }
         if(TextUtils.isEmpty(pw)){
-            Toast.makeText(context,"密码不能为空",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.empty_pw,Toast.LENGTH_SHORT).show();
             return;
         }
 

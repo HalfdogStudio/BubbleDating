@@ -35,11 +35,19 @@ import com.android.volley.VolleyError;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.widgets.ProgressDialog;
 
+import org.hybridsquad.android.library.CropHandler;
+import org.hybridsquad.android.library.CropHelper;
+import org.hybridsquad.android.library.CropParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URLConnection;
+import java.nio.channels.NonWritableChannelException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -80,12 +88,15 @@ public class RegisterAccountActivity extends Activity {
     private String uAvatarString;
 
     private Context context;
+    private CropParams mCropParams;
+    private MyCropHandler mCropHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_account);
         initUI();
+        initCropParams();
     }
 
     public void initUI() {
@@ -107,6 +118,20 @@ public class RegisterAccountActivity extends Activity {
         userAvatar.setOnClickListener(clickListener);
 
         progressDialog = new ProgressDialog(RegisterAccountActivity.this, this.getResources().getString(R.string.wait_a_moment));
+    }
+
+    public void initCropParams(){
+
+        mCropHandler = new MyCropHandler();
+
+        mCropParams = new CropParams();
+        mCropParams.crop = "true";
+        mCropParams.aspectY = 1;
+        mCropParams.aspectY = 1;
+        mCropParams.outputX = 200;
+        mCropParams.outputY = 200;
+        mCropParams.scale = true;
+        mCropParams.returnData = true;
     }
 
     RadioGroup.OnCheckedChangeListener checkedChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -142,7 +167,7 @@ public class RegisterAccountActivity extends Activity {
                     switch (response) {
                         case ResponseState.OK:
 
-                            Toast.makeText(RegisterAccountActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterAccountActivity.this, R.string.register_success, Toast.LENGTH_SHORT).show();
                             BubbleDatingApplication.userEntity = new UserEntity(-1, uName, uPw, uEmail
                                     , uGender, null, true);
 
@@ -166,27 +191,27 @@ public class RegisterAccountActivity extends Activity {
                             break;
                         case ResponseState.USER_NAME_DUPLICATE:
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterAccountActivity.this, "用户名已被使用，请重新输入", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterAccountActivity.this, R.string.repeated_username, Toast.LENGTH_SHORT).show();
                             break;
                         case ResponseState.EMAIL_DUPLICATE:
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterAccountActivity.this, "邮箱已被使用，请重新输入", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterAccountActivity.this, R.string.repeated_email, Toast.LENGTH_SHORT).show();
                             break;
                         case ResponseState.INSERT_FAILED:
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterAccountActivity.this, "数据库插入失败，请稍后再试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterAccountActivity.this, R.string.insert_failed, Toast.LENGTH_SHORT).show();
                             break;
                         case ResponseState.SQL_EXCEPTION:
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterAccountActivity.this, "服务器SQL异常，请联系管理员", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterAccountActivity.this, R.string.sql_exceptiion, Toast.LENGTH_SHORT).show();
                             break;
                         case ResponseState.HX_REGISTER_FAILED:
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterAccountActivity.this, "HX注册失败，请更换用户名重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterAccountActivity.this, R.string.hx_register_failed, Toast.LENGTH_SHORT).show();
                             break;
                         default:
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterAccountActivity.this, "未知", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterAccountActivity.this, R.string.unknown_error, Toast.LENGTH_SHORT).show();
                             break;
 
                     }
@@ -229,22 +254,22 @@ public class RegisterAccountActivity extends Activity {
                     uEmail = userEmail.getText().toString();
                     uGender = male.isChecked() ? "m" : "f";
                     if (TextUtils.isEmpty(uName)) {
-                        Toast.makeText(RegisterAccountActivity.this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterAccountActivity.this, R.string.empty_username, Toast.LENGTH_SHORT).show();
                         break;
                     }
                     if (TextUtils.isEmpty(uPw)) {
 //                            userPassword.setError("密码不能为空");
-                        Toast.makeText(RegisterAccountActivity.this, "密码不能为空", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterAccountActivity.this, R.string.empty_pw, Toast.LENGTH_SHORT).show();
                         break;
                     }
                     if (TextUtils.isEmpty(uEmail)) {
 //                            userEmail.setError("邮箱不能为空");
-                        Toast.makeText(RegisterAccountActivity.this, "邮箱不能为空", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterAccountActivity.this, R.string.empty_email, Toast.LENGTH_SHORT).show();
                         break;
                     }
                     if (!Patterns.EMAIL_ADDRESS.matcher(uEmail).matches()) {
 //                            userEmail.setError("邮箱格式不合法");
-                        Toast.makeText(RegisterAccountActivity.this, "邮箱格式不合法", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterAccountActivity.this, R.string.illegal_email_format, Toast.LENGTH_SHORT).show();
                         break;
                     }
 
@@ -290,64 +315,122 @@ public class RegisterAccountActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQUEST_TAKE_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "default1.png");
-                    startPhotoZoom(Uri.fromFile(file));
-                }
-                break;
-            case REQUEST_FROM_GALLERY:
-                if (resultCode == RESULT_OK) {
-                    startPhotoZoom(data.getData());
-                }
-                break;
-            case REQUEST_PHOTO_ZOOM:
-                if (data != null) {
-                    Bundle extras = data.getExtras();
-                    if (extras != null) {
-                        Bitmap bitmap = extras.getParcelable("data");
-                        Drawable drawable = new BitmapDrawable(this.getResources(), bitmap);
-                        userAvatar.setImageDrawable(drawable);
+        Log.d(TAG, "-->REQUEST CODE :" + requestCode + ", resultCode:" + resultCode);
 
-                        try {
-                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
-                            byte[] mBitmapData = bos.toByteArray();
-                            uAvatarString = Base64.encodeToString(mBitmapData, Base64.DEFAULT);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }
-
-
-        }
+        CropHelper.handleResult(mCropHandler, requestCode, resultCode, data);
+//
+//        switch (requestCode) {
+//            case REQUEST_TAKE_PHOTO:
+//                if (resultCode == RESULT_OK) {
+//                    File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "default1.png");
+////                    cropPhoto(Uri.fromFile(file));
+//                    CropHelper.clearCachedCropFile(Uri.fromFile(file));
+//                    Intent intent = CropHelper.buildCaptureIntent(Uri.fromFile(file));
+//                    startActivityForResult(intent, CropHelper.REQUEST_CAMERA);
+//                }
+//                break;
+//            case REQUEST_FROM_GALLERY:
+//                if (resultCode == RESULT_OK) {
+////                  cropPhoto(data.getData());
+//                    Intent intent = CropHelper.buildCropFromGalleryIntent(new MyCropHandler().getCropParams());
+//                    startActivityForResult(intent, CropHelper.REQUEST_CROP);
+//                }
+//                break;
+//            case REQUEST_PHOTO_ZOOM:
+//                break;
+//            default:
+//                CropHelper.handleResult(new MyCropHandler(),requestCode,resultCode,data);
+//                break;
+////                if (data != null) {
+////                    Bundle extras = data.getExtras();
+////                    if (extras != null) {
+////                        Bitmap bitmap = extras.getParcelable("data");
+////                        Drawable drawable = new BitmapDrawable(this.getResources(), bitmap);
+////                        userAvatar.setImageDrawable(drawable);
+////
+////                        try {
+////                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+////                            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
+////                            byte[] mBitmapData = bos.toByteArray();
+////                            uAvatarString = Base64.encodeToString(mBitmapData, Base64.DEFAULT);
+////
+////                        } catch (Exception e) {
+////                            e.printStackTrace();
+////                        }
+////
+////                    }
+//     }
     }
+
+
+     public class MyCropHandler implements CropHandler{
+         @Override
+         public void onPhotoCropped(Uri uri) {
+             Drawable drawable = null;
+             try {
+                 InputStream inputStream = context.getContentResolver().openInputStream(uri);
+                 drawable = Drawable.createFromStream(inputStream, uri.toString() );
+                 userAvatar.setImageDrawable(drawable);
+
+             } catch (FileNotFoundException e) {
+                 e.printStackTrace();
+             }
+         }
+
+         @Override
+         public void onCropCancel() {
+            Log.e(TAG,"-->crop canceled");
+         }
+
+         @Override
+         public void onCropFailed(String s) {
+            Log.e(TAG,"-->crop faied:"+s);
+         }
+
+         @Override
+         public CropParams getCropParams() {
+             return mCropParams;
+         }
+
+         @Override
+         public Activity getContext() {
+             return (Activity)context;
+         }
+     }
 
 
     public void showOptionDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("设置头像")
-                .setItems(new String[]{"选择本地图片", "拍照"}, new DialogInterface.OnClickListener() {
+                .setTitle(R.string.set_avatar)
+                .setItems(new String[]{context.getResources().getString(R.string.choose_local_pic),
+                        context.getResources().getString(R.string.take_photo)}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                Intent mFromGallery = new Intent();
-                                mFromGallery.setType("image/*");
-                                mFromGallery.setAction(Intent.ACTION_GET_CONTENT);
-                                startActivityForResult(mFromGallery, REQUEST_FROM_GALLERY);
+                                //choose local photo
+//                                Intent mFromGallery = new Intent();
+//                                mFromGallery.setType("image/*");
+//                                mFromGallery.setAction(Intent.ACTION_GET_CONTENT);
+//                                startActivityForResult(mFromGallery, REQUEST_FROM_GALLERY);
+
+                                CropHelper.clearCachedCropFile(mCropHandler.getCropParams().uri);
+                                Intent intent = CropHelper.buildCropFromGalleryIntent(mCropHandler.getCropParams());
+                                startActivityForResult(intent, CropHelper.REQUEST_CROP);
+
                                 break;
                             case 1:
-                                Intent mFromCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                File path = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                                File mLocPath = new File(path, "default1.png");
-                                Log.d(TAG, "-->path:" + mLocPath);
-                                mFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mLocPath));
-                                startActivityForResult(mFromCapture, REQUEST_TAKE_PHOTO);
+                                //take photo
+//                                Intent mFromCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                                File path = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//                                File mLocPath = new File(path, "default1.png");
+//                                Log.d(TAG, "-->path:" + mLocPath);
+//                                mFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mLocPath));
+//                                startActivityForResult(mFromCapture, REQUEST_TAKE_PHOTO);
+
+                                CropHelper.clearCachedCropFile(mCropHandler.getCropParams().uri);
+                                Intent intent2 = CropHelper.buildCaptureIntent(mCropHandler.getCropParams().uri);
+                                startActivityForResult(intent2, CropHelper.REQUEST_CAMERA);
                                 break;
                         }
                     }
